@@ -34,10 +34,14 @@
         <p>Btech V Sem Results</p>
     </div>
 
+
     <form action="/addResults" method="POST" class="details_form" id="details_form">
         <div class="main_div" align="center">
-            <div class="inner_divs" align="left">
+            < class="inner_divs" align="left">
                 <h3 style="text-align: center;">Student Details</h3>
+
+
+
 
 
                 <label for="Registration number">Registration number:</label>
@@ -48,29 +52,38 @@
                 <input type="integer" id="semNo" name="semNo"><br><br>
                 <label for="sgpa:">SGPA:</label>
                 <input type="integer" id="sgpa" name="sgpa"><br><br>
-            </div>
-            <div class="inner_divs" align="left">
-                <h3 style="text-align: center;">Marks Details</h3>
-                <label for="compiler design">compiler design:</label>
-                <input type="integer" id="compiler design" name="cs1" min="0" max="1000" step="0.01"><br><br>
-                <label for="Data Analytics:">Data Analytics:</label>
-                <input type="integer" id="Data Analytics:" name="cs2" min="0" max="1000" step="0.01"><br><br>
-                <label for="Artificial Intelligence:">Artificial Intelligence:</label>
-                <input type="integer" id="Artificial Intelligence:" name="cs3" min="0" max="1000" step="0.01"><br><br>
-                <label for="Cryptography and Network Security">Cryptography and Network Security:</label>
-                <input type="integer" id="Cryptography and Network Security" name="cs4" min="0" max="1000"
-                    step="0.01"><br><br>
-                <label for="Introdution to python Programming:">Introdution to python Programming</label>
-                <input type="integer" id="Introdution to python Programming" name="cs5" min="0" max="1000"
-                    step="0.01"><br><br>
-
-            </div>
-
-            <button class="submit">Submit</button>
         </div>
+        <div class="inner_divs" align="left">
+            <h3 style="text-align: center;">Marks Details</h3>
+            <label for="compiler design">compiler design:</label>
+            <input type="integer" id="compiler design" name="cs1" min="0" max="1000" step="0.01"><br><br>
+            <label for="Data Analytics:">Data Analytics:</label>
+            <input type="integer" id="Data Analytics:" name="cs2" min="0" max="1000" step="0.01"><br><br>
+            <label for="Artificial Intelligence:">Artificial Intelligence:</label>
+            <input type="integer" id="Artificial Intelligence:" name="cs3" min="0" max="1000" step="0.01"><br><br>
+            <label for="Cryptography and Network Security">Cryptography and Network Security:</label>
+            <input type="integer" id="Cryptography and Network Security" name="cs4" min="0" max="1000"
+                step="0.01"><br><br>
+            <label for="Introdution to python Programming:">Introdution to python Programming</label>
+            <input type="integer" id="Introdution to python Programming" name="cs5" min="0" max="1000"
+                step="0.01"><br><br>
+
+        </div>
+
+        <button class="submit">Submit</button>
+        </div>
+    </form>
+    <form>
+
+        <h3>Upload Results Data</h3>
+        <label for="resultsFileUpload">Upload File<input type="file" name="resultsFileUpload"
+                id="resultsFileUpload"></label>
+        <button>Upload</button>
     </form>
     <script>
         document.getElementById('details_form').addEventListener('submit', (event) => {
+
+            document.location.assign(window.location.href)
             alert("Successfully submited")
         })
     </script>

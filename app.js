@@ -56,7 +56,7 @@ app.post("/addResults", (req, res) => {
   });
   console.log(student_marks_details);
 
-  // res.send("request recieved");
+  res.send({});
 
   // connect to Db
   //const createDbConnection = require("./db/db.js").creatDbConnection;
