@@ -26,6 +26,20 @@
 
             padding: 100px;
         }
+
+
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+
+        }
+
+        #results-table2 {
+
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -38,10 +52,127 @@
         <p>College of Engineering.</p>
         <p>Btech V Sem Results</p>
     </div>
+
     <div class="results" align="center">
-        <label>Hall Ticket:<input type="number"></label>
-        <button>Submit</button>
+        <form action="/studentMarksDetails" method="POST" id="results">
+            <label>Semester:<input name="semNo" type="integer"></label>
+            <label>Hall Ticket:<input name="registrationNo" type="integer"></label>
+            <button>Submit</button>
+        </form>
+        <div id="tableDiv" style="display: none;">
+            <h3>Student Details</h3>
+            <table style="width:40%; text-align: left;" id="results-table1">
+                <!-- <tr>
+                    <td>Registration number:</td>
+                    <td style="width:30%"> </td>
+                </tr>
+                <tr>
+                    <td>StudentName:</td>
+                    <td style="width:30%"> </td>
+                </tr>
+                <tr>
+                    <td>semNo:</td>
+                    <td style="width:30%"> </td>
+                </tr>
+                <tr>
+                    <td>SGPA</td>
+                    <td style="width:30%"> </td>
+                </tr> -->
+            </table>
+            <br>
+            <br>
+            <h3>Marks Details</h3>
+            <table style="width:40%" id="results-table2">
+                <tr>
+                    <th> Subject Code</th>
+                    <th> Grade points</th>
+                </tr>
+                <!-- <tr>
+                    <td>Formal Languages and Automata Theory</td>
+                    <td style="width:30%"> </td>
+                </tr>
+                <tr>
+                    <td>Network Security</td>
+                    <td style="width:30%"> </td>
+                </tr>
+                <tr>
+                    <td>Web Technologies</td>
+                    <td style="width:30%"> </td>
+                </tr>
+                <tr>
+                    <td>Design and Analysis of Algorithms</td>
+                    <td style="width:30%"> </td>
+                </tr>
+                <tr>
+                    <td>Machine Learning</td>
+                    <td style="width:30%"> </td>
+                </tr>
+                <tr>
+                    <td>Computer Graphics</td>
+                    <td style="width:30%"> </td>
+                </tr> -->
+            </table>
+        </div>
     </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"></script>
+    <script>
+        function studentResults() {
+            document.getElementById('results').addEventListener('submit', async (event) => {
+                event.preventDefault();
+                await axios.post("/studentDetails", new URLSearchParams(new FormData(event.target))
+                ).then((response) => {
+                    // sample data
+                    console.log(response.data);
+
+                    // table1
+                    const results_table1 = document.getElementById('results-table1');
+                    const results_table1_length = results_table1.rows.length;
+                    for (let i = 0; i < results_table1_length; i++) {
+                        results_table1.deleteRow(0);
+                    }
+                    Object.keys(response.data[0]).forEach(
+                        (key) => {
+                            const row = results_table1.insertRow();
+                            const detailName = row.insertCell(0);
+                            detailName.textContent = _.startCase(key);
+                            const detailValue = row.insertCell(1);
+                            detailValue.textContent = response.data[0][key];
+                        }
+                    )
+                })
+
+                // table2
+                await axios.post("/studentMarksDetails", new URLSearchParams(new FormData(event.target))
+                ).then((response) => {
+                    // sample data
+                    console.log(response.data);
+
+                    // table2
+                    const results_table2 = document.getElementById('results-table2');
+                    const results_table2_length = results_table2.rows.length;
+                    for (var i = 0; i < results_table2_length - 1; i++) {
+                        results_table2.deleteRow(-1);
+                    }
+                    response.data.forEach(
+                        (subject) => {
+                            const row = results_table2.insertRow();
+                            const subjectCode = row.insertCell(0);
+                            subjectCode.textContent = subject.subjectCode;
+                            const gradePoints = row.insertCell(1);
+                            gradePoints.textContent = subject.gradePoints;
+
+                        }
+                    )
+
+                    document.getElementById('tableDiv').setAttribute('style', 'display:show;')
+
+                })
+
+            })
+        }
+        studentResults();
+    </script>
 
 </body>
 

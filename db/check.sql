@@ -1,3 +1,5 @@
-USE student_database;
-INSERT INTO student_results values(2,"student2", "9.6");
-SELECT * FROM student_results;
+USE studentDatabase;
+--INSERT INTO student_results values(3,"student3", "9.6");
+SELECT * FROM studentDetails ;
+SELECT * FROM studentMarksDetails ;
+ 

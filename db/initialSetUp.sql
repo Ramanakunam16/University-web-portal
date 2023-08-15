@@ -1,16 +1,20 @@
 
-
 --Database creation
-
-CREATE DATABASE student_database;
+CREATE DATABASE studentDatabase;
 
 --Table Creation 
-USE student_database;
-CREATE TABLE student_results (
-    RegistrationNo INT,
-    StudentName CHAR(20),
-    GPA FLOAT
+USE studentDatabase;
+--
+CREATE TABLE studentDetails (
+    registrationNo INT,
+    studentName CHAR(20),
+    semNo INT,
+    sGPA FLOAT
 );
-
-
-
+--
+CREATE TABLE studentMarksDetails (
+    registartionNo INT,
+    semNo INT,
+    subjectCode CHAR(20),
+    gradePoints INT
+);

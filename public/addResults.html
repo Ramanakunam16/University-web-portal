@@ -17,6 +17,11 @@
         .header p {
             font-size: 20px;
         }
+
+        .inner_divs {
+            margin-left: 20%;
+
+        }
     </style>
 </head>
 
@@ -29,36 +34,40 @@
         <p>Btech V Sem Results</p>
     </div>
 
-    <form action="" method="POST">
+    <form action="/addResults" method="POST" class="details_form">
+        <div class="main_div" align="center">
+            <div class="inner_divs" align="left">
+                <h3 style="text-align: center;">Student Details</h3>
 
-        <div align="center">
-            <h3 style="text-align: center;">Student Details</h3>
-            <label for="fname"> Student Name:</label>
-            <input type="text" id="fname" name="fname"><br><br>
-            <label for="Registration number:">Registration number:</label>
-            <input type="integer" id="Registration Number:" Name="Registration Number:" Class="results"><br><br>
-            <label for="sgpa:">SGPA:</label>
-            <input type="integer" id="sgpa" Name="sgpa"><br><br>
+
+                <label for="Registration number">Registration number:</label>
+                <input type="integer" id="Registration Number" name="RegistrationNumber" class="results"><br><br>
+                <label for="fname"> Student Name:</label>
+                <input type="text" id="fname" name="StudentName"><br><br>
+                <label for="semNo"> Sem No:</label>
+                <input type="integer" id="semNo" name="semNo"><br><br>
+                <label for="sgpa:">SGPA:</label>
+                <input type="integer" id="sgpa" name="sgpa"><br><br>
+            </div>
+            <div class="inner_divs" align="left">
+                <h3 style="text-align: center;">Marks Details</h3>
+                <label for="compiler design">compiler design:</label>
+                <input type="integer" id="compiler design" name="cs1" min="0" max="1000" step="0.01"><br><br>
+                <label for="Data Analytics:">Data Analytics:</label>
+                <input type="integer" id="Data Analytics:" name="cs2" min="0" max="1000" step="0.01"><br><br>
+                <label for="Artificial Intelligence:">Artificial Intelligence:</label>
+                <input type="integer" id="Artificial Intelligence:" name="cs3" min="0" max="1000" step="0.01"><br><br>
+                <label for="Cryptography and Network Security">Cryptography and Network Security:</label>
+                <input type="integer" id="Cryptography and Network Security" name="cs4" min="0" max="1000"
+                    step="0.01"><br><br>
+                <label for="Introdution to python Programming:">Introdution to python Programming</label>
+                <input type="integer" id="Introdution to python Programming" name="cs5" min="0" max="1000"
+                    step="0.01"><br><br>
+
+            </div>
+
+            <button class="submit">Submit</button>
         </div>
-        <div align="center">
-            <h3 style="text-align: center;">Marks Details</h3>
-            <label for="compiler design">compiler design:</label>
-            <input type="integer" id="compiler design" name="compiler design" min="0" max="1000" step="0.01"><br><br>
-            <label for="Data Analytics:">Data Analytics:</label>
-            <input type="integer" id="Data Analytics:" name:"Data Analytics:" min="0" max="1000" step="0.01"><br><br>
-            <label for="Artificial Intelligence:">Artificial Intelligence:</label>
-            <input type="integer" id="Artificial Intelligence:" name:"Artificial Intelligence:" min="0" max="1000"
-                step="0.01"><br><br>
-            <label for="Cryptography and Network Security">Cryptography and Network Security:</label>
-            <input type="integer" id="Cryptography and Network Security" name:"Cryptography and Network Security"
-                min="0" max="1000" step="0.01"><br><br>
-            <label for="Introdution to python Programming:">Introdution to python Programming</label>
-            <input type="integer" id="Introdution to python Programming" name:"Introdution to python Programming"
-                min="0" max="1000" step="0.01"><br><br>
-        </div>
-        <button>Submit</button>
-
-
     </form>
 </body>
 
