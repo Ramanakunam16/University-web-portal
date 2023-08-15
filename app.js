@@ -150,6 +150,10 @@ app.post("/studentDetails", (req, res) => {
   // });
 });
 
+app.post('/rsultsFileUploadData', (req,res) =>{
+  
+})
+
 app.listen(port, () => {
   console.log(`app listening on port ${port}`);
 });

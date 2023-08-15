@@ -37,14 +37,9 @@
 
     <form action="/addResults" method="POST" class="details_form" id="details_form">
         <div class="main_div" align="center">
-            < class="inner_divs" align="left">
+            <div class="inner_divs" align="left">
                 <h3 style="text-align: center;">Student Details</h3>
-
-
-
-
-
-                <label for="Registration number">Registration number:</label>
+                 <label for="Registration number">Registration number:</label>
                 <input type="integer" id="Registration Number" name="RegistrationNumber" class="results"><br><br>
                 <label for="fname"> Student Name:</label>
                 <input type="text" id="fname" name="StudentName"><br><br>
@@ -73,7 +68,7 @@
         <button class="submit">Submit</button>
         </div>
     </form>
-    <form>
+    <form action="/rsultsFileUploadData" method="POST">
 
         <h3>Upload Results Data</h3>
         <label for="resultsFileUpload">Upload File<input type="file" name="resultsFileUpload"
