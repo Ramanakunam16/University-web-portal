@@ -34,7 +34,7 @@
         <p>Btech V Sem Results</p>
     </div>
 
-    <form action="/addResults" method="POST" class="details_form">
+    <form action="/addResults" method="POST" class="details_form" id="details_form">
         <div class="main_div" align="center">
             <div class="inner_divs" align="left">
                 <h3 style="text-align: center;">Student Details</h3>
@@ -69,6 +69,11 @@
             <button class="submit">Submit</button>
         </div>
     </form>
+    <script>
+        document.getElementById('details_form').addEventListener('submit', (event) => {
+            alert("Successfully submited")
+        })
+    </script>
 </body>
 
 </html>
