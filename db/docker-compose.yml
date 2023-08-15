@@ -1,0 +1,10 @@
+services:
+
+  db:
+    image: mariadb
+    container_name: mariadb_container
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: ""
+    ports:
+      - 3307:3306
