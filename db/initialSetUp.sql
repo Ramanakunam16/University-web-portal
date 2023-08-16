@@ -4,17 +4,31 @@ CREATE DATABASE studentDatabase;
 
 --Table Creation 
 USE studentDatabase;
---
+
 CREATE TABLE studentDetails (
-    registrationNo INT,
-    studentName CHAR(20),
-    semNo INT,
-    sGPA FLOAT
+    registrationNumber INT,
+    studentName CHAR(50),
+    sem INT,
+    totalResults FLOAT
 );
---
 CREATE TABLE studentMarksDetails (
-    registartionNo INT,
-    semNo INT,
-    subjectCode CHAR(20),
+    registrationNumber INT,
+    sem INT,
+    subjectName CHAR(50),
+
     gradePoints INT
 );
+
+
+
+-- CREATE TABLE UploadedData (
+--     studentName CHAR(20),
+--     registrationNumber INT,
+--     sem INT,
+--     s1 INT,
+--     s2 INT,
+--     s3 INT,
+--     s4 INT,
+--     s5 INT,
+--     sGPA FLOAT
+-- );

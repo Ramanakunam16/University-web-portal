@@ -55,16 +55,16 @@
 
     <div class="results" align="center">
         <form action="/studentMarksDetails" method="POST" id="results">
-            <label>Semester:<input name="semNo" type="integer"></label>
-            <label>Hall Ticket:<input name="registrationNo" type="integer"></label>
+            <label>Semester:<input name="sem" type="integer"></label>
+            <label>Hall Ticket:<input name="registrationNumber" type="integer"></label>
             <button>Submit</button>
         </form>
         <div id="tableDiv" style="display: none;">
-            
+
             <table style="width:40%; text-align: left;" id="results-table1">
                 <thead>
                     <h3>Student Details</h3>
-                    </thead>
+                </thead>
                 <!-- <tr>
                     <td>Registration number:</td>
                     <td style="width:30%"> </td>
@@ -85,13 +85,13 @@
             <br>
             <br>
 
-            
+
             <table style="width:40%" id="results-table2">
                 <thead>
                     <h3>SubjectWise Grade Points</h3>
                 </thead>
                 <tr>
-                    <th> Subject Code</th>
+                    <th> Subject Name</th>
                     <th> Grade points</th>
                 </tr>
                 <!-- <tr>
@@ -130,51 +130,65 @@
                 await axios.post("/studentDetails", new URLSearchParams(new FormData(event.target))
                 ).then((response) => {
                     // sample data
-                    console.log(response.data);
 
-                    // table1
-                    const results_table1 = document.getElementById('results-table1');
-                    const results_table1_length = results_table1.rows.length;
-                    for (let i = 0; i < results_table1_length; i++) {
-                        results_table1.deleteRow(0);
+                    if (response.data.length == 0) {
+                        alert("invalid input");
+                        document.getElementById('tableDiv').setAttribute('style', 'display:none;')
                     }
-                    Object.keys(response.data[0]).forEach(
-                        (key) => {
-                            const row = results_table1.insertRow();
-                            const detailName = row.insertCell(0);
-                            detailName.textContent = _.startCase(key);
-                            const detailValue = row.insertCell(1);
-                            detailValue.textContent = response.data[0][key];
+                    else {
+
+                        // table1
+                        const results_table1 = document.getElementById('results-table1');
+                        const results_table1_length = results_table1.rows.length;
+                        for (let i = 0; i < results_table1_length; i++) {
+                            results_table1.deleteRow(0);
                         }
-                    )
+                        Object.keys(response.data[0]).forEach(
+                            (key) => {
+                                const row = results_table1.insertRow();
+                                const detailName = row.insertCell(0);
+                                detailName.textContent = _.startCase(key);
+                                const detailValue = row.insertCell(1);
+                                detailValue.textContent = response.data[0][key];
+                            }
+                        )
+                        document.getElementById('tableDiv').setAttribute('style', 'display:show;')
+                    }
                 })
+                    .catch((err) => { console.log(err) })
 
                 // table2
                 await axios.post("/studentMarksDetails", new URLSearchParams(new FormData(event.target))
                 ).then((response) => {
                     // sample data
-                    console.log(response.data);
 
-                    // table2
-                    const results_table2 = document.getElementById('results-table2');
-                    const results_table2_length = results_table2.rows.length;
-                    for (var i = 0; i < results_table2_length - 1; i++) {
-                        results_table2.deleteRow(-1);
+                    if (response.data.length == 0) {
+                        // alert("invalid input");
+                        document.getElementById('tableDiv').setAttribute('style', 'display:none;')
                     }
-                    response.data.forEach(
-                        (subject) => {
-                            const row = results_table2.insertRow();
-                            const subjectCode = row.insertCell(0);
-                            subjectCode.textContent = subject.subjectCode;
-                            const gradePoints = row.insertCell(1);
-                            gradePoints.textContent = subject.gradePoints;
-
+                    else {
+                        // table2
+                        const results_table2 = document.getElementById('results-table2');
+                        const results_table2_length = results_table2.rows.length;
+                        for (var i = 0; i < results_table2_length - 1; i++) {
+                            results_table2.deleteRow(-1);
                         }
-                    )
+                        response.data.forEach(
+                            (subject) => {
+                                const row = results_table2.insertRow();
+                                const subjectName = row.insertCell(0);
+                                subjectName.textContent = subject.subjectName;
+                                const gradePoints = row.insertCell(1);
+                                gradePoints.textContent = subject.gradePoints;
 
-                    document.getElementById('tableDiv').setAttribute('style', 'display:show;')
+                            }
+                        )
+
+                        document.getElementById('tableDiv').setAttribute('style', 'display:show;')
+                    }
 
                 })
+                    .catch((err) => { console.log(err) })
 
             })
         }
