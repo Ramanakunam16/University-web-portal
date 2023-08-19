@@ -1,13 +1,19 @@
 <html>
 
 <head>
+    <title>results</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         .header {
             padding: 5px;
             text-align: center;
             background: #FFFFC2;
             color: #F4A460;
+
+
         }
+
 
         /* Increase the font size of the h1 element */
         .header h1 {
@@ -20,6 +26,31 @@
 
         .inner_divs {
             margin-left: 20%;
+
+        }
+
+
+
+        .fileUpload {
+            /* background-color: #686766; */
+            width: 50%;
+            display: grid;
+            justify-content: center;
+            position: absolute;
+            left: 25%;
+            margin-top: 10%;
+
+
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+
+        button {
+            margin-top: 10px;
+            width: 100px;
 
         }
     </style>
@@ -35,7 +66,7 @@
     </div>
 
 
-    <form action="/addResults" method="POST" class="details_form" id="details_form">
+    <!-- <form action="/addResults" method="POST" class="details_form" id="details_form">
         <div class="main_div" align="center">
             <div class="inner_divs" align="left">
                 <h3 style="text-align: center;">Student Details</h3>
@@ -67,8 +98,9 @@
 
             <button class="submit">Submit</button>
         </div>
-    </form>
-    <form action="/resultsFileUploadData" method="POST" enctype="multipart/form-data">
+    </form> -->
+    <!-- <h1>(OR)</h1> -->
+    <form action="/resultsFileUploadData" method="POST" enctype="multipart/form-data" class="fileUpload">
 
         <h3>Upload Results Data</h3>
         <label for="resultsFileUpload">Upload File<input type="file" name="resultsFileUpload"

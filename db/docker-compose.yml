@@ -5,6 +5,6 @@ services:
     container_name: mariadb_container
     restart: always
     environment:
-      MARIADB_ROOT_PASSWORD: example
+      MARIADB_ROOT_PASSWORD: prototype
     ports:
       - 3307:3306
