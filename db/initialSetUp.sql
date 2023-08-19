@@ -9,7 +9,7 @@ CREATE TABLE studentDetails (
     registrationNumber INT,
     studentName CHAR(50),
     sem INT,
-    sGPA FLOAT
+    totalResults FLOAT
 );
 CREATE TABLE studentMarksDetails (
     registrationNumber INT,
