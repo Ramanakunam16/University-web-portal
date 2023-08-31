@@ -1,7 +1,7 @@
 <html lang="en">
 
 <head>
-    <title>Page Title</title>
+    <title>Results</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -43,6 +43,20 @@
         #results-table2 {
 
             text-align: center;
+        }
+
+        @media print {
+            #printButton {
+                display: none;
+            }
+
+            #results {
+                display: none;
+            }
+        }
+
+        #printButton {
+            margin-top: 30px;
         }
     </style>
 
@@ -130,6 +144,7 @@
                     <td style="width:30%"> </td>
                 </tr> -->
             </table>
+            <button id="printButton">Print Results</button>
         </div>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -141,7 +156,7 @@
                 await axios.post("/studentDetails", new URLSearchParams(new FormData(event.target))
                 ).then((response) => {
                     // sample data
-
+                    console.log(response.data);
                     if (response.data.length == 0) {
                         alert("invalid input");
                         document.getElementById('tableDiv').setAttribute('style', 'display:none;')
@@ -204,6 +219,13 @@
             })
         }
         studentResults();
+    </script>
+    <script>
+
+        document.getElementById("printButton").addEventListener("click", function () {
+            // Open the print dialog when the button is clicked
+            window.print();
+        });
     </script>
 
 </body>

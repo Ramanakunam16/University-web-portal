@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<title> login form
+</title>
+
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="style4.css">
+
+
+</head>
+
+<>
+    <header>
+
+        <a href="index.html"> <img src="ambedkar-university-sklm.jpg"></a>
+        <h1>Student login</h1>
+        <nav><a href="index.html"><strong>HOME</strong><a> </ul>
+        </nav>
+    </header>
+    <div class="form">
+        <form id="signin" action="/signIn" , method="post">
+
+            <div class="label1">
+                <label for="uname" name="uname">Username<input type="text" id="uname" name="uname"
+                        placeholder="Enter your username" required></label>
+
+
+            </div>
+            <div class="label2">
+                <label for="passwd" name="passwd">password<input type="password" id="passwd" name="passwd"
+                        pattern="[a-z0-9]{8,0}" placeholder="password" required>
+                </label>
+
+            </div>
+    </div>
+
+    <input type="submit" value="login">
+
+
+    <a href="/forgotPassword"><span class="fp">forgot password?</span></a>
+    </form>
+    </div>
+
+
+    <!-- <script>
+        document.getElementById("signin").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Alert a message
+            alert("login failed.try again ..");
+
+            // Redirect to index.html
+            window.location.href = "signinform.html";
+        }); -->
+
+    </body>
+
+</html>

@@ -15,7 +15,6 @@ CREATE TABLE studentMarksDetails (
     registrationNumber INT,
     sem INT,
     subjectName CHAR(50),
-
     gradePoints INT
 );
 
@@ -32,3 +31,11 @@ CREATE TABLE studentMarksDetails (
 --     s5 INT,
 --     sGPA FLOAT
 -- );
+
+
+CREATE TABLE users (
+user_name  VARCHAR(255) PRIMARY KEY,
+user_email VARCHAR(255),
+hasedPassword VARCHAR(255)
+);
+

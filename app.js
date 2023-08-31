@@ -1,21 +1,39 @@
+// importing
 const express = require("express");
 const app = express();
-const port = 8005;
+const port = 8007;
 const bodyParser = require("body-parser");
 const lodash = require("lodash");
+const { exec } = require("child_process");
+const fs = require("fs");
+const fileUpload = require("express-fileupload");
+const bcrypt = require("bcrypt");
 
+// import express from "express";
+
+// import bodyParser from "body-parser";
+// import lodash from "lodash";
+// import { exec } from "child_process";
+// import node_xlsx from "node-xlsx";
+// import fileUpload from "express-fileupload";
+// import mysql from "mysql";
+// import fs from "fs";
+
+// express middleware
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 const node_xlsx = require("node-xlsx").default;
-app.use(require("express-fileupload")());
+app.use(fileUpload());
 
-// Db
+// sqlCredentials importing
 
 const mysql = require("mysql");
-
+// import sqlDbCredentialsjson from "./db/sqlDbCredentials.json";
 const sqlDbCredentials = require("./db/sqlDbCredentials.json");
 
-//Function to create db connection
+// const fileUpload = require("express-fileupload");
+
+// Function to create db connection
 function createDbConnection() {
   return mysql.createConnection(sqlDbCredentials);
 }
@@ -33,6 +51,8 @@ function createDbConnection() {
 //   //End Connection
 //   mysqlConnection.end();
 // });
+
+// app.get("/hello", (req, res) => res.send("hello world"));
 
 app.post("/addResults", (req, res) => {
   const body = req.body;
@@ -158,11 +178,13 @@ app.post("/resultsFileUploadData", (req, res) => {
   // Read excel file
   const workBook = node_xlsx.parse(req.files.resultsFileUpload.data);
   const sheetData = workBook[0].data;
+  console.log(req.files.resultsFileUpload.data);
   // const sheetDataColumns = sheetData[0];
   // sheetDataRows = sheetData.slice(1, sheetData.length);
   // excel conversion
   const sheetDataLength = sheetData.length;
   let studentMarksDetails = [];
+  console.log(studentMarksDetails);
   // let oneStudentMarksDetails = {};
   // for (var k = 0; k < sheetData[0].lengthength; k++) {
 
@@ -181,6 +203,7 @@ app.post("/resultsFileUploadData", (req, res) => {
 
   var studentResults = [];
   var studentDetails = [];
+
   for (let i = 0; i < studentMarksDetails.length; i++) {
     Object.keys(studentMarksDetails[i]).forEach((key) => {
       if (key.slice(0, 2) == "cs") {
@@ -192,6 +215,7 @@ app.post("/resultsFileUploadData", (req, res) => {
         ]);
       }
     });
+
     studentDetails.push([
       studentMarksDetails[i].registrationNumber,
       studentMarksDetails[i].studentName,
@@ -235,6 +259,175 @@ app.post("/resultsFileUploadData", (req, res) => {
   mysqlConnection.end();
 });
 
-app.listen(port, () => {
+app.post("/convert", (req, res) => {
+  if (!req.files) {
+    res.status(400).send("No file uploaded");
+    return;
+  }
+
+  const mdbFile = req.files.file;
+  // if (mdbFile.type !== "application/x-mdb") {
+  //   res.status(400).send("Invalid file ");
+  //   return;
+  // }
+  const mdbFileData = mdbFile.data;
+
+  console.log(req.files.file);
+  const nonNullMdbFileData = mdbFileData.filter((byte) => byte !== 0x00);
+  fs.writeFileSync(mdbFile.name, nonNullMdbFileData);
+  console.log(mdbFile.name);
+
+  // const nonNullMdbFileData = mdbFileData.filter((byte) => byte !== 0x00);
+  // fs.writeFileSync(mdbFileData, nonNullMdbFileData);
+  // console.log(nonNullMdbFileData);
+
+  const csvFilePath = `${mdbFile.name}.csv`;
+  const tableName = "excel_data";
+
+  // Convert MDB to CSV
+  const mdbToCsvCommand = `mdb-export "${mdbFile.name}" "${tableName}" > "${csvFilePath}"`;
+  console.log("Executing command:", mdbToCsvCommand);
+  exec(mdbToCsvCommand, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error extracting data: ${error.message}`);
+      res.status(500).send("Error extracting data");
+      return;
+    }
+    console.log("Data extracted successfully");
+    // Convert CSV to Excel
+    const csvData = fs.readFileSync(csvFilePath, "utf-8");
+    const csvRows = csvData.split("\n");
+    const xlsxData = csvRows.map((row) => [row.split(",")]);
+    console.log(xlsxData);
+    const xlsxBuffer = xlsx.build([{ name: "Sheet 1", data: xlsxData }]);
+    console.log(xlsxData);
+    console.log(xlsxBuffer);
+
+    // Send the xlsx data as a response
+    res.setHeader("Content-Disposition", "attachment; filename=output.xlsx");
+    res.type(
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.send(xlsxBuffer);
+  });
+});
+
+// user account details after account creation
+app.post("/signUp", async (req, res) => {
+  const mysqlConnection = createDbConnection();
+  const uname = req.body.uname;
+  const email = req.body.email;
+  const passwd = req.body.passwd;
+
+  // console.log(body);
+
+  //checking for exiting user and emails
+  try {
+    // Check if username or email already exists
+    const existingUser = await new Promise((resolve, reject) => {
+      mysqlConnection.query(
+        "SELECT user_name, user_email FROM users WHERE user_name = ? OR user_email = ?",
+        [uname, email],
+        (err, results) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve(results[0]);
+          console.log("results:", results);
+        }
+      );
+    });
+
+    if (existingUser) {
+      if (existingUser.user_name === uname) {
+        console.log("Username already exists. Please select a new username.");
+      } else if (existingUser.user_email === email) {
+        console.log("Email already exists. Please use a different email.");
+      }
+      const message =
+        "<script>alert('Username or email already exists.'); window.location.href='signupform.html'</script>";
+      res.status(400).send(message);
+      return;
+    }
+    // console.log(existingUser, existingUser.user_name);
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(passwd, 10);
+
+    console.log(hashedPassword);
+
+    // Insert the user
+    mysqlConnection.query(
+      "INSERT INTO users VALUES (?, ?, ?)",
+      [uname, email, hashedPassword],
+      (err, results) => {
+        if (err) {
+          console.log("Error:", err);
+          res.status(500).send("An error occurred while signing up.");
+          return;
+        }
+        const message =
+          "<script>alert('Sign up successful.'); window.location.href='signinform.html'</script>";
+        res.send(message);
+      }
+    );
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("An error occurred while signing up.");
+  }
+
+  // excute query
+});
+app.post("/signIn", (req, res) => {
+  const mysqlConnection = createDbConnection();
+  const uname = req.body.uname;
+  const password = req.body.passwd;
+  // console.log(uname, password);
+
+  // excute query
+
+  mysqlConnection.query(
+    "SELECT * FROM users WHERE user_name=?",
+    [uname],
+    async (err, results) => {
+      console.log(results);
+      if (err) {
+        console.log("Invalid query", err);
+      } else {
+        if (results.length === 0 || results[0].user_name !== uname) {
+          res.redirect("index.html");
+        }
+        if (results[0].hasedPassword === password) {
+          res.send("login successfully");
+        } else {
+          const message =
+            "<script>alert('invalid password'); window.location.href='signinform.html'</script>";
+          res.send(message);
+        }
+
+        // console.log(results);
+      }
+    }
+  );
+});
+
+// app.post("/convert", (req, res) => {
+//   const mdbFileData = req.files.file.data;
+//   const tableName = "results";
+
+//   fs.readFile(mdbFileData, (err, data) => {
+//     if (err) {
+//       console.log("error reading file", err);
+//     } else {
+//       console.log("");
+//     }
+//     const mdb = new mdbReader(data);
+//     const tableData = mdb.table(tableName);
+//     console.log(tableData);
+//   });
+// });
+
+app.listen(port, "localhost", () => {
   console.log(`app listening on port ${port}`);
 });
