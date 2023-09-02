@@ -43,9 +43,9 @@ nav > a:hover {
 }
 
 .form {
-  width: 50%;
-  min-width: 50%;
-  max-width: 70%;
+  width: 30%;
+  min-width: 30%;
+  max-width: 50%;
   margin: auto;
   border-radius: 20px;
   background-color: #dbd1d1;
@@ -66,7 +66,7 @@ button {
   margin: 10px 0;
   width: 100%;
   height: 40px;
-  background-color: #ae6262;
+  background-color: #f0f3f3;
   border-radius: 20px;
   border: none;
   padding: 10px;
@@ -106,7 +106,7 @@ body {
 }
 
 input:hover {
-  color: rgb(236, 233, 233);
+  color: rgb(10, 4, 4);
 }
 
 .navbar a {
@@ -119,5 +119,6 @@ input:hover {
 }
 
 span {
+  display: inline-block;
   color: red;
 }

@@ -99,7 +99,7 @@
     }
 
     .form {
-      width: 50%;
+      width: 30%;
       min-width: 50%;
       max-width: 70%;
       margin: auto;
@@ -124,7 +124,7 @@
       margin: 10px 0;
       width: 100%;
       height: 40px;
-      background-color: #ae6262;
+      background-color: #f0f3f3;
       border-radius: 20px;
       border: none;
       padding: 10px;
@@ -220,7 +220,7 @@
         <!-- <button class="continue-button">Continue</button> -->
       </div>
 
-      <button>create account</button>
+      <button type="submit">create account</button>
 
     </form>
   </div>
@@ -228,11 +228,17 @@
 
 
   <script>
+
+
+
+
     const emailInput = document.getElementById("email");
     const userNameInput = document.getElementById("uname");
     const userNameAvailability = document.getElementById("userAvailability");
     const emailAvailability = document.getElementById("emailAvailability");
     const signUpForm = document.getElementById("signup");
+
+
 
     userNameInput.addEventListener("blur", () => {
       const userName = userNameInput.value;
@@ -274,6 +280,9 @@
           })
       }
     });
+
+
+
 
     // signUpForm.addEventListener("submit", async (event) => {
     //   event.preventDefault();

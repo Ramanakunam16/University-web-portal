@@ -22,15 +22,16 @@
     <form id="signin" action="/signIn" , method="post">
 
         <div class="label1">
-            <label for="uname" name="uname">Username or Email Id :<input type="text" id="uname" name="uname"
-                    placeholder="Enter your username or email id" required></label>
-
+            <label for="unameOrEmail" name="unameOrEmail">Username or Email Id :<input type="text" id="unameOrEmail"
+                    name="unameOrEmail" , placeholder="Enter your username or email id" required></label>
+            <span id="error" color="red"></span>
 
         </div>
         <div class="label2">
             <label for="passwd" name="passwd">password :<input type="password" id="passwd" name="passwd"
-                    pattern="[a-z0-9]{8,0}" placeholder="password" required>
+                    placeholder="password" required>
             </label>
+
 
         </div>
 
@@ -56,8 +57,31 @@
             // Redirect to index.html
             window.location.href = "signinform.html";
         }); -->
-
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
+    const userOrEmailInput = document.getElementById("unameOrEmail");
+    const error = document.getElementById("error")
+
+    userOrEmailInput.addEventListener("blur", () => {
+        const usernameOrEmail = userOrEmailInput.value;
+        console.log(usernameOrEmail);
+        if (usernameOrEmail) {
+            axios.post("/check-Validity", { usernameOrEmail })
+                .then(response => {
+                    if (response.data.isValidity) {
+                        error.textContent = " 🚫 INVALID USER NAME OR EMAIL ID"
+
+                    }
+                    else {
+                        error.textContent = "✅"
+                    }
+                })
+                .catch(error => {
+                    console.log("error in checking", error);
+                })
+        }
+
+    })
 
 </script>
 </body>

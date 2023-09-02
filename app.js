@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const node_xlsx = require('node-xlsx').default;
 app.use(fileUpload());
 app.use(express.json());
+app.set('view engine', 'html');
 
 // sqlCredentials importing
 
@@ -365,7 +366,9 @@ app.post('/signUp', async (req, res) => {
     (err, results) => {
       if (err) {
         console.log('Error:', err);
-        res.status(500).send('An error occurred while signing up.');
+        const message =
+          "<script>alert('username or email id already in use.Choose diferrent username or email id'); window.location.href='signupform.html'</script>";
+        res.status(500).send(message);
         return;
       }
       const message =
@@ -420,44 +423,69 @@ app.post('/check-Availability', (req, res) => {
     }
   );
 });
+
 app.post('/signIn', (req, res) => {
   const mysqlConnection = createDbConnection();
-  const uname = req.body.uname;
+  const usernameOrEmail = req.body.unameOrEmail;
   const password = req.body.passwd;
-  // console.log(uname, password);
+  console.log(usernameOrEmail);
 
   // excute query
 
   mysqlConnection.query(
-    'SELECT * FROM users WHERE user_name=?',
-    [uname],
+    'SELECT * FROM users WHERE  user_name=? OR user_email=?',
+    [usernameOrEmail, usernameOrEmail],
     async (err, results) => {
-      // console.log(results);
+      console.log(results);
       if (err) {
         console.log('Invalid query', err);
       } else {
-        if (results.length === 0 || results[0].user_name !== uname) {
+        if (results.length === 0) {
           // res.render("check");
-          res.send('invalid user');
-        }
-        const passwordMatch = await bcrypt.compare(
-          password,
-          results[0].hashedPassword
-        );
-        if (passwordMatch) {
-          res.send('login successfully');
-        } else {
-          res.send('INVALID PASSWORD RETRY AGAIN!');
-          //   const message =
-          //     "<script>alert('invalid password'); window.location.href='signinform.html'</script>";
-          //   res.send(message);
-        }
+          res.send('invalid user or email id');
+        } else if (results.length !== 0) {
+          const passwordMatch = await bcrypt.compare(
+            password,
+            results[0].hashedPassword
+          );
 
+          if (passwordMatch) {
+            res.send('login successfully');
+          } else {
+            res.send('INVALID PASSWORD RETRY AGAIN!');
+            //   const message =
+            //     "<script>alert('invalid password'); window.location.href='signinform.html'</script>";
+            //   res.send(message);
+          }
+        }
         // console.log(results);
       }
     }
   );
 });
+
+app.post('/check-Validity', (req, res) => {
+  const mysqlConnection = createDbConnection();
+  const emailOrUserName = req.body.usernameOrEmail;
+  console.log(emailOrUserName);
+
+  mysqlConnection.query(
+    'SELECT * FROM users WHERE user_name=? OR user_email=?',
+    [emailOrUserName, emailOrUserName],
+    (err, results) => {
+      console.log(results);
+      if (err) {
+        res.send('invalid ');
+      }
+
+      const validity = results.length === 0;
+
+      res.json({ isValidity: validity });
+    }
+  );
+});
+
+app.post('/dashBoard', (req, res) => {});
 
 // app.post("/convert", (req, res) => {
 //   const mdbFileData = req.files.file.data;
