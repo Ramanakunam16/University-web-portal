@@ -5,19 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
     <style>
+        body {
+            background-color: #dd6c2b;
+        }
+
         .header {
             width: 100%;
+            max-width: 200%;
             height: 80px;
             background-color: #f8fafa;
             display: flex;
+            align-items: right;
 
-            /* justify-content: left; */
+            justify-content: right;
             /* margin-bottom: 50px; */
             border-radius: 20px;
         }
 
-        img {
+        #logo {
             width: 70px;
             height: 70px;
             margin: 2px 2px;
@@ -25,6 +32,18 @@
             position: absolute;
             left: 2%;
             top: 1.2%;
+        }
+
+        #avatar {
+            align-items: center;
+            width: 50px;
+            border-radius: 50%;
+            margin-top: 15px
+        }
+
+        span {
+            margin-top: 0px;
+            margin-right: 60px;
         }
 
         .navbar a {
@@ -48,38 +67,89 @@
             display: flex;
             border-left: 2px solid #e06907;
             height: 40px;
+            align-items: center;
 
-
-            margin: 2% 3% 4% 15%;
+            margin: 1% 0% 4% 0%;
         }
 
         .welcome {
-            display: flex;
-            justify-content: center;
+            position: absolute;
+            right: 15%;
+            margin-top: 7px;
+
             font-size: 20px;
+        }
+
+        .welcome {
+            position: relative;
+        }
+
+        .dropbtn {
+
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 50%;
+            background-color: #d8a371;
+            min-width: 160px;
+            border: 2px solid black;
+            border-radius: auto;
+            /* box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); */
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+
+
+        }
+
+        .dropdown-content a:hover {
+            background-color: #dd6c2b;
+        }
+
+
+        .dropdown:hover .dropdown-content {
+
+            display: block;
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <div class="header">
-            <div>
-                <a href="dashBoard.html"> <img src="ambedkar-university-sklm.jpg">
-                </a>
-            </div>
-            <div id="line"></div>
-            <div class="welcome">
-                <p>✋ welcome </p>
+
+    <div class="header">
+        <div>
+            <a href="dashBoard.html"> <img id="logo" src="ambedkar-university-sklm.jpg">
+            </a>
+        </div>
+
+        <div class="welcome">
+            <p>✋ welcome </p>
+
+        </div>
+        <!-- <div id="line"></div> -->
+        <div class="dropdown">
+            <img id="avatar" id="dropbnt" src="avatar.jpg"> <span>🔻</span>
+            <div class="dropdown-content">
+                <a href="settings.html">settings</a>
+                <a href="index.html">sign out</a>
 
             </div>
-            </di>
-            <div class="navbar">
+        </div>
 
-                <a href=""></a>
-
-            </div>
-    </header>
 </body>
 
 </html>

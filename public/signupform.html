@@ -169,7 +169,7 @@
     }
 
     input:hover {
-      color: rgb(236, 233, 233);
+      color: rgb(27, 23, 23);
     }
 
     .navbar a {
@@ -248,7 +248,7 @@
           .then(response => {
             console.log(response.data.userName);
             if (response.data.userName) {
-              userNameAvailability.textContent = "🚫 username is already in use";
+              userNameAvailability.textContent = "🚫 username is already in use .please login";
             }
             else {
               userNameAvailability.textContent = "🔥 username is available";
@@ -268,7 +268,7 @@
           .then(response => {
             console.log(response.data.email);
             if (response.data.email) {
-              emailAvailability.textContent = "🚫 email is already in use.";
+              emailAvailability.textContent = "🚫 email is already in use.Please login";
             }
             else {
               emailAvailability.textContent = "🔥 email is available.";

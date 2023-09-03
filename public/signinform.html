@@ -68,6 +68,7 @@
         if (usernameOrEmail) {
             axios.post("/check-Validity", { usernameOrEmail })
                 .then(response => {
+                    console.log(response.data.isValidity);
                     if (response.data.isValidity) {
                         error.textContent = " 🚫 INVALID USER NAME OR EMAIL ID"
 

@@ -5,9 +5,43 @@ const port = 8007;
 const bodyParser = require('body-parser');
 const lodash = require('lodash');
 const { exec } = require('child_process');
+const { execSync } = require('child_process');
+
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const bcrypt = require('bcrypt');
+const path = require('path');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    const extname = path.extname(file.originalname);
+    cb(null, Date.now() + extname);
+  },
+});
+const upload = multer({ storage: storage });
+
+function getlatestUploadedFile(uploadDir) {
+  const files = fs.readdirSync(uploadDir);
+
+  if (files.length === 0) {
+    return null;
+  }
+
+  const sortedFiles = files.map(file => {
+    const filePath = path.join(uploadDir, file);
+    const stat = fs.statSync(filePath);
+    return { file, stat };
+  });
+
+  sortedFiles.sort((a, b) => {
+    b.stat.mtime.getTime() - b.stat.mtime.getTime();
+  });
+  return sortedFiles[0].file;
+}
 
 // import express from "express";
 
@@ -261,58 +295,118 @@ app.post('/resultsFileUploadData', (req, res) => {
   mysqlConnection.end();
 });
 
-app.post('/convert', (req, res) => {
-  if (!req.files) {
-    res.status(400).send('No file uploaded');
-    return;
-  }
-
-  const mdbFile = req.files.file;
-  // if (mdbFile.type !== "application/x-mdb") {
-  //   res.status(400).send("Invalid file ");
-  //   return;
-  // }
-  const mdbFileData = mdbFile.data;
-
-  console.log(req.files.file);
-  const nonNullMdbFileData = mdbFileData.filter(byte => byte !== 0x00);
-  fs.writeFileSync(mdbFile.name, nonNullMdbFileData);
-  console.log(mdbFile.name);
-
-  // const nonNullMdbFileData = mdbFileData.filter((byte) => byte !== 0x00);
-  // fs.writeFileSync(mdbFileData, nonNullMdbFileData);
-  // console.log(nonNullMdbFileData);
-
-  const csvFilePath = `${mdbFile.name}.csv`;
-  const tableName = 'excel_data';
-
-  // Convert MDB to CSV
-  const mdbToCsvCommand = `mdb-export "${mdbFile.name}" "${tableName}" > "${csvFilePath}"`;
-  console.log('Executing command:', mdbToCsvCommand);
-  exec(mdbToCsvCommand, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error extracting data: ${error.message}`);
-      res.status(500).send('Error extracting data');
-      return;
-    }
-    console.log('Data extracted successfully');
-    // Convert CSV to Excel
-    const csvData = fs.readFileSync(csvFilePath, 'utf-8');
-    const csvRows = csvData.split('\n');
-    const xlsxData = csvRows.map(row => [row.split(',')]);
-    console.log(xlsxData);
-    const xlsxBuffer = xlsx.build([{ name: 'Sheet 1', data: xlsxData }]);
-    console.log(xlsxData);
-    console.log(xlsxBuffer);
-
-    // Send the xlsx data as a response
-    res.setHeader('Content-Disposition', 'attachment; filename=output.xlsx');
-    res.type(
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    );
-    res.send(xlsxBuffer);
-  });
+app.get('/upload', (req, res) => {
+  res.sendFile(__dirname + '/piblic/convert.html');
 });
+app.post('/upload', upload.single('myfile'), (req, res) => {
+  console.log('file uploaded', req.file);
+  const latestUploadedFile = getlatestUploadedFile('uploads/');
+
+  if (latestUploadedFile) {
+    const mdbFile = latestUploadedFile;
+
+    console.log(mdbFile);
+    // const nonNullMdbFileData = mdbFileData.filter(byte => byte !== 0x00);
+    // fs.writeFileSync(mdbFile.name, nonNullMdbFileData);
+
+    // const nonNullMdbFileData = mdbFileData.filter((byte) => byte !== 0x00);
+    // fs.writeFileSync(mdbFileData, nonNullMdbFileData);
+    // console.log(nonNullMdbFileData);
+
+    const csvFilePath = `data.csv`;
+    const tableName = 'Amber';
+
+    console.log(tableName);
+    const relativeMdbFilePath = path.join('uploads', mdbFile);
+    // Convert MDB to CSV
+    const mdbToCsvCommand = `mdb-export "${relativeMdbFilePath}" ${tableName} > ${csvFilePath}`;
+    console.log('Executing command:', mdbToCsvCommand);
+    exec(mdbToCsvCommand, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error extracting data: ${error.message}`);
+        console.log('s2:', stderr);
+        res.status(500).send('Error extracting data');
+        return;
+      }
+      console.log('s1:', stdout);
+      console.log('Data extracted successfully');
+      // Convert CSV to Excel
+      const csvData = fs.readFileSync(csvFilePath, 'utf-8');
+      const csvRows = csvData.split('\n');
+      const xlsxData = csvRows.map(row => [row.split(',')]);
+      console.log(xlsxData);
+      // const xlsxBuffer = node_xlsx.build([{ name: 'Sheet 1', data: xlsxData }]);
+      // console.log(xlsxData);
+      // console.log(xlsxBuffer);
+
+      // Send the xlsx data as a response
+      // res.setHeader('Content-Disposition', 'attachment; filename=output.xlsx');
+      // res.type(
+      //   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      // );
+      // res.send(xlsxBuffer);
+    });
+  } else {
+    console.log('no file found!');
+  }
+});
+// app.get('/uplodedFiles', (req, res) => {
+//   if (!req.files) {
+//     res.status(400).send('No file uploaded');
+//     return;
+//   } else {
+//     res.send('uploaded successfull');
+//   }
+//   const mdbFile = req.files.file;
+//   // if (mdbFile.type !== "application/x-mdb") {
+//   //   res.status(400).send("Invalid file ");
+//   //   return;
+//   // }
+//   const mdbFileData = mdbFile.data;
+
+//   console.log(req.files.file);
+//   // const nonNullMdbFileData = mdbFileData.filter(byte => byte !== 0x00);
+//   // fs.writeFileSync(mdbFile.name, nonNullMdbFileData);
+//   console.log(mdbFile.name);
+
+//   // const nonNullMdbFileData = mdbFileData.filter((byte) => byte !== 0x00);
+//   // fs.writeFileSync(mdbFileData, nonNullMdbFileData);
+//   // console.log(nonNullMdbFileData);
+
+//   const csvFilePath = `data.csv`;
+//   const tableName = 'Amber';
+
+//   console.log(tableName);
+
+//   // Convert MDB to CSV
+//   const mdbToCsvCommand = `mdb-export "${mdbFile.name}" ${tableName} > ${csvFilePath}`;
+//   console.log('Executing command:', mdbToCsvCommand);
+//   exec(mdbToCsvCommand, (error, stdout, stderr) => {
+//     if (error) {
+//       console.error(`Error extracting data: ${error.message}`);
+//       console.log('s2:', stderr);
+//       res.status(500).send('Error extracting data');
+//       return;
+//     }
+//     console.log('s1:', stdout);
+//     console.log('Data extracted successfully');
+//     // Convert CSV to Excel
+//     const csvData = fs.readFileSync(csvFilePath, 'utf-8');
+//     const csvRows = csvData.split('\n');
+//     const xlsxData = csvRows.map(row => [row.split(',')]);
+//     console.log(xlsxData);
+//     const xlsxBuffer = xlsx.build([{ name: 'Sheet 1', data: xlsxData }]);
+//     console.log(xlsxData);
+//     console.log(xlsxBuffer);
+
+//     // Send the xlsx data as a response
+//     res.setHeader('Content-Disposition', 'attachment; filename=output.xlsx');
+//     res.type(
+//       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+//     );
+//     res.send(xlsxBuffer);
+//   });
+// });
 
 // user account details after account creation
 app.post('/signUp', async (req, res) => {
@@ -450,7 +544,7 @@ app.post('/signIn', (req, res) => {
           );
 
           if (passwordMatch) {
-            res.send('login successfully');
+            res.redirect('/dashBoard');
           } else {
             res.send('INVALID PASSWORD RETRY AGAIN!');
             //   const message =
@@ -462,6 +556,10 @@ app.post('/signIn', (req, res) => {
       }
     }
   );
+});
+app.get('/dashBoard', (req, res) => {
+  const filePath = __dirname + '/public/dashBoard.html';
+  res.sendFile(filePath);
 });
 
 app.post('/check-Validity', (req, res) => {
@@ -503,6 +601,6 @@ app.post('/dashBoard', (req, res) => {});
 //   });
 // });
 
-app.listen(port, 'localhost', () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`app listening on port ${port}`);
 });
