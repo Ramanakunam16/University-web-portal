@@ -1,24 +1,23 @@
 
 -- --Database creation
--- CREATE DATABASE studentDatabase;
+CREATE DATABASE studentDatabase;
 
 --Table Creation 
 USE studentDatabase;
 
-<<<<<<< HEAD
--- CREATE TABLE studentDetails (
---     registrationNumber INT,
---     studentName CHAR(50),
---     sem INT,
---     totalResults FLOAT
--- );
--- CREATE TABLE studentMarksDetails (
---     registrationNumber INT,
---     sem INT,
---     subjectName CHAR(50),
+CREATE TABLE studentDetails (
+    registrationNumber INT,
+    studentName CHAR(50),
+    sem INT,
+    totalResults FLOAT
+);
+CREATE TABLE studentMarksDetails (
+    registrationNumber INT,
+    sem INT,
+    subjectName CHAR(50),
 
---     gradePoints INT
--- );
+    gradePoints INT
+);
 
 
 
@@ -33,34 +32,6 @@ USE studentDatabase;
 -- --     s5 INT,
 -- --     sGPA FLOAT
 -- -- );
-=======
-CREATE TABLE studentDetails (
-    registrationNumber INT,
-    studentName CHAR(50),
-    sem INT,
-    totalResults FLOAT
-);
-CREATE TABLE studentMarksDetails (
-    registrationNumber INT,
-    sem INT,
-    subjectName CHAR(50),
-    gradePoints INT
-);
-
-
-
--- CREATE TABLE UploadedData (
---     studentName CHAR(20),
---     registrationNumber INT,
---     sem INT,
---     s1 INT,
---     s2 INT,
---     s3 INT,
---     s4 INT,
---     s5 INT,
---     sGPA FLOAT
--- );
-
 
 CREATE TABLE users (
 user_name  VARCHAR(255) PRIMARY KEY,
@@ -68,4 +39,3 @@ user_email VARCHAR(255),
 hasedPassword VARCHAR(255)
 );
 
->>>>>>> 2d080d5c550440fc420380445b6f29015ad1a5c2
