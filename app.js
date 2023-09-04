@@ -6,9 +6,9 @@ const bodyParser = require('body-parser');
 const lodash = require('lodash');
 const { exec } = require('child_process');
 const { execSync } = require('child_process');
-
+const node_xlsx = require('node-xlsx').default;
 const fs = require('fs');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const multer = require('multer');
@@ -56,8 +56,7 @@ function getlatestUploadedFile(uploadDir) {
 // express middleware
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-const node_xlsx = require('node-xlsx').default;
-app.use(fileUpload());
+// app.use(fileUpload());
 app.use(express.json());
 app.set('view engine', 'html');
 
@@ -298,7 +297,7 @@ app.post('/resultsFileUploadData', (req, res) => {
 app.get('/upload', (req, res) => {
   res.sendFile(__dirname + '/piblic/convert.html');
 });
-app.post('/upload', upload.single('myfile'), (req, res) => {
+app.post('/upload', upload.single('myfile1'), (req, res) => {
   console.log('file uploaded', req.file);
   const latestUploadedFile = getlatestUploadedFile('uploads/');
 
@@ -600,7 +599,16 @@ app.post('/dashBoard', (req, res) => {});
 //     console.log(tableData);
 //   });
 // });
+app.post('/updateInfo', (req, res) => {
+  res.send('updated success.');
+});
+app.post('/changePasswd', (req, res) => {
+  res.send('Password changed successfully');
+});
 
+app.post('/updateProfilePic', (req, res) => {
+  res.send('uploaded.');
+});
 app.listen(port, '0.0.0.0', () => {
   console.log(`app listening on port ${port}`);
 });

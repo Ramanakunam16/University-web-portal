@@ -44,60 +44,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <script src="validation.js"></script>
   <style>
-    img {
-      width: 70px;
-      height: 70px;
-      margin: 2px 2px;
-      border-radius: 50px;
-      position: absolute;
-      left: 2%;
-      top: 1.2%;
-
-    }
-
-    header {
-      width: 100%;
-      height: 75px;
-      background-color: #f8fafa;
-      display: flex;
-
-      justify-content: space-between;
-      margin-bottom: 50px;
-      border-radius: 20px;
-    }
-
-    h1 {
-      color: rgb(10, 8, 8);
-      text-align: center;
-      width: 50%;
-      position: absolute;
-      left: 20%;
-
-
-    }
-
-    header nav {
-      font-size: 20vw;
-      display: flex;
-      justify-content: right;
-
-
-
-
-
-    }
-
-    header nav a {
-      text-decoration: none;
-      color: black;
-
-
-    }
-
-    nav>a:hover {
-      color: white;
-    }
-
     .form {
       width: 30%;
       min-width: 50%;
@@ -106,6 +52,7 @@
       border-radius: 20px;
       background-color: #dbd1d1;
       padding: 40px;
+      flex: 2 2 200px;
 
       box-shadow: 0 0 10px #e6e1e0e6;
 
@@ -121,7 +68,7 @@
     input,
     button {
       display: block;
-      margin: 10px 0;
+      margin: 16px 0;
       width: 100%;
       height: 40px;
       background-color: #f0f3f3;
@@ -148,7 +95,7 @@
       width: 50%;
       min-width: 30%;
       max-width: 50%;
-      margin: 0 100px;
+      margin: auto;
     }
 
     a {
@@ -165,7 +112,11 @@
     }
 
     body {
-      background-image: linear-gradient(90deg, rgb(255, 255, 255) 20%, rgb(255, 255, 255));
+      overflow: scroll;
+      margin-top: 10%;
+      background-image: linear-gradient(90deg,
+          rgb(102, 90, 67) 20%,
+          rgb(119, 95, 95));
     }
 
     input:hover {
@@ -182,24 +133,23 @@
     }
 
     span {
-
+      margin-bottom: 10%;
       color: red;
+    }
+
+    .main {
+
+      margin: auto;
     }
   </style>
 
 </head>
 
-<c>
-  <header>
+<div class="main">
 
-    <a href="index.html"> <img src="ambedkar-university-sklm.jpg"></a>
-    <!-- <h1>Student login</h1>
-    <div class="navbar">
-      <nav><a href="index.html"><strong>HOME</strong><a>
-      </nav>
-    </div> -->
-  </header>
+  <h2 style="text-align: center;">Login To Dr.Brau university Campus connect</h2>
   <div class="form" style="width: 30%">
+
     <form id="signup" action="/signUp" method="post">
       <div <div>
         <label for="email">Enter your email</label>
@@ -224,62 +174,63 @@
 
     </form>
   </div>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</div>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
-  <script>
-
-
-
-
-    const emailInput = document.getElementById("email");
-    const userNameInput = document.getElementById("uname");
-    const userNameAvailability = document.getElementById("userAvailability");
-    const emailAvailability = document.getElementById("emailAvailability");
-    const signUpForm = document.getElementById("signup");
+<script>
 
 
 
-    userNameInput.addEventListener("blur", () => {
-      const userName = userNameInput.value;
-      console.log(userName);
-      if (userName) {
-        axios.post("/check-Availability", { userName })
-          .then(response => {
-            console.log(response.data.userName);
-            if (response.data.userName) {
-              userNameAvailability.textContent = "🚫 username is already in use .please login";
-            }
-            else {
-              userNameAvailability.textContent = "🔥 username is available";
-            }
-          })
-          .catch(error => {
-            console.log("Error checking ", error);
-          })
-      }
-    })
 
-    emailInput.addEventListener("blur", () => {
-      const email = emailInput.value;
-      console.log(email);
-      if (email) {
-        axios.post("/check-Availability", { email })
-          .then(response => {
-            console.log(response.data.email);
-            if (response.data.email) {
-              emailAvailability.textContent = "🚫 email is already in use.Please login";
-            }
-            else {
-              emailAvailability.textContent = "🔥 email is available.";
-            }
+  const emailInput = document.getElementById("email");
+  const userNameInput = document.getElementById("uname");
+  const userNameAvailability = document.getElementById("userAvailability");
+  const emailAvailability = document.getElementById("emailAvailability");
+  const signUpForm = document.getElementById("signup");
 
-          })
-          .catch(error => {
-            console.log("error checking".error);
-          })
-      }
-    });
+
+
+  userNameInput.addEventListener("blur", () => {
+    const userName = userNameInput.value;
+    console.log(userName);
+    if (userName) {
+      axios.post("/check-Availability", { userName })
+        .then(response => {
+          console.log(response.data.userName);
+          if (response.data.userName) {
+            userNameAvailability.textContent = "🚫 username is already in use .please login";
+          }
+          else {
+            userNameAvailability.textContent = "🔥 username is available";
+          }
+        })
+        .catch(error => {
+          console.log("Error checking ", error);
+        })
+    }
+  })
+
+  emailInput.addEventListener("blur", () => {
+    const email = emailInput.value;
+    console.log(email);
+    if (email) {
+      axios.post("/check-Availability", { email })
+        .then(response => {
+          console.log(response.data.email);
+          if (response.data.email) {
+            emailAvailability.textContent = "🚫 email is already in use.Please login";
+          }
+          else {
+            emailAvailability.textContent = "🔥 email is available.";
+          }
+
+        })
+        .catch(error => {
+          console.log("error checking".error);
+        })
+    }
+  });
 
 
 
@@ -293,12 +244,12 @@
 
 
 
-  </script>
+</script>
 
 
 
 
 
-  </body>
+</body>
 
 </html>

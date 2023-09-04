@@ -5,10 +5,461 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .form1,
+        .form2 {
+
+            min-width: 50%;
+            max-width: 70%;
+
+            border-radius: 20px;
+            background-image: linear-gradient(90deg,
+                    rgb(180, 167, 141) 20%,
+                    rgb(180, 167, 141) 20%, );
+            padding: 40px;
+            flex: 2 2 200px;
+
+            /* box-shadow: 0 0 10px #e6e1e0e6; */
+
+        }
+
+        .form3 {
+            min-width: 50%;
+            max-width: 70%;
+
+            border-radius: 20px;
+            background-image: linear-gradient(90deg,
+                    rgb(180, 167, 141) 20%,
+                    rgb(180, 167, 141) 20%, );
+            padding: 40px;
+            flex: 2 2 200px;
+        }
+
+        label:not(.piclabel) {
+            color: black;
+            display: block;
+            margin: auto;
+
+        }
+
+        input:not(#pic) {
+            display: block;
+            margin: 16px 0;
+            min-width: 100%;
+            height: 40px;
+            background-color: #f0f3f3;
+            border-radius: 20px;
+            border: none;
+            padding: 10px;
+
+
+
+
+
+
+        }
+
+        button:hover {
+            background-color: rgb(194, 135, 87);
+
+
+            cursor: pointer;
+            color: #f0f3f3;
+
+
+        }
+
+        button {
+            display: block;
+            /* margin: 16px 0; */
+
+            /* height: 40px; */
+            background-color: #f0f3f3;
+            border-radius: 20px;
+            border: none;
+            padding: 10px;
+            font: bold;
+            min-width: 30%;
+            max-width: 100%;
+            font-size: 15px;
+            color: #0a0a09;
+
+        }
+
+        .header {
+            width: 100%;
+            max-width: 200%;
+            height: 80px;
+            background-color: #f8fafa;
+            display: flex;
+            align-items: right;
+
+            justify-content: space-between;
+            /* margin-bottom: 50px; */
+            border-radius: 20px;
+        }
+
+        #logo {
+            width: 70px;
+            height: 70px;
+            margin: 2px 2px;
+            border-radius: 50px;
+            position: absolute;
+            left: 2%;
+            top: 1.2%;
+        }
+
+        #profilepic {
+            width: 120px;
+            height: 120px;
+            border: 1px solid black;
+            border-radius: 60%;
+            object-fit: cover;
+        }
+
+        .piclabel {
+            /* min-width: 10%; */
+            max-width: 25%;
+            display: block;
+            padding: 10px 20px;
+            background-color: #f0f3f3;
+            color: black;
+            cursor: pointer;
+            border: none;
+            border-radius: 20px;
+        }
+
+        .piclabel:hover {
+            color: #b46e06;
+        }
+
+        #pic {
+
+            display: none;
+            /* position: absolute;
+            bottom: -10%;
+            left: 2;
+            opacity: 1;
+            cursor: pointer; */
+
+        }
+
+
+        #avatar {
+            align-items: center;
+            width: 50px;
+            border-radius: 50%;
+            margin-top: 15px
+        }
+
+        span {
+            margin-top: 0px;
+            margin-right: 60px;
+        }
+
+        .navbar a {
+            float: left;
+
+            color: black;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        .navbar :hover {
+            background-color: aliceblue;
+            color: black;
+            text-decoration: none;
+            border-radius: 10px;
+
+        }
+
+
+        .settings {
+            /* position: absolute;
+            right: 15%;
+            margin-top: 7px; */
+
+            font-size: 25px;
+        }
+
+        .settings {
+            position: relative;
+        }
+
+        .dropbtn {
+
+            border: none;
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 70%;
+            background-color: #d8a371;
+            min-width: 200px;
+            /* border: 2px solid black; */
+            border-radius: 20px;
+            /* box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); */
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: rgb(255, 254, 254);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 20px;
+
+
+        }
+
+        .dropdown-content a:hover {
+            color: #504e4e;
+        }
+
+
+        .dropdown:hover .dropdown-content {
+
+            display: block;
+        }
+
+        .container {
+
+
+            display: flex;
+            justify-content: space-between;
+            margin: 20px;
+        }
+
+        .box-1 {
+
+            border: 2px solid rgb(7, 115, 151);
+            background-image: linear-gradient(90deg,
+                    rgb(180, 167, 141) 20%,
+                    rgb(119, 95, 95));
+
+            height: 20vh;
+
+
+            width: 20%;
+
+
+            border-radius: 20px;
+
+
+
+        }
+
+        .box-1 button {
+            position: relative;
+            margin: auto;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .box-2 {
+            background-image: linear-gradient(90deg,
+                    rgb(180, 167, 141) 20%,
+                    rgb(119, 95, 95));
+            border: 2px solid rgb(7, 115, 151);
+            border-radius: 20px;
+            min-width: 65%;
+            /* height: 40em; */
+            max-height: 100em;
+
+
+        }
+
+        .box-3 {
+            background-image: linear-gradient(90deg,
+                    rgb(180, 167, 141) 20%,
+                    rgb(180, 167, 141) 20%, );
+            border-radius: 20px;
+
+            height: 20em;
+            min-width: 10%;
+            /* 
+            position: absolute;
+
+            top: 50%;
+
+            left: 50%;
+
+            transform: translate(80%, -50%);
+ */
+
+
+        }
+
+        .box-4 {
+            display: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                /* Change to a column layout */
+                align-items: center;
+                display: block;
+
+                /* Center-align items vertically */
+            }
+
+            .box-2 {
+                min-width: 90%;
+            }
+
+            .box-1 {
+
+                margin-bottom: 30px;
+                width: 100%;
+            }
+
+            .box-1 button {
+                margin-top: 20px;
+            }
+
+            /* .box-3 {
+                position: absolute;
+
+                top: 100%;
+
+                left: 50%;
+                transform: translate(-50%, -50%);
+
+            } */
+
+            .header {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <div class="header">
+        <div>
+            <a href="dashBoard.html"> <img id="logo" src="ambedkar-university-sklm.jpg">
+            </a>
+        </div>
 
+        <div class="settings">
+            <p> ⚙ Abminstrator</p>
+            </p>
+
+        </div>
+        <!-- <div id="line"></div> -->
+        <div class="dropdown">
+            <img id="avatar" id="dropbnt" src="avatar.jpg">
+            <span>🔻</span>
+            <div class="dropdown-content">
+                <a href="settings.html">⚙ Platform settings</a>
+                <a href="index.html">↩ Sign Out</a>
+
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="box-1">
+            <a href="#box-2"> <button class="profilebtn">⚙ Profile Settings</button></a>
+            <a href="#box-4" class="reservationbtn"> <button>📚 Library Reservations</button></a>
+
+        </div>
+        <div class="form1 form2 form3 box-2" id="box-2">
+
+
+            <div class="form1" style="width: 30%">
+                <h3>personal Info</h3>
+                <form id="updateInfo" action="/updateInfo" method="post">
+                    <div>
+                        <label for="email">Update Your Email Id:</label>
+                        <input type="email" id="email" name="email" required>
+
+                        <!-- <button class="continue-button">Continue</button> -->
+                    </div>
+
+                    <div>
+                        <label for="uname">Change Your Username:</label>
+                        <input type="text" id="uname" name="uname">
+
+                    </div>
+                    <button type="submit">Update Profile</button>
+                </form>
+            </div>
+            <div class="box-3">
+                <div class="form3">
+                    <form action="/updateProfilePic" method="post">
+                        <img id="profilepic" alt="">
+                        <h3>Profile Picture</h3>
+                        <p>
+
+                            For best results, use an square image at least 248px x 248px</p>
+                        <label for="pic" class="piclabel">Upload Picture</label>
+                        <input type="file" id="pic" name="pic">
+                    </form>
+                </div>
+
+            </div>
+            <div class="form2" style="width: 30%">
+                <form id="changePasswd" action="/changePasswd" method="post">
+
+                    <h3>Change Password</h3>
+                    <div>
+                        <label for="opasswd">Enter Your Old Password:</label>
+                        <input type="password" id="opasswd" name="opasswd" required>
+
+                        <!-- <button class="continue-button">Continue</button> -->
+                    </div>
+
+                    <div>
+                        <label for="npasswd">Enter Your New Password:</label>
+                        <input type="password" id="npassword" name="npassword">
+
+                    </div>
+
+                    <button type="submit">Change Password</button>
+                </form>
+            </div>
+
+
+
+        </div>
+
+        <!-- <div class="box-4" id="box-4">
+            <h1>RESERVATIONS</h1>
+        </div> -->
+
+    </div>
+    <div class="box-4" , id="box-4">
+
+
+    </div>
+
+    <script>
+        const pic = document.getElementById("profilepic");
+        const input = document.getElementById("pic");
+
+        input.addEventListener("change", (event) => {
+            pic.src = URL.createObjectURL(event.target.files[0])
+        })
+
+
+
+
+
+    </script>
 </body>
 
 </html>

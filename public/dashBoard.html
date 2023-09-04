@@ -8,11 +8,13 @@
 
     <style>
         body {
-            background-color: #dd6c2b;
+            background-image: linear-gradient(90deg,
+                    rgb(110, 98, 76) 20%,
+                    rgb(119, 95, 95));
         }
 
         .header {
-            width: 100%;
+            min-width: 100%;
             max-width: 200%;
             height: 80px;
             background-color: #f8fafa;
@@ -28,6 +30,7 @@
             width: 70px;
             height: 70px;
             margin: 2px 2px;
+            margin-left: 6%;
             border-radius: 50px;
             position: absolute;
             left: 2%;
@@ -38,12 +41,15 @@
             align-items: center;
             width: 50px;
             border-radius: 50%;
-            margin-top: 15px
+            margin-top: 15px;
+            /* margin-right: 30%; */
         }
 
-        span {
-            margin-top: 0px;
-            margin-right: 60px;
+        i {
+            position: absolute;
+            left: 0;
+            /* margin-top: 20px; */
+
         }
 
         .navbar a {
@@ -63,6 +69,7 @@
 
         }
 
+        /* 
         #line {
             display: flex;
             border-left: 2px solid #e06907;
@@ -70,19 +77,9 @@
             align-items: center;
 
             margin: 1% 0% 4% 0%;
-        }
+        } */
 
-        .welcome {
-            position: absolute;
-            right: 15%;
-            margin-top: 7px;
 
-            font-size: 20px;
-        }
-
-        .welcome {
-            position: relative;
-        }
 
         .dropbtn {
 
@@ -98,32 +95,40 @@
         .dropdown-content {
             display: none;
             position: absolute;
-            right: 50%;
+            right: 70%;
             background-color: #d8a371;
-            min-width: 160px;
-            border: 2px solid black;
-            border-radius: auto;
+            min-width: 200px;
+            /* border: 2px solid black; */
+            border-radius: 20px;
             /* box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); */
             z-index: 1;
         }
 
         .dropdown-content a {
-            color: black;
+            color: rgb(255, 254, 254);
             padding: 12px 16px;
             text-decoration: none;
             display: block;
+            font-size: 20px;
 
 
         }
 
         .dropdown-content a:hover {
-            background-color: #dd6c2b;
+            color: #504e4e;
         }
 
 
         .dropdown:hover .dropdown-content {
 
             display: block;
+        }
+
+        h1 {
+            color: #110c03;
+            font-size: 3em;
+            text-align: center;
+            filter: drop-shadow(0 0 10px #e0b2a9e6);
         }
     </style>
 </head>
@@ -134,21 +139,24 @@
         <div>
             <a href="dashBoard.html"> <img id="logo" src="ambedkar-university-sklm.jpg">
             </a>
-        </div>
 
-        <div class="welcome">
-            <p>✋ welcome </p>
+
 
         </div>
         <!-- <div id="line"></div> -->
         <div class="dropdown">
-            <img id="avatar" id="dropbnt" src="avatar.jpg"> <span>🔻</span>
+
+            <i>🔻
+            </i>
             <div class="dropdown-content">
-                <a href="settings.html">settings</a>
-                <a href="index.html">sign out</a>
+                <a href="settings.html">⚙ Platform settings</a>
+                <a href="index.html">↩ Sign Out</a>
 
             </div>
         </div>
+    </div>
+
+    <h1>Welcome to Dr.Brau Campus connect </h1>
 
 </body>
 
