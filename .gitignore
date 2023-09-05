@@ -1,2 +1,6 @@
 node_modules
-sqlDbCredentials.json
+sqlDbCredentials.js
+data.csv
+uploads
+.env
+rough
