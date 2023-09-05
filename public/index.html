@@ -7,30 +7,73 @@
   <style>
     body {
       font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-
+      /* margin: 10px; */
     }
 
+    body,
+    .jungle {
+
+      background-image: linear-gradient(90deg,
+          rgb(102, 90, 67) 20%,
+          rgb(119, 95, 95));
+    }
+
+    img {
+      width: 120px;
+      height: 120px;
+      margin: 10px 2px;
+      border-radius: 60px;
+      position: absolute;
+      left: 2%;
+      top: 1.2%;
+    }
+
+    body {
+      font-family: inherit;
+    }
+
+    header {
+      background-image: linear-gradient(90deg,
+          rgb(226, 199, 149) 20%,
+          rgb(119, 95, 95));
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+
     /* Style the header */
-    .header {
+    /* .header {
       padding: 5px;
       text-align: center;
       background: #FFFFC2;
       color: #F4A460;
-    }
+    } */
+
+    /* header {
+      width: 100%;
+      height: 75px;
+      background-color: #f8fafa;
+      display: flex;
+
+      justify-content: space-between;
+      margin-bottom: 50px;
+      border-radius: 20px;
+    } */
 
     /* Increase the font size of the h1 element */
     .header h1 {
+
       font-size: 20px;
+      text-align: center;
     }
 
     .header p {
-      font-size: 10px;
+      font-size: 20px;
+      text-align: center;
     }
 
     .navbar {
-      overflow: hidden;
-      background-color: #AAF0D1;
+      /* overflow: hidden; */
       display: flex;
       justify-content: right;
     }
@@ -38,27 +81,33 @@
     /* Style the navigation bar links */
     .navbar a {
       float: left;
-
-      color: black;
+      font-size: 20px;
+      color: rgb(17, 3, 1);
       text-align: center;
       padding: 14px 20px;
+      /* border-right: 1px solid black; */
+      /* border-top: 1px solid black; */
       text-decoration: none;
+
+      border-radius: 10px;
+      background-color: rgb(240, 232, 214);
     }
 
-    .navbar :hover {
-      background-color: aliceblue;
+    .navbar :hover :not(.signUpbtn) {
+      /* background-color: aliceblue; */
       color: black;
       text-decoration: none;
       border-radius: 10px;
+      border-color: #ae6262;
 
     }
+
 
 
 
 
     .jungle {
       padding: 20px;
-      background: white;
       text-align: center;
       display: flex;
       flex-wrap: wrap;
@@ -68,8 +117,10 @@
     .footer {
       padding: 10px;
       text-align: center;
-      background: #ddd;
-      margin-top: 350px;
+      background-image: linear-gradient(90deg,
+          rgb(119, 105, 79) 20%,
+          rgb(119, 95, 95));
+      margin-top: 415px;
     }
 
     /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
@@ -79,30 +130,60 @@
       }
     }
 
+    .signUpbtn {
+      margin-left: 20px;
+      color: #ae6262;
+    }
+
+    .signUpbtn a {
+      color: #ae6262;
+    }
+
+    .signUpbtn:hover {
+      border-radius: 16px;
+      border: 5px #ee501fc4;
+    }
+
     /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
     @media screen and (max-width: 400px) {
       .navbar a {
         float: none;
         width: 100%;
       }
+
+    }
+
+    #logintxt:hover {
+      color: #ae6262;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="header">
-    <img src="ambedkar-university-sklm.jpg" style="float:center;width:72px;height:42px;">
-    <h1>Dr.B.R Ambedkar University,Srikakulam</h1>
-    <p>College of Engineering.</p>
-  </div>
+
+  <header>
+    <div class="header">
+      <img src="ambedkar-university-sklm.jpg">
+      <h1>Dr.B.R Ambedkar University</h1>
+      <h1>Campus Connect</h1>
+      <p>College of Engineering.</p>
+    </div>
+  </header>
   <div class="navbar">
+<<<<<<< HEAD
     <a href="signinform.html" id="signin">sign in</a>
     <a href="signupform.html" id="signin">sign up</a>
     <a href="new.html" id="signin">new sign up</a>
     <a href="#">About us</a>
     <a href="#">contact</a>
+=======
+    <div class="signInbtn"> <a href="signinform.html" id="signin"><span id="logintxt"> Log In</span></a></div>
+    <div class="signUpbtn"><a href="signupform.html" id="signup"><span>Sign Up</span></a>
+    </div>
+>>>>>>> 3070d1a6d61c43c5a1110731b8a637797d178671
   </div>
+
   <div class="jungle">
     <a href="addResults.html">upload Btech 4th semseter results<a />
   </div>
@@ -111,7 +192,7 @@
     <a href="results.html">Btech 4th semseter results<a />
   </div>
   <div class="jungle">
-    <a href="convert.html">mdb file reading<a />
+    <a href="convert.html">conver mdb to excel.Download the file and Upload the results.<a />
   </div>
 
 
@@ -125,6 +206,8 @@
       <h4>Designed and developed by BVR</h4>
     </div>
   </footer>
+
+
 </body>
 
 </html>
