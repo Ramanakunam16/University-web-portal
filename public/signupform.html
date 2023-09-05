@@ -42,35 +42,36 @@
   <meta charset="utf-8">
 
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <script src="validation.js"></script>
+
   <style>
     .form {
-      width: 30%;
-      min-width: 50%;
-      max-width: 70%;
+      width: 40em;
+      max-width: 80%;
       margin: auto;
       border-radius: 20px;
       background-color: #dbd1d1;
       padding: 40px;
-      flex: 2 2 200px;
 
-      box-shadow: 0 0 10px #e6e1e0e6;
 
+      height: 100%;
+      opacity: 1;
+
+      filter: drop-shadow(0 0 10px #e4ce0ee6);
     }
 
     label {
       color: black;
       display: block;
-      margin: auto;
+      margin: 12px 0 0 12px;
 
     }
 
     input,
     button {
       display: block;
-      margin: 16px 0;
+      margin: 20px 0px 12px 6px;
       width: 100%;
-      height: 40px;
+      height: 30px;
       background-color: #f0f3f3;
       border-radius: 20px;
       border: none;
@@ -93,26 +94,21 @@
 
     button {
       width: 50%;
-      min-width: 30%;
-      max-width: 50%;
+      height: 50px;
       margin: auto;
+      font-size: 20px;
+      color: #7c1103;
+      margin-top: 25px;
     }
 
-    a {
-      text-decoration: none;
-      font-size: medium;
-      color: black;
-      margin: 0 50px;
 
-
-    }
 
     button:hover {
       color: rgb(248, 246, 245);
     }
 
     body {
-      overflow: scroll;
+
       margin-top: 10%;
       background-image: linear-gradient(90deg,
           rgb(102, 90, 67) 20%,
@@ -133,13 +129,83 @@
     }
 
     span {
-      margin-bottom: 10%;
+
+      margin: 20%;
+      margin-left: 4px;
       color: red;
+      /* text-align: center; */
     }
+
+    #check {
+      position: absolute;
+      top: 195px;
+      right: -190px;
+      display: none;
+
+    }
+
+    .eye {
+      position: absolute;
+      top: 355px;
+      right: 12%;
+      width: 22px;
+      cursor: pointer;
+      /* display: none; */
+    }
+
+    .eye img {
+      position: sticky;
+      width: 22px;
+      /* transition: 0.3s ease-in-out */
+    }
+
+    input[type="checkbox"]:checked~.line {
+      background-color: rgb(8, 3, 3);
+      width: 110%;
+      height: 2px;
+      position: absolute;
+      top: 22%;
+      left: -3%;
+
+
+      transform: rotate(60deg);
+    }
+
 
     .main {
 
       margin: auto;
+    }
+
+    .signinbtn {
+      display: block;
+      color: rgb(241, 113, 8);
+      font-size: 24px;
+      text-align: center;
+      margin: auto;
+      margin-top: 30px;
+      margin-left: 10px;
+    }
+
+    .signinbtn span,
+    a {
+      text-decoration: none;
+      color: red;
+      margin-left: px;
+    }
+
+    @media (max-width: 900px) {
+
+      .form {
+        flex-direction: column;
+
+        align-items: center;
+
+
+        min-width: 24em;
+        max-width: 40em;
+
+      }
     }
   </style>
 
@@ -147,7 +213,7 @@
 
 <div class="main">
 
-  <h2 style="text-align: center;">Login To Dr.Brau university Campus connect</h2>
+  <h2 style="text-align: center;">SignUP To Dr.Brau university Campus connect</h2>
   <div class="form" style="width: 30%">
 
     <form id="signup" action="/signUp" method="post">
@@ -167,12 +233,20 @@
       <div>
         <label for="passwd">Create a password</label>
         <input type="password" id="passwd" name="passwd" required>
+        <label class="eye" for="check"><input id="check" type="checkbox">
+          <span class="line"></span>
+          <span><img src="icons8-eye-32.jpg" alt=""></span>
+        </label>
         <!-- <button class="continue-button">Continue</button> -->
       </div>
 
-      <button type="submit">create account</button>
+      <button type="submit">Create Account</button>
 
     </form>
+    <div class="signinbtn">
+      <p> Already have an Account?</p>
+      <a href="signinform.html"><span style="font-size: 24px;" id="signinbtn">LOG IN</span></a>
+    </div>
   </div>
 </div>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -199,9 +273,13 @@
         .then(response => {
           console.log(response.data.userName);
           if (response.data.userName) {
+
+            userNameInput.style.border = "2px solid red";
             userNameAvailability.textContent = "🚫 username is already in use .please login";
           }
           else {
+
+            userNameInput.style.border = "2px solid green";
             userNameAvailability.textContent = "🔥 username is available";
           }
         })
@@ -219,9 +297,12 @@
         .then(response => {
           console.log(response.data.email);
           if (response.data.email) {
+
+            emailInput.style.border = "2px solid red";
             emailAvailability.textContent = "🚫 email is already in use.Please login";
           }
           else {
+            emailInput.style.border = "2px solid green";
             emailAvailability.textContent = "🔥 email is available.";
           }
 
@@ -235,12 +316,23 @@
 
 
 
-    // signUpForm.addEventListener("submit", async (event) => {
-    //   event.preventDefault();
+  // signUpForm.addEventListener("submit", async (event) => {
+  //   event.preventDefault();
 
-    //   await axios.post("/signUp", new URLSearchParams(new FormData(event.target))
-    //   )
-    // });
+  //   await axios.post("/signUp", new URLSearchParams(new FormData(event.target))
+  //   )
+  // });
+
+
+  check.onclick = togglePassword;
+  function togglePassword() {
+    if (check.checked) {
+      passwd.type = "text";
+
+    } else {
+      passwd.type = "password";
+    }
+  }
 
 
 

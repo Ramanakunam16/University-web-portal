@@ -1,10 +1,7 @@
-// importing
-<<<<<<< HEAD
-'use strict';
-const express = require("express");
-=======
+// importing modules
+
 const express = require('express');
->>>>>>> 3070d1a6d61c43c5a1110731b8a637797d178671
+const mysql = require('mysql');
 const app = express();
 const port = 8007;
 const bodyParser = require('body-parser');
@@ -13,11 +10,13 @@ const { exec } = require('child_process');
 const { execSync } = require('child_process');
 const node_xlsx = require('node-xlsx').default;
 const fs = require('fs');
-// const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const multer = require('multer');
+require('dotenv').config();
 
+//Storing uploaded MDB file in uploads folder locally.
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -29,6 +28,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+// Function to always retrive latest uploaded file from uploads folder
 function getlatestUploadedFile(uploadDir) {
   const files = fs.readdirSync(uploadDir);
 
@@ -48,52 +48,29 @@ function getlatestUploadedFile(uploadDir) {
   return sortedFiles[0].file;
 }
 
-// import express from "express";
-
-// import bodyParser from "body-parser";
-// import lodash from "lodash";
-// import { exec } from "child_process";
-// import node_xlsx from "node-xlsx";
-// import fileUpload from "express-fileupload";
-// import mysql from "mysql";
-// import fs from "fs";
-
-// express middleware
+// expressjs middleware
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(fileUpload());
+app.use(fileUpload());
 app.use(express.json());
 app.set('view engine', 'html');
 
 // sqlCredentials importing
-
-const mysql = require('mysql');
-// import sqlDbCredentialsjson from "./db/sqlDbCredentials.json";
-const sqlDbCredentials = require('./db/sqlDbCredentials.json');
-
-// const fileUpload = require("express-fileupload");
+const sqlDbCredentials = require('./db/sqlDbCredentials.js');
 
 // Function to create db connection
 function createDbConnection() {
   return mysql.createConnection(sqlDbCredentials);
 }
 
-// app.get("/", (req, res) => {
-//   res.send();
+// HANDLING HTTP REQUESTS
+app.get('/', (req, res) => {
+  res.send();
+});
 
-//   // connect to Db
-//   //const createDbConnection = require("./db/db.js").creatDbConnection;
+// READING HTTP REQUETS
 
-//   const mysqlConnection = createDbConnection();
-
-//   // excute query
-//   mysqlConnection.query();
-//   //End Connection
-//   mysqlConnection.end();
-// });
-
-// app.get("/hello", (req, res) => res.send("hello world"));
-
+// Adding Results Data File to Database
 app.post('/addResults', (req, res) => {
   const body = req.body;
   // body = {
@@ -120,13 +97,21 @@ app.post('/addResults', (req, res) => {
   });
   console.log(student_marks_details);
 
-  res.send({});
+  // res.send({});
 
   // connect to Db
-  //const createDbConnection = require("./db/db.js").creatDbConnection;
   const mysqlConnection = createDbConnection();
 
-  // excute query
+  //handling connection error
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  // query execution
   mysqlConnection.query(
     'INSERT INTO studentDetails values(?,?,?,?)',
     [body.RegistrationNumber, body.StudentName, body.semNo, body.sgpa],
@@ -138,6 +123,7 @@ app.post('/addResults', (req, res) => {
       }
     }
   );
+  // query execution
   mysqlConnection.query(
     'INSERT INTO studentMarksDetails values ? ',
     [student_marks_details],
@@ -154,12 +140,29 @@ app.post('/addResults', (req, res) => {
 });
 app.post('/studentMarksDetails', (req, res) => {
   const body = req.body;
-  // connect to Db
-  //const createDbConnection = require("./db/db.js").creatDbConnection;
 
+  // connection to Db
   const mysqlConnection = createDbConnection();
 
-  // excute query
+  // query execution
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  // query execution
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  // query execution
   mysqlConnection.query(
     'SELECT * FROM studentMarksDetails where sem = ? AND registrationNumber = ?',
     [body.sem, body.registrationNumber],
@@ -172,6 +175,7 @@ app.post('/studentMarksDetails', (req, res) => {
       }
     }
   );
+
   //End Connection
   mysqlConnection.end();
   // // res.json({
@@ -184,12 +188,19 @@ app.post('/studentMarksDetails', (req, res) => {
   // //   ],
   // });
 });
+
 app.post('/studentDetails', (req, res) => {
   const body = req.body;
-  // connect to Db
-  //const createDbConnection = require("./db/db.js").creatDbConnection;
 
   const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
 
   // excute query
   mysqlConnection.query(
@@ -214,6 +225,7 @@ app.post('/studentDetails', (req, res) => {
   // });
 });
 
+//uploading MDB file and reading uploaded file which is stored
 app.post('/resultsFileUploadData', (req, res) => {
   // Read excel file
   const workBook = node_xlsx.parse(req.files.resultsFileUpload.data);
@@ -221,14 +233,12 @@ app.post('/resultsFileUploadData', (req, res) => {
   console.log(req.files.resultsFileUpload.data);
   // const sheetDataColumns = sheetData[0];
   // sheetDataRows = sheetData.slice(1, sheetData.length);
-  // excel conversion
-  const sheetDataLength = sheetData.length;
+
   let studentMarksDetails = [];
   console.log(studentMarksDetails);
-  // let oneStudentMarksDetails = {};
-  // for (var k = 0; k < sheetData[0].lengthength; k++) {
 
-  // }
+  const sheetDataLength = sheetData.length;
+
   for (var i = 1; i < sheetDataLength; i++) {
     let oneStudentMarksDetails = {};
     for (var j = 0; j < sheetData[i].length; j++) {
@@ -270,6 +280,15 @@ app.post('/resultsFileUploadData', (req, res) => {
   //const createDbConnection = require("./db/db.js").creatDbConnection;
 
   const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+    // Your code here
+  });
 
   // excute query
 
@@ -335,122 +354,28 @@ app.post('/upload', upload.single('myfile1'), (req, res) => {
       console.log('s1:', stdout);
       console.log('Data extracted successfully');
       // Convert CSV to Excel
-      const csvData = fs.readFileSync(csvFilePath, 'utf-8');
-      const csvRows = csvData.split('\n');
-      const xlsxData = csvRows.map(row => [row.split(',')]);
-      console.log(xlsxData);
-      // const xlsxBuffer = node_xlsx.build([{ name: 'Sheet 1', data: xlsxData }]);
-      // console.log(xlsxData);
-      // console.log(xlsxBuffer);
-
-      // Send the xlsx data as a response
-      // res.setHeader('Content-Disposition', 'attachment; filename=output.xlsx');
-      // res.type(
-      //   'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      // );
-      // res.send(xlsxBuffer);
     });
   } else {
     console.log('no file found!');
   }
 });
-// app.get('/uplodedFiles', (req, res) => {
-//   if (!req.files) {
-//     res.status(400).send('No file uploaded');
-//     return;
-//   } else {
-//     res.send('uploaded successfull');
-//   }
-//   const mdbFile = req.files.file;
-//   // if (mdbFile.type !== "application/x-mdb") {
-//   //   res.status(400).send("Invalid file ");
-//   //   return;
-//   // }
-//   const mdbFileData = mdbFile.data;
-
-//   console.log(req.files.file);
-//   // const nonNullMdbFileData = mdbFileData.filter(byte => byte !== 0x00);
-//   // fs.writeFileSync(mdbFile.name, nonNullMdbFileData);
-//   console.log(mdbFile.name);
-
-//   // const nonNullMdbFileData = mdbFileData.filter((byte) => byte !== 0x00);
-//   // fs.writeFileSync(mdbFileData, nonNullMdbFileData);
-//   // console.log(nonNullMdbFileData);
-
-//   const csvFilePath = `data.csv`;
-//   const tableName = 'Amber';
-
-//   console.log(tableName);
-
-//   // Convert MDB to CSV
-//   const mdbToCsvCommand = `mdb-export "${mdbFile.name}" ${tableName} > ${csvFilePath}`;
-//   console.log('Executing command:', mdbToCsvCommand);
-//   exec(mdbToCsvCommand, (error, stdout, stderr) => {
-//     if (error) {
-//       console.error(`Error extracting data: ${error.message}`);
-//       console.log('s2:', stderr);
-//       res.status(500).send('Error extracting data');
-//       return;
-//     }
-//     console.log('s1:', stdout);
-//     console.log('Data extracted successfully');
-//     // Convert CSV to Excel
-//     const csvData = fs.readFileSync(csvFilePath, 'utf-8');
-//     const csvRows = csvData.split('\n');
-//     const xlsxData = csvRows.map(row => [row.split(',')]);
-//     console.log(xlsxData);
-//     const xlsxBuffer = xlsx.build([{ name: 'Sheet 1', data: xlsxData }]);
-//     console.log(xlsxData);
-//     console.log(xlsxBuffer);
-
-//     // Send the xlsx data as a response
-//     res.setHeader('Content-Disposition', 'attachment; filename=output.xlsx');
-//     res.type(
-//       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-//     );
-//     res.send(xlsxBuffer);
-//   });
-// });
 
 // user account details after account creation
 app.post('/signUp', async (req, res) => {
   const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+    // Your code here
+  });
+
   const uname = req.body.uname;
   const email = req.body.email;
   const passwd = req.body.passwd;
-
-  // console.log(body);
-
-  // //checking for exiting user and emails
-  // try {
-  //   // Check if username or email already exists
-  //   const existingUser = await new Promise((resolve, reject) => {
-  //     mysqlConnection.query(
-  //       'SELECT user_name, user_email FROM users WHERE user_name = ? OR user_email = ?',
-  //       [uname, email],
-  //       (err, results) => {
-  //         if (err) {
-  //           reject(err);
-  //           return;
-  //         }
-  //         resolve(results[0]);
-  //         console.log('results:', results);
-  //       }
-  //     );
-  //   });
-
-  //   if (existingUser) {
-  //     if (existingUser.user_name === uname) {
-  //       console.log('Username already exists. Please select a new username.');
-  //     } else if (existingUser.user_email === email) {
-  //       console.log('Email already exists. Please use a different email.');
-  //     }
-  //     const message =
-  //       "<script>alert('Username or email already exists.'); window.location.href='signupform.html'</script>";
-  //     res.status(400).send(message);
-  //     return;
-  //   }
-  // console.log(existingUser, existingUser.user_name);
 
   // Hash the password
   const hashedPassword = await bcrypt.hash(passwd, 10);
@@ -489,6 +414,15 @@ app.post('/check-Availability', (req, res) => {
 
   const mysqlConnection = createDbConnection();
 
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+    // Your code here
+  });
+
   mysqlConnection.query(
     'SELECT COUNT(*) AS userNameCount FROM users WHERE user_name=?',
     [userName],
@@ -524,6 +458,16 @@ app.post('/check-Availability', (req, res) => {
 
 app.post('/signIn', (req, res) => {
   const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+    // Your code here
+  });
+
   const usernameOrEmail = req.body.unameOrEmail;
   const password = req.body.passwd;
   console.log(usernameOrEmail);
@@ -537,21 +481,9 @@ app.post('/signIn', (req, res) => {
       console.log(results);
       if (err) {
         console.log('Invalid query', err);
-      } else {
-<<<<<<< HEAD
-        if (results.length === 0 || results[0].user_name !== uname) {
-          res.send("invalid user");
-        }
-        const passwordMatch = bcrypt.compare(password,results[0].hasedPassword)
-        if (passwordMatch) {
-          res.send("login successfully");
-        } else {
-          res.send("wrong password retry again");
-          // const message =
-          //   "<script>alert('invalid password'); window.location.href='signinform.html'</script>";
-          // res.send(message);
-        }
-=======
+      }
+
+      try {
         if (results.length === 0) {
           // res.render("check");
           res.send('invalid user or email id');
@@ -560,18 +492,19 @@ app.post('/signIn', (req, res) => {
             password,
             results[0].hashedPassword
           );
->>>>>>> 3070d1a6d61c43c5a1110731b8a637797d178671
 
           if (passwordMatch) {
-            res.redirect('/dashBoard');
+            res.json({ isLogged: true });
           } else {
-            res.send('INVALID PASSWORD RETRY AGAIN!');
+            res.json({ isLogged: false });
             //   const message =
             //     "<script>alert('invalid password'); window.location.href='signinform.html'</script>";
             //   res.send(message);
           }
         }
         // console.log(results);
+      } catch {
+        res.json({ error: true });
       }
     }
   );
@@ -583,6 +516,15 @@ app.get('/dashBoard', (req, res) => {
 
 app.post('/check-Validity', (req, res) => {
   const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
   const emailOrUserName = req.body.usernameOrEmail;
   console.log(emailOrUserName);
 
@@ -604,21 +546,6 @@ app.post('/check-Validity', (req, res) => {
 
 app.post('/dashBoard', (req, res) => {});
 
-// app.post("/convert", (req, res) => {
-//   const mdbFileData = req.files.file.data;
-//   const tableName = "results";
-
-//   fs.readFile(mdbFileData, (err, data) => {
-//     if (err) {
-//       console.log("error reading file", err);
-//     } else {
-//       console.log("");
-//     }
-//     const mdb = new mdbReader(data);
-//     const tableData = mdb.table(tableName);
-//     console.log(tableData);
-//   });
-// });
 app.post('/updateInfo', (req, res) => {
   res.send('updated success.');
 });
