@@ -1,4 +1,5 @@
 // importing
+'use strict';
 const express = require("express");
 const app = express();
 const port = 8007;
@@ -396,14 +397,16 @@ app.post("/signIn", (req, res) => {
         console.log("Invalid query", err);
       } else {
         if (results.length === 0 || results[0].user_name !== uname) {
-          res.redirect("index.html");
+          res.send("invalid user");
         }
-        if (results[0].hasedPassword === password) {
+        const passwordMatch = bcrypt.compare(password,results[0].hasedPassword)
+        if (passwordMatch) {
           res.send("login successfully");
         } else {
-          const message =
-            "<script>alert('invalid password'); window.location.href='signinform.html'</script>";
-          res.send(message);
+          res.send("wrong password retry again");
+          // const message =
+          //   "<script>alert('invalid password'); window.location.href='signinform.html'</script>";
+          // res.send(message);
         }
 
         // console.log(results);
