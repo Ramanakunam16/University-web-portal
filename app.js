@@ -10,13 +10,14 @@ const { exec } = require('child_process');
 const { execSync } = require('child_process');
 const node_xlsx = require('node-xlsx').default;
 const fs = require('fs');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const multer = require('multer');
+const csv_parser = require('csv-parser');
 require('dotenv').config();
 
-//Storing uploaded MDB file in uploads folder locally.
+//Storing uploaded files in uploads folder locally.
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -51,7 +52,7 @@ function getlatestUploadedFile(uploadDir) {
 // expressjs middleware
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(fileUpload());
+// app.use(fileUpload());
 app.use(express.json());
 app.set('view engine', 'html');
 
@@ -64,8 +65,9 @@ function createDbConnection() {
 }
 
 // HANDLING HTTP REQUESTS
-app.get('/', (req, res) => {
-  res.send();
+app.get('/forgotPassword', (req, res) => {
+  const filePath = __dirname + '/public/forgotPassword.html';
+  res.sendFile(filePath);
 });
 
 // READING HTTP REQUETS
@@ -145,15 +147,7 @@ app.post('/studentMarksDetails', (req, res) => {
   const mysqlConnection = createDbConnection();
 
   // query execution
-  mysqlConnection.connect(err => {
-    if (err) {
-      console.error('Error connecting to MySQL:', err);
-      return;
-    }
-    console.log('Connected to MySQL');
-  });
 
-  // query execution
   mysqlConnection.connect(err => {
     if (err) {
       console.error('Error connecting to MySQL:', err);
@@ -179,7 +173,7 @@ app.post('/studentMarksDetails', (req, res) => {
   //End Connection
   mysqlConnection.end();
   // // res.json({
-  // //   studentMarksDetails: [
+  // //   mainData: [
   // //     { registrationNo: 1, semNo: 1, subjectCode: "cs1", gradePoints: 10 },
   // //     { registrationNo: 1, semNo: 1, subjectCode: "cs2", gradePoints: 10 },
   // //     { registrationNo: 1, semNo: 1, subjectCode: "cs3", gradePoints: 10 },
@@ -234,43 +228,42 @@ app.post('/resultsFileUploadData', (req, res) => {
   // const sheetDataColumns = sheetData[0];
   // sheetDataRows = sheetData.slice(1, sheetData.length);
 
-  let studentMarksDetails = [];
-  console.log(studentMarksDetails);
+  let mainData = [];
+  console.log(mainData);
 
   const sheetDataLength = sheetData.length;
 
   for (var i = 1; i < sheetDataLength; i++) {
-    let oneStudentMarksDetails = {};
+    let onemainData = {};
     for (var j = 0; j < sheetData[i].length; j++) {
-      oneStudentMarksDetails[lodash.camelCase(sheetData[0][j])] =
-        sheetData[i][j];
+      onemainData[lodash.camelCase(sheetData[0][j])] = sheetData[i][j];
     }
-    studentMarksDetails.push(oneStudentMarksDetails);
+    mainData.push(onemainData);
   }
   //console.log(sheetData[0]);
-  console.log(studentMarksDetails[0]);
+  console.log(mainData);
   res.send('success');
 
   var studentResults = [];
   var studentDetails = [];
 
-  for (let i = 0; i < studentMarksDetails.length; i++) {
-    Object.keys(studentMarksDetails[i]).forEach(key => {
+  for (let i = 0; i < mainData.length; i++) {
+    Object.keys(mainData[i]).forEach(key => {
       if (key.slice(0, 2) == 'cs') {
         studentResults.push([
-          studentMarksDetails[i].registrationNumber,
-          studentMarksDetails[i].sem,
+          mainData[i].registrationNumber,
+          mainData[i].sem,
           key,
-          studentMarksDetails[i][key],
+          mainData[i][key],
         ]);
       }
     });
 
     studentDetails.push([
-      studentMarksDetails[i].registrationNumber,
-      studentMarksDetails[i].studentName,
-      studentMarksDetails[i].sem,
-      studentMarksDetails[i].totalResult,
+      mainData[i].registrationNumber,
+      mainData[i].studentName,
+      mainData[i].sem,
+      mainData[i].totalResult,
     ]);
   }
   console.log(studentDetails);
@@ -304,7 +297,7 @@ app.post('/resultsFileUploadData', (req, res) => {
     }
   );
   mysqlConnection.query(
-    'INSERT INTO studentMarksDetails values ? ',
+    'INSERT INTO mainData values ? ',
     [studentResults],
     (err, results) => {
       if (err) {
@@ -318,9 +311,6 @@ app.post('/resultsFileUploadData', (req, res) => {
   mysqlConnection.end();
 });
 
-app.get('/upload', (req, res) => {
-  res.sendFile(__dirname + '/piblic/convert.html');
-});
 app.post('/upload', upload.single('myfile1'), (req, res) => {
   console.log('file uploaded', req.file);
   const latestUploadedFile = getlatestUploadedFile('uploads/');
@@ -329,35 +319,227 @@ app.post('/upload', upload.single('myfile1'), (req, res) => {
     const mdbFile = latestUploadedFile;
 
     console.log(mdbFile);
+
     // const nonNullMdbFileData = mdbFileData.filter(byte => byte !== 0x00);
     // fs.writeFileSync(mdbFile.name, nonNullMdbFileData);
-
-    // const nonNullMdbFileData = mdbFileData.filter((byte) => byte !== 0x00);
-    // fs.writeFileSync(mdbFileData, nonNullMdbFileData);
     // console.log(nonNullMdbFileData);
 
-    const csvFilePath = `data.csv`;
+    const csvFilePath = __dirname + '/uploads/csv_data/data.csv';
     const tableName = 'Amber';
 
     console.log(tableName);
-    const relativeMdbFilePath = path.join('uploads', mdbFile);
+    const MdbFilePath = path.join('uploads', mdbFile);
+
     // Convert MDB to CSV
-    const mdbToCsvCommand = `mdb-export "${relativeMdbFilePath}" ${tableName} > ${csvFilePath}`;
+    const mdbToCsvCommand = `mdb-export "${MdbFilePath}" ${tableName} > ${csvFilePath}`;
     console.log('Executing command:', mdbToCsvCommand);
-    exec(mdbToCsvCommand, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error extracting data: ${error.message}`);
-        console.log('s2:', stderr);
-        res.status(500).send('Error extracting data');
+    exec(mdbToCsvCommand, async (error, stdout, stderr) => {
+      try {
+        if (error) {
+          console.error(`Error extracting data: ${error.message}`);
+          console.log('s2:', stderr);
+          res.status(500).send('Error extracting data');
+          return;
+        }
+        console.log('s1:', stdout);
+        console.log('Data extracted successfully');
+        // Convert CSV to Excel
+      } catch {
+        console.log('no file found!');
+      }
+    });
+  }
+  let data = [];
+  console.log(data);
+  const dataPath = __dirname + '/uploads/csv_data/data.csv';
+
+  function onDataProcessingComplete() {
+    // console.log('From json:', results);
+    console.log('data', typeof data);
+    console.log(data);
+    const dataLength = data.length;
+    const mainData = [];
+    // const updatedObj = {};
+    for (let i = 1; i < dataLength; i++) {
+      const object = data[i];
+      const updatedObj = {};
+      // console.log('obj:', object);
+      Object.keys(object).forEach(key => {
+        // console.log(key);
+        // const updatedObj = {};
+        const updatedKey = lodash.camelCase(key);
+        updatedObj[updatedKey] = object[key];
+      });
+      mainData.push(updatedObj);
+    }
+
+    // mainData.push(updatedObj);
+
+    console.log('updatedData:', mainData);
+
+    var studentResults = [];
+    var studentDetails = [];
+
+    for (let i = 1; i < mainData.length; i++) {
+      Object.keys(mainData[i]).forEach(key => {
+        if (key.slice(0, 2) == 'cs') {
+          studentResults.push([
+            mainData[i].registrationNumber,
+            mainData[i].sem,
+            key,
+            mainData[i][key],
+          ]);
+        }
+      });
+
+      studentDetails.push([
+        mainData[i].registrationNumber,
+        mainData[i].studentName,
+        mainData[i].sem,
+        mainData[i].totalResult,
+      ]);
+    }
+    console.log(studentDetails);
+    console.log(studentResults);
+
+    // connect to Db
+    //const createDbConnection = require("./db/db.js").creatDbConnection;
+
+    const mysqlConnection = createDbConnection();
+
+    mysqlConnection.connect(err => {
+      if (err) {
+        console.error('Error connecting to MySQL:', err);
         return;
       }
-      console.log('s1:', stdout);
-      console.log('Data extracted successfully');
-      // Convert CSV to Excel
+      console.log('Connected to MySQL');
     });
-  } else {
-    console.log('no file found!');
+
+    // excute query
+
+    mysqlConnection.query(
+      'INSERT INTO studentDetails values ?',
+      [studentDetails],
+      (err, results) => {
+        if (err) {
+          console.log('Invalid query', err);
+        } else {
+          console.log(results);
+        }
+      }
+    );
+    mysqlConnection.query(
+      'INSERT INTO studentMarksDetails values ?',
+      [studentResults],
+      (err, results) => {
+        if (err) {
+          console.log('Invalid query', err);
+        } else {
+          console.log(results);
+        }
+      }
+    );
+    //End Connection
+    mysqlConnection.end();
   }
+
+  const columnMap = {
+    A: 'STUDENT NAME',
+    B: 'REGISTRATION NUMBER',
+    C: 'COURSE',
+    D: 'SEM',
+    E: 'CS1_FORMAL LANGUAGES AND AUTOMETA THEORY',
+    F: 'CS2_COMPUTER NETWORKS',
+    G: 'CS3_WEB TECHNOLOGY',
+    H: 'CS4_DESIGN AND ANALYSIS OF ALGORITHMS',
+    I: 'CS5_MACHINE LEARNING',
+    J: 'CS6_COMPUTER GRAPHICS',
+    K: 'CS7_WEB TECHNOLOGY LAB',
+    L: 'CS8_COMPUTER GRAPHICS LAB',
+    M: 'TOTAL RESULT',
+  };
+
+  fs.createReadStream(dataPath)
+    .pipe(csv_parser())
+    .on('data', row => {
+      console.log('rows:', row);
+      const newRow = {};
+
+      for (const field in row) {
+        // console.log('rows:', row);
+        if (Object.hasOwnProperty.call(row, field) && columnMap[field]) {
+          console.log(`${columnMap[field]}:${row[field]}`);
+          // Convert numeric values to integers
+          if (!isNaN(row[field])) {
+            newRow[columnMap[field]] = parseFloat(row[field]);
+            //   console.log(row[field]);
+            //   console.log(newRow[columnMap[field]]);
+          } else {
+            newRow[columnMap[field]] = row[field];
+          }
+        }
+      }
+
+      data.push(newRow);
+      // console.log("NEW ROW:", newRow);
+    })
+    .on('end', () => {
+      // fs.writeFileSync(
+      //   './uploads/mdb_data_in_json/data.json',
+      //   JSON.stringify(data, null, 2)
+      // );
+      onDataProcessingComplete();
+    });
+
+  // const filePath = __dirname + '/uploads/mdb_data_in_json/data.json';
+
+  // fs.readFile(filePath, 'utf-8', (err, results) => {
+  //   if (err) {
+  //     console.log(err);
+  //   }
+  //   try {
+  //     // const data = JSON.parse(results);
+  //     const mainData = [];
+  //     // console.log('From json:', results);
+  //     const data = results;
+  //     console.log('data', typeof data);
+  //     const updatedObj = {};
+  //     for (let i = 1; i < results.length; i++) {
+  //     const object = data[1];
+  //     console.log('obj:', object);
+  //     Object.keys(object).forEach(key => {
+  //       console.log(key);
+  //       // const updatedObj = {};
+  //       const updatedKey = lodash.camelCase(key);
+  //       updatedObj[updatedKey] = object[key];
+  //     });
+  //    }
+  //     mainData.push(updatedObj);
+
+  //     console.log('updatedData:', mainData);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+
+  //   //Db Connection
+  //   const mysqlConnection = createDbConnection();
+
+  //   //handling connection error
+  //   mysqlConnection.connect(err => {
+  //     if (err) {
+  //       console.error('Error connecting to MySQL:', err);
+  //       return;
+  //     }
+  //     console.log('Connected to MySQL');
+  //   });
+
+  //   // Query Execution
+  //   mysqlConnection.query(
+  //     'INSERT INTO studentDetails VALUES (?,?,?,?)',
+  //     [],
+  //     (err, results) => {}
+  //   );
+  // });
 });
 
 // user account details after account creation
@@ -370,7 +552,6 @@ app.post('/signUp', async (req, res) => {
       return;
     }
     console.log('Connected to MySQL');
-    // Your code here
   });
 
   const uname = req.body.uname;
@@ -403,8 +584,6 @@ app.post('/signUp', async (req, res) => {
   //   console.error('Error:', error);
   //   res.status(500).send('An error occurred while signing up.');
   // }
-
-  // excute query
 });
 
 app.post('/check-Availability', (req, res) => {
@@ -486,7 +665,7 @@ app.post('/signIn', (req, res) => {
       try {
         if (results.length === 0) {
           // res.render("check");
-          res.send('invalid user or email id');
+          res.json({ isInvalidDetails: true });
         } else if (results.length !== 0) {
           const passwordMatch = await bcrypt.compare(
             password,
@@ -556,6 +735,7 @@ app.post('/changePasswd', (req, res) => {
 app.post('/updateProfilePic', (req, res) => {
   res.send('uploaded.');
 });
+
 app.listen(port, '0.0.0.0', () => {
   console.log(`app listening on port ${port}`);
 });

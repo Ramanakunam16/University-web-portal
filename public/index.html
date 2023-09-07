@@ -11,7 +11,6 @@
     }
 
     body {
-
       background-image: linear-gradient(90deg,
           rgb(102, 90, 67) 20%,
           rgb(119, 95, 95));
@@ -20,7 +19,7 @@
 
 
 
-    img {
+    #logo {
       width: 120px;
       height: 120px;
       margin: 10px 2px;
@@ -63,7 +62,8 @@
     } */
 
     /* Increase the font size of the h1 element */
-    .header h1 {
+    .header h1,
+    h2 {
 
       font-size: 20px;
       text-align: center;
@@ -104,16 +104,123 @@
 
     }
 
+    .welcome {
+      background-color:
+        rgb(14, 13, 13);
+      /* background-color: #2c2525; */
+      width: 100%;
+      height: 70%;
 
-
-
-
-    .jungle {
-      padding: 20px;
-      text-align: center;
-      display: flex;
-      flex-wrap: wrap;
+      place-items: center;
     }
+
+    .welcome picture {
+      position: relative;
+      display: flex;
+      justify-content: space-evenly;
+      top: 60%
+    }
+
+
+
+    .library {
+      background-image: linear-gradient(90deg,
+          rgb(14, 13, 13) 60%,
+          rgb(119, 95, 95));
+      /* background-color: aqua; */
+      width: 100%;
+      height: 70%;
+    }
+
+    .blogs {
+      background-image: linear-gradient(90deg,
+          rgb(119, 95, 95) 40%,
+          rgb(0, 0, 0));
+      /* background-color: black; */
+      width: 100%;
+      height: 70%;
+    }
+
+    .results:not(#resultsLink) {
+      background-image: linear-gradient(90deg,
+          rgb(14, 13, 13) 50%, rgb(119, 95, 95));
+      /* background-color: #ae6262; */
+      height: 70%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+
+
+
+
+    #resultsLink {
+
+      background-color: rgb(240, 232, 214);
+      opacity: 0.8;
+      padding: 10px;
+      min-width: 10%;
+      height: 40px;
+      border-radius: 20px;
+      padding-top: 20px;
+      /* max-width: 100px; */
+      text-align: center;
+      margin-right: 18%;
+      /* border: 2px solid rgb(235, 231, 231); */
+      filter: drop-shadow(0 0 10px #ece9e8e6);
+      display: flex;
+      justify-content: right;
+      /* display: flex; */
+      /* align-items: flex-end; */
+    }
+
+    #resultsLink:hover {
+      opacity: 1;
+      border: 2px solid rgb(6, 13, 14);
+    }
+
+    #resultsLink a {
+      color: black;
+      /* width: 5px; */
+
+      font-size: 24px;
+      text-decoration: none;
+    }
+
+    .resultsimg1,
+    .libimg {
+      width: 120px;
+      height: 120px;
+      /* margin: 10px 2px; */
+      border-radius: 60px;
+
+
+    }
+
+    .resultsimg2,
+    .libimg1 {
+      width: 120px;
+      height: 120px;
+      /* margin: 10px 2px; */
+      border-radius: 60px;
+
+    }
+
+    .resultsimgs,
+    .libimgs {
+      position: relative;
+      top: -20%;
+      right: -110px;
+    }
+
+    .results p {
+      position: relative;
+      left: -20%;
+      font-size: 20px;
+    }
+
 
 
     .footer {
@@ -122,13 +229,31 @@
       background-image: linear-gradient(90deg,
           rgb(119, 105, 79) 20%,
           rgb(119, 95, 95));
-      margin-top: 415px;
+      /* margin-top: 415px; */
     }
 
     /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-    @media screen and (max-width: 700px) {
-      .row {
+    @media (max-width: 900px) {
+      .results {
         flex-direction: column;
+      }
+
+      .resultsimgs,
+      .libimgs {
+        position: relative;
+        top: 10%;
+        right: -2px;
+      }
+
+      #resultsLink {
+        margin-bottom: 50px;
+        /* place-items: center; */
+        margin-left: 110px;
+      }
+
+      .results p {
+        position: relative;
+        left: 20px
       }
     }
 
@@ -156,13 +281,7 @@
 
 
     /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
-    @media screen and (max-width: 400px) {
-      .navbar a {
-        float: none;
-        width: 100%;
-      }
 
-    }
 
     #logintxt:hover {
       color: #ae6262;
@@ -175,9 +294,9 @@
 
   <header>
     <div class="header">
-      <img src="ambedkar-university-sklm.jpg">
+      <img src="ambedkar-university-sklm.jpg" id="logo">
       <h1>Dr.B.R Ambedkar University</h1>
-      <h1>Campus Connect</h1>
+      <h2>Student Area</h2>
       <p>College of Engineering.</p>
     </div>
   </header>
@@ -187,17 +306,43 @@
     </div>
   </div>
 
-  <div class="jungle">
-    <a href="addResults.html">upload Btech 4th semseter results<a />
+  <!-- <div class="mainDiv"></div> -->
+
+  <div class="welcome">
+
+    <h2 style="color:white;"> WELCOME TO DR.BRAU </h2>
+    <picture>
+      <h3 style="color: white;">Library Book Reservation</h3>
+
+      <a href="#library"><img src="lib1.jpg" id="startLib" alt=""></a>
+      <h3 style="color: white;">Semesters Results</h3>
+
+      <a href=" #results"><img src="results.jpg" id="startResults" alt=""></a>
+    </picture>
+
   </div>
+  <div class="library results" id="library">
+    <picture class="libimgs"><img src="lib1.jpg" class="libimg1" alt="">
+      <img src="lib.jpg" class="libimg2" alt="">
+    </picture>
+    <p style="color:white">Students can reserve there books here......</p>
+    <div id="resultsLink">
+      <a href="signupform.html">Reserve a Book</a>
+    </div>
   </div>
-  <div class="jungle">
-    <a href="results.html">Btech 4th semseter results<a />
-  </div>
-  <div class="jungle">
-    <a href="convert.html">conver mdb to excel.Download the file and Upload the results.<a />
+  <div class="blogs"></div>
+  <div class="library results" id="results">
+    <picture class="resultsimgs"><img src="results.jpg" class="resultsimg1" alt="">
+      <img src="results1.jpg" class="resultsimg2" alt="">
+    </picture>
+    <p style="color:white">students can view results of every semester here......</p>
+    <div id="resultsLink">
+      <a href="results.html">View Results</a>
+    </div>
   </div>
 
+
+  <!-- </div> -->
 
 
   <footer>
@@ -210,4 +355,4 @@
 
 </body>
 
-</htm>
+</html>

@@ -167,7 +167,7 @@
     }
 
     .eye img {
-        position: sticky;
+        position: relative;
         width: 22px;
         /* transition: 0.3s ease-in-out */
     }
@@ -234,10 +234,10 @@
 
         </div>
 
-        <button class="loginbtn">Log in</button>
+        <button class="loginbtn" id="loginbtn">Log in</button>
         <div class="fp">
             <p>Did you forgot your password?</p>
-            <a href="/forgotPassword"><span>forgot password?</span></a>
+            <a href="/forgotPassword"><span>Reset Password</span></a>
         </div>
         <div class="signupbtn">
             <p>Did not have an Account?</p>
@@ -266,6 +266,33 @@
 <script>
     const userOrEmailInput = document.getElementById("unameOrEmail");
     const error = document.getElementById("error")
+    const passwdInput = document.getElementById("passwd");
+    const loginForm = document.getElementById("loginbtn");
+
+
+
+
+
+    //     axios.post("/signIn")
+    //         .then(response => {
+    //             console.log(response.data);
+    //             if (response.data.isLogged) {
+    //                 passwdInput.style.border = "2px solid green";
+    //             }
+    //             else {
+    //                 passwdInput.style.border = "2px solid red";
+    //                 passwdInput.textContent = "wrong password.check again!"
+    //             }
+
+
+
+    //         })
+
+    //         .catch(error => {
+    //             console.log("error", error);
+    //         })
+    // })
+
 
     userOrEmailInput.addEventListener("blur", () => {
         const usernameOrEmail = userOrEmailInput.value;
@@ -292,6 +319,17 @@
 
     })
 
+
+
+
+    // signIn();
+
+
+
+
+
+
+
     check.onclick = togglePassword;
     function togglePassword() {
         if (check.checked) {
@@ -301,6 +339,9 @@
             passwd.type = "password";
         }
     }
+
+
+
 </script>
 </body>
 

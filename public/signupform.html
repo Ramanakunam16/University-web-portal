@@ -154,7 +154,7 @@
     }
 
     .eye img {
-      position: sticky;
+      /* position: relative; */
       width: 22px;
       /* transition: 0.3s ease-in-out */
     }
@@ -240,7 +240,7 @@
         <!-- <button class="continue-button">Continue</button> -->
       </div>
 
-      <button type="submit">Create Account</button>
+      <button type="submit" onclick="validateForm()">Create Account</button>
 
     </form>
     <div class="signinbtn">
@@ -333,6 +333,44 @@
       passwd.type = "password";
     }
   }
+
+  function validateForm() {
+
+    const email = document.getElementById("email");
+    const username = document.getElementById('uname');
+    const password = document.getElementById('passwd');
+
+    if (username.value == '') {
+      alert('Username must be filled out');
+      return false;
+    } else if (/^[a-zA-Z0-9]$/.test(username.value)
+    ) {
+      username.style.border = '2px solid green';
+
+      return true;
+    }
+
+    if (email.value == '') {
+      alert('email must be filled out');
+      return false;
+    } else if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email.value)
+    ) {
+      email.style.border = '2px solid green';
+
+      return true;
+    }
+    if (password.value == '') {
+      alert('Password must be filled out');
+      return false;
+    }
+    if (!/^[a-z0-9]{8,}$/.test(password.value)) {
+      alert(
+        'Password must be at least 8 characters and contain only lowercase letters and numbers'
+      );
+      return false;
+    }
+  }
+
 
 
 
