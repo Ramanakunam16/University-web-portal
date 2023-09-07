@@ -1,5 +1,5 @@
 node_modules/
 sqlDbCredentials.js
 uploads/
-.env/
+.env
 rough/
