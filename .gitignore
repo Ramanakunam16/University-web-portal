@@ -1,6 +1,5 @@
 node_modules/
 sqlDbCredentials.js
-data.csv
 uploads/
-.env
-rough
+.env/
+rough/
