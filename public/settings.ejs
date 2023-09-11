@@ -3,6 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
@@ -19,6 +22,7 @@
             padding: 40px;
             flex: 2 2 200px;
 
+
             /* box-shadow: 0 0 10px #e6e1e0e6; */
 
         }
@@ -34,6 +38,11 @@
             padding: 40px;
             flex: 2 2 200px;
         }
+
+        /* 
+        .form2:not(.box-2)) {
+            margin-top: 50%;
+        } */
 
         label:not(.piclabel) {
             color: black;
@@ -69,7 +78,7 @@
 
         }
 
-        button {
+        button:not(.dropdown-btn) {
             display: block;
             /* margin: 16px 0; */
 
@@ -144,12 +153,17 @@
 
         }
 
+        #picSave {
+            display: inline;
+        }
 
         #avatar {
             align-items: center;
             width: 50px;
+            height: 50px;
             border-radius: 50%;
-            margin-top: 15px
+            margin-top: 15px;
+            object-fit: cover;
         }
 
         span {
@@ -203,7 +217,7 @@
             position: absolute;
             right: 70%;
             background-color: #d8a371;
-            min-width: 200px;
+            min-width: 250px;
             /* border: 2px solid black; */
             border-radius: 20px;
             /* box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); */
@@ -212,10 +226,12 @@
 
         .dropdown-content a {
             color: rgb(255, 254, 254);
-            padding: 12px 16px;
+            /* padding: 12px 16px; */
             text-decoration: none;
             display: block;
             font-size: 20px;
+
+
 
 
         }
@@ -224,17 +240,20 @@
             color: #504e4e;
         }
 
-
-        .dropdown:hover .dropdown-content {
-
-            display: block;
+        .active {
+            background-color: rgb(221, 199, 127);
+            color: white;
         }
+
+
+
 
         .container {
 
 
             display: flex;
             justify-content: space-between;
+            gap: 6%;
             margin: 20px;
         }
 
@@ -245,10 +264,10 @@
                     rgb(180, 167, 141) 20%,
                     rgb(119, 95, 95));
 
-            height: 20vh;
+            height: 160px;
 
 
-            width: 20%;
+            width: 60%;
 
 
             border-radius: 20px;
@@ -260,7 +279,7 @@
         .box-1 button {
             position: relative;
             margin: auto;
-            margin-top: 20px;
+            margin-top: 30px;
             margin-bottom: 20px;
         }
 
@@ -302,11 +321,38 @@
             display: none;
         }
 
-        a {
+        a:not(.dropdown-content) {
+            display: grid;
+            /* margin: 16px 0; */
+
+            /* height: 40px; */
+            /* background-color: #f0f3f3; */
+            border-radius: 20px;
+            border: none;
+            padding: 10px;
+            font: bold;
+
+
+            width: 70%;
+
+            font-size: 18px;
+            color: hsl(60, 18%, 93%);
+
             text-decoration: none;
         }
 
-        @media (max-width: 768px) {
+        a:not(.dropdown-content a) {
+            margin-top: 20px;
+            text-align: center;
+
+            margin-left: 10%;
+        }
+
+        a:hover {
+            color: #b46e06;
+        }
+
+        @media (max-width: 980px) {
             .container {
                 flex-direction: column;
                 /* Change to a column layout */
@@ -324,11 +370,31 @@
 
                 margin-bottom: 30px;
                 width: 100%;
+                height: 160px;
             }
 
             .box-1 button {
                 margin-top: 20px;
             }
+
+            #picSave {
+                flex-direction: row;
+                min-width: 160px;
+
+            }
+
+            .piclabel {
+                /* min-width: 30%; */
+
+                max-width: 50%;
+            }
+
+            .form2 {
+                margin-top: 80px;
+                width: 45px;
+            }
+
+
 
             /* .box-3 {
                 position: absolute;
@@ -351,7 +417,7 @@
 <body>
     <div class="header">
         <div>
-            <a href="dashBoard.html"> <img id="logo" src="ambedkar-university-sklm.jpg">
+            <a href="/dashBoard"> <img id="logo" src="ambedkar-university-sklm.jpg">
             </a>
         </div>
 
@@ -362,19 +428,27 @@
         </div>
         <!-- <div id="line"></div> -->
         <div class="dropdown">
-            <img id="avatar" id="dropbnt" src="avatar.jpg">
-            <span>🔻</span>
-            <div class="dropdown-content">
-                <a href="settings.html">⚙ Platform settings</a>
-                <a href="index.html">↩ Sign Out</a>
+            <% if (profilePicData) { %>
+                <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>" id="avatar"
+                    alt="profile pic">
+                <% } else { %>
+                    <img src="avatar.jpg" id="avatar" alt="">
+                    <% } %>
 
-            </div>
+                        <button style="width:30px; margin-right: 47px;" class="dropdown-btn">
+                            <span>🔻 </span>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="/settings">⚙ Platform settings</a>
+                            <a href="/logout">↩ Sign Out</a>
+
+                        </div>
         </div>
     </div>
     <div class="container">
         <div class="box-1">
-            <a href="#box-2"> <button class="profilebtn">⚙ Profile Settings</button></a>
-            <a href="#box-4" class="reservationbtn"> <button>📚 Library Reservations</button></a>
+            <a href="#box-2">⚙ Profile Settings</a>
+            <a href="#box-4">📚 Library Reservations</a>
 
         </div>
         <div class="form1 form2 form3 box-2" id="box-2">
@@ -385,14 +459,14 @@
                 <form id="updateInfo" action="/updateInfo" method="post">
                     <div>
                         <label for="email">Update Your Email Id:</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email" value="<%= email %>" />
 
-                        <!-- <button class="continue-button">Continue</button> -->
+                        <!-- <button class="continue-button">Continue</button>  -->
                     </div>
 
                     <div>
                         <label for="uname">Change Your Username:</label>
-                        <input type="text" id="uname" name="uname">
+                        <input type="text" id="uname" name="uname" value="<%= username%>">
 
                     </div>
                     <button type="submit">Update Profile</button>
@@ -400,19 +474,28 @@
             </div>
             <div class="box-3">
                 <div class="form3">
-                    <form action="/updateProfilePic" method="post">
-                        <img id="profilepic" alt="">
-                        <h3>Profile Picture</h3>
-                        <p>
+                    <form action="/updateProfilePic" method="post" enctype="multipart/form-data">
+                        <% if (profilePicData) { %>
+                            <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>"
+                                id="profilepic" alt="profile pic">
+                            <% } else { %>
+                                <img src="avatar.jpg" id="profilepic" alt="">
+                                <% } %>
 
-                            For best results, use an square image at least 248px x 248px</p>
-                        <label for="pic" class="piclabel">Upload Picture</label>
-                        <input type="file" id="pic" name="pic">
+
+                                    <h3>Profile Picture</h3>
+                                    <p>
+
+                                        For best results, use an square image at least 248px x 248px</p>
+                                    <label for="pic" class="piclabel">Upload Picture</label>
+                                    <input type="file" id="pic" name="pic">
+                                    <button id="picSave" type="submit"
+                                        style="font-size: 18px;margin-top: 20px; margin-bottom: \50px;">Save</button>
                     </form>
                 </div>
 
             </div>
-            <div class="form2" style="width: 30%">
+            <div class="form2" style="width: 30%;margin-top: 50px;">
                 <form id="changePasswd" action="/changePasswd" method="post">
 
                     <h3>Change Password</h3>
@@ -425,13 +508,13 @@
 
                     <div>
                         <label for="npasswd">Enter Your New Password:</label>
-                        <input type="password" id="npassword" name="npassword">
+                        <input type="password" id="npasswd" name="npasswd">
 
                     </div>
 
                     <div>
                         <label for="repeatNpasswd">Repeat New Password:</label>
-                        <input type="password" id="repeatNpassword" name="repeatNpassword">
+                        <input type="password" id="repeatNpasswd" name="repeatNpasswd">
 
                     </div>
 
@@ -455,11 +538,30 @@
 
     <script>
         const pic = document.getElementById("profilepic");
+
+
         const input = document.getElementById("pic");
 
         input.addEventListener("change", (event) => {
             pic.src = URL.createObjectURL(event.target.files[0])
+
         })
+
+        var dropdown = document.getElementsByClassName("dropdown-btn");
+        var i;
+
+        for (i = 0; i < dropdown.length; i++) {
+            dropdown[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var dropdownContent = this.nextElementSibling;
+                if (dropdownContent.style.display === "block") {
+                    dropdownContent.style.display = "none";
+                } else {
+                    dropdownContent.style.display = "block";
+                }
+            });
+        }
+
 
 
 

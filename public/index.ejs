@@ -278,6 +278,10 @@
       padding: 0;
     }
 
+    #startLib,
+    #startResults {
+      margin-right: 20px;
+    }
 
 
     /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
@@ -301,8 +305,8 @@
     </div>
   </header>
   <div class="navbar">
-    <div class="signInbtn"> <a href="signinform.html" id="signin"><span id="logintxt"> Log In</span></a></div>
-    <div class="signUpbtn"><a href="signupform.html" id="signup"><span>Sign Up</span></a>
+    <div class="signInbtn"> <a href="/login" id="signin"><span id="logintxt"> Log In</span></a></div>
+    <div class="signUpbtn"><a href="/signup" id="signup"><span>Sign Up</span></a>
     </div>
   </div>
 
@@ -310,7 +314,7 @@
 
   <div class="welcome">
 
-    <h2 style="color:white;"> WELCOME TO DR.BRAU </h2>
+    <!-- <h2 style="color:white;"> WELCOME TO DR.BRAU </h2> -->
     <picture>
       <h3 style="color: white;">Library Book Reservation</h3>
 
@@ -327,7 +331,7 @@
     </picture>
     <p style="color:white">Students can reserve there books here......</p>
     <div id="resultsLink">
-      <a href="signupform.html">Reserve a Book</a>
+      <a href="/signup">Reserve a Book</a>
     </div>
   </div>
   <div class="blogs"></div>
@@ -337,10 +341,10 @@
     </picture>
     <p style="color:white">students can view results of every semester here......</p>
     <div id="resultsLink">
-      <a href="results.html">View Results</a>
+      <a href="/results">View Results</a>
     </div>
   </div>
-
+  <a href="/uploadResults">upload</a>
 
   <!-- </div> -->
 
@@ -351,7 +355,14 @@
       <h4>Designed and developed by BVR</h4>
     </div>
   </footer>
+  <script>
+    window.addEventListener("popstate", event => {
+      location.reload();
+    })
+    // history.go(-1);
+    // location.reload("/public/dashBoard.ejs");
 
+  </script>
 
 </body>
 
