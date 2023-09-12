@@ -134,7 +134,21 @@
             color: white;
         }
 
+        .hidden {
+            display: none;
+        }
 
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 0;
+
+        }
 
         h1 {
             color: #110c03;
@@ -172,12 +186,13 @@
                         </button>
 
                         <div class="dropdown-content">
-                            <a href="/settings">⚙ Platform settings</a>
+                            <a href="/settings" class="settings">⚙ Platform settings</a>
                             <a href="/logout">↩ Sign Out</a>
 
                         </div>
         </div>
     </div>
+    <div class="overlay hidden"></div>
 
     <h1>Welcome to Dr.Brau Campus connect
         <%= username%>
@@ -185,6 +200,9 @@
 
 
     <script>
+
+        const dropdownbtn = document.querySelector(".dropdown-btn")
+        const overlay = document.querySelector(".overlay")
 
         let dropdown = document.getElementsByClassName("dropdown-btn");
         let i;
@@ -199,7 +217,25 @@
                     dropdownContent.style.display = "block";
                 }
             });
-        }</script>
+        }
+
+        dropdownbtn.addEventListener("click", () => {
+            console.log(dropdownbtn);
+            overlay.classList.remove("hidden");
+        })
+
+
+
+
+        overlay.addEventListener("click", () => {
+            console.log("clicked");
+            document.querySelector(".dropdown-content").style.display = "none";
+
+            overlay.classList.add("hidden");
+        })
+
+
+    </script>
 
 </body>
 

@@ -3,7 +3,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const app = express();
-const port = 8009;
+const port = 8007;
 const bodyParser = require('body-parser');
 const lodash = require('lodash');
 const { exec } = require('child_process');
@@ -18,6 +18,8 @@ const csv_parser = require('csv-parser');
 require('dotenv').config();
 const ejs = require('ejs');
 const session = require('express-session');
+const speakeasy = require('speakeasy');
+const nodemailer = require('nodemailer');
 
 //Storing uploaded files in uploads folder locally.
 const storage = multer.diskStorage({
@@ -661,6 +663,8 @@ app.post('/check-Availability', (req, res) => {
     }
   );
 });
+
+app.get('/resetPassword');
 // let results1 = {};
 
 let profilePic;
@@ -881,10 +885,15 @@ app.post('/updateInfo', isAuthUser, (req, res) => {
     'UPDATE users SET user_name=CASE WHEN ? IS NOT NULL THEN ? ELSE user_name END,user_email = CASE WHEN ? IS NOT NULL THEN ? ELSE user_email END WHERE user_name=?',
     [username, username, email, email, userData.user_name],
     (err, results) => {
+      console.log(results);
       if (err) {
         console.log('Internal error occurs', err);
       }
+      // const updatedUserData = results[0];
+      // const UpdatedUserData = ;
       // console.log('user', userData);
+      userData.user_name = username;
+      userData.user_email = email;
       if (profilePic === 0) {
         res.render('settings', {
           username: userData.user_name,
@@ -961,7 +970,7 @@ app.post('/changePasswd', isAuthUser, async (req, res) => {
 });
 
 // profile pic upload.
-app.post('/updateProfilePic', isAuthUser, (req, res) => {
+app.post('/saveProfilePic', isAuthUser, (req, res) => {
   const { name, data, mimetype } = req.files.pic;
   console.log(name, data, mimetype);
 
@@ -984,6 +993,7 @@ app.post('/updateProfilePic', isAuthUser, (req, res) => {
       if (err) {
         console.log(err);
       }
+
       if (profilePic === 0) {
         res.render('settings', {
           username: userData.user_name,
@@ -1006,9 +1016,38 @@ app.post('/updateProfilePic', isAuthUser, (req, res) => {
 
 // password reset
 app.post('/resetPassword', async (req, res) => {
-  const usernameOrEmail = req.body.unameOrEmail;
-  const oldPassword = req.body.opasswd;
+  const email = req.body.email;
   const newPassword = req.body.npasswd;
+
+  const secret = speakeasy.generateSecret();
+  const otp = speakeasy.totp({
+    secret: secret.base32,
+    encoding: 'base32',
+  });
+
+  const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'drbraufinalyearproject@gmail.com',
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const mailOptions = {
+    from: 'drbraufinalyearproject@gmail.com',
+    to: email,
+    subject: 'your one time password(OTP)',
+    text: `Your OTP is :${otp}`,
+  };
+
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.error('error sennding mail', error);
+    } else {
+      console.log('email sent', info.response);
+      res.render('otpAuth');
+    }
+  });
 
   const newHashedPassword = await bcrypt.hash(newPassword, 10);
 

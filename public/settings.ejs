@@ -317,9 +317,6 @@
 
         }
 
-        .box-4 {
-            display: none;
-        }
 
         a:not(.dropdown-content) {
             display: grid;
@@ -351,6 +348,22 @@
         a:hover {
             color: #b46e06;
         }
+
+        .hidden {
+            display: none;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(3px);
+            z-index: 0;
+        }
+
 
         @media (max-width: 980px) {
             .container {
@@ -443,15 +456,19 @@
                             <a href="/logout">↩ Sign Out</a>
 
                         </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="box-1">
-            <a href="#box-2">⚙ Profile Settings</a>
-            <a href="#box-4">📚 Library Reservations</a>
 
         </div>
-        <div class="form1 form2 form3 box-2" id="box-2">
+
+    </div>
+
+    <div class="container">
+        <div class="box-1">
+            <button class="profileSettings ">⚙ Profile Settings</button>
+            <button class="libReserve">📚 Library Reservations</button>
+
+        </div>
+        <div class="overlay hidden"></div>
+        <div class="form1 form2 form3 box-2 " id="box-2">
 
 
             <div class="form1" style="width: 30%">
@@ -474,7 +491,7 @@
             </div>
             <div class="box-3">
                 <div class="form3">
-                    <form action="/updateProfilePic" method="post" enctype="multipart/form-data">
+                    <form action="/saveProfilePic" method="post" enctype="multipart/form-data">
                         <% if (profilePicData) { %>
                             <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>"
                                 id="profilepic" alt="profile pic">
@@ -529,12 +546,12 @@
         <!-- <div class="box-4" id="box-4">
             <h1>RESERVATIONS</h1>
         </div> -->
+        <div class="box-4 hidden" , id="box-4">
+            <p>hello this is student book revservation history</p>
 
+        </div>
     </div>
-    <div class="box-4" , id="box-4">
 
-
-    </div>
 
     <script>
         const pic = document.getElementById("profilepic");
@@ -547,8 +564,11 @@
 
         })
 
-        var dropdown = document.getElementsByClassName("dropdown-btn");
-        var i;
+        const dropdownbtn = document.querySelector(".dropdown-btn")
+        const overlay = document.querySelector(".overlay")
+
+        let dropdown = document.getElementsByClassName("dropdown-btn");
+        let i;
 
         for (i = 0; i < dropdown.length; i++) {
             dropdown[i].addEventListener("click", function () {
@@ -561,8 +581,34 @@
                 }
             });
         }
+        dropdownbtn.addEventListener("click", () => {
+            console.log(dropdownbtn);
+            overlay.classList.remove("hidden");
+        })
+
+        overlay.addEventListener("click", () => {
+            console.log("clicked");
+            document.querySelector(".dropdown-content").style.display = "none";
+            overlay.classList.add("hidden");
+        })
 
 
+        const libreservebtn = document.querySelector(".libReserve");
+        const box_2 = document.querySelector(".box-2");
+        const box_4 = document.querySelector(".box-4");
+        const profileSettings
+            = document.querySelector(".profileSettings")
+
+        libreservebtn.addEventListener("click", () => {
+            console.log("btn clicked");
+            box_2.classList.add("hidden");
+            box_4.classList.remove("hidden");
+
+        })
+        profileSettings.addEventListener("click", () => {
+            box_2.classList.remove("hidden");
+            box_4.classList.add("hidden");
+        })
 
 
 
