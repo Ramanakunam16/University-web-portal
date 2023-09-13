@@ -78,6 +78,7 @@
       /* overflow: hidden; */
       display: flex;
       justify-content: right;
+      gap: 2%
     }
 
     /* Style the navigation bar links */
@@ -123,139 +124,136 @@
 
 
 
-    .library {
-      background-image: linear-gradient(90deg,
-          rgb(14, 13, 13) 60%,
-          rgb(119, 95, 95));
-      /* background-color: aqua; */
+    .content {
       width: 100%;
-      height: 70%;
-    }
-
-    .blogs {
-      background-image: linear-gradient(90deg,
-          rgb(119, 95, 95) 40%,
-          rgb(0, 0, 0));
-      /* background-color: black; */
-      width: 100%;
-      height: 70%;
-    }
-
-    .results:not(#resultsLink) {
-      background-image: linear-gradient(90deg,
-          rgb(14, 13, 13) 50%, rgb(119, 95, 95));
-      /* background-color: #ae6262; */
-      height: 70%;
-      width: 100%;
+      height: 800px;
+      background-color: #f0e9de;
       display: flex;
+      gap: 4%;
       justify-content: space-between;
-      align-items: center;
+
     }
 
-
-
-
-
-    #resultsLink {
-
-      background-color: rgb(240, 232, 214);
-      opacity: 0.8;
-      padding: 10px;
-      min-width: 10%;
-      height: 40px;
+    .results {
+      margin-top: 10%;
+      margin-left: 40px;
+      height: 70%;
+      width: 30%;
+      border: 2px solid black;
       border-radius: 20px;
-      padding-top: 20px;
-      /* max-width: 100px; */
-      text-align: center;
-      margin-right: 18%;
-      /* border: 2px solid rgb(235, 231, 231); */
-      filter: drop-shadow(0 0 10px #ece9e8e6);
+      animation: boxAnim 2s ease-in-out 0s 2 normal forwards;
+
+
+
+    }
+
+    .resultsContent {
       display: flex;
-      justify-content: right;
-      /* display: flex; */
-      /* align-items: flex-end; */
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 30%;
+      font-size: 20px;
+
+
     }
 
-    #resultsLink:hover {
-      opacity: 1;
-      border: 2px solid rgb(6, 13, 14);
+    .resultsContent p {
+      padding-top: 20px;
+      margin-left: 10px;
     }
 
-    #resultsLink a {
-      color: black;
-      /* width: 5px; */
+    .resultsbtn a {
 
-      font-size: 24px;
       text-decoration: none;
-    }
+      font-size: 20px;
+      border: 2px solid #222;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
 
-    .resultsimg1,
-    .libimg {
-      width: 120px;
-      height: 120px;
-      /* margin: 10px 2px; */
-      border-radius: 60px;
+      background-color: rgb(238, 147, 43);
 
 
-    }
-
-    .resultsimg2,
-    .libimg1 {
-      width: 120px;
-      height: 120px;
-      /* margin: 10px 2px; */
-      border-radius: 60px;
 
     }
 
-    .resultsimgs,
-    .libimgs {
+    .resultsbtn p {
+      padding-top: 40%;
+      color: rgb(221, 96, 87);
       position: relative;
-      top: -20%;
-      right: -110px;
     }
 
-    .results p {
-      position: relative;
-      left: -20%;
+    .libReserve {
+      margin-top: 10%;
+      /* margin-right: 40px; */
+
+      height: 70%;
+      width: 30%;
+      border: 2px solid black;
+      border-radius: 20px;
+      animation: boxAnim 2s ease-in-out 0s 2 normal forwards;
+    }
+
+    .libReserveContent {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 30%;
       font-size: 20px;
     }
 
-
-
-    .footer {
-      padding: 10px;
-      text-align: center;
-      background-image: linear-gradient(90deg,
-          rgb(119, 105, 79) 20%,
-          rgb(119, 95, 95));
-      /* margin-top: 415px; */
+    .libReserveContent p {
+      padding-top: 20px;
+      margin-left: 10px;
     }
 
-    /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-    @media (max-width: 900px) {
-      .results {
-        flex-direction: column;
+    .libbtn a {
+
+      text-decoration: none;
+      font-size: 20px;
+      border: 2px solid #222;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+
+      background-color: rgb(238, 147, 43);
+
+
+
+    }
+
+    .libbtn p {
+      padding-top: 36%;
+      color: rgb(221, 96, 87);
+    }
+
+    .blogs {
+      margin-top: 10%;
+      margin-right: 40px;
+      height: 70%;
+      width: 30%;
+      border: 2px solid black;
+      border-radius: 20px;
+      animation: boxAnim 2s ease-in-out 0s 2 normal forwards;
+
+    }
+
+    @keyframes boxAnim {
+      0% {
+        transform: scale(0.5);
       }
 
-      .resultsimgs,
-      .libimgs {
-        position: relative;
-        top: 10%;
-        right: -2px;
-      }
-
-      #resultsLink {
-        margin-bottom: 50px;
-        /* place-items: center; */
-        margin-left: 110px;
-      }
-
-      .results p {
-        position: relative;
-        left: 20px
+      100% {
+        transform: scale(1);
       }
     }
+
 
     .signUpbtn {
       margin-left: 20px;
@@ -278,17 +276,56 @@
       padding: 0;
     }
 
-    #startLib,
-    #startResults {
-      margin-right: 20px;
+    #logintxt:hover {
+      color: #ae6262;
     }
 
 
-    /* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+    .footer {
+      padding: 10px;
+      text-align: center;
+      background-image: linear-gradient(90deg,
+          rgb(119, 105, 79) 20%,
+          rgb(119, 95, 95));
+      position: relative;
+      /* margin-top: 415px; */
+    }
+
+    /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+    @media (max-width: 900px) {
 
 
-    #logintxt:hover {
-      color: #ae6262;
+      .content {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 130rem;
+        /* min-height: 100%; */
+      }
+
+      .results {
+        min-width: 50%;
+        /* min-height: 50%; */
+      }
+
+
+
+
+      .libReserve {
+        min-width: 50%;
+        margin-left: 40px;
+        /* height: 70%; */
+      }
+
+
+
+      .blogs {
+        min-width: 50%;
+        margin-bottom: 10%;
+        margin-left: 80px;
+        /* height: 70%; */
+      }
+
     }
   </style>
 </head>
@@ -310,39 +347,48 @@
     </div>
   </div>
 
-  <!-- <div class="mainDiv"></div> -->
-
   <div class="welcome">
 
-    <!-- <h2 style="color:white;"> WELCOME TO DR.BRAU </h2> -->
-    <picture>
-      <h3 style="color: white;">Library Book Reservation</h3>
-
-      <a href="#library"><img src="lib1.jpg" id="startLib" alt=""></a>
-      <h3 style="color: white;">Semesters Results</h3>
-
-      <a href=" #results"><img src="results.jpg" id="startResults" alt=""></a>
-    </picture>
 
   </div>
-  <div class="library results" id="library">
-    <picture class="libimgs"><img src="lib1.jpg" class="libimg1" alt="">
-      <img src="lib.jpg" class="libimg2" alt="">
-    </picture>
-    <p style="color:white">Students can reserve there books here......</p>
-    <div id="resultsLink">
-      <a href="/signup">Reserve a Book</a>
+
+  <div class="content">
+    <div class="results">
+
+      <article class="resultsContent">
+        <div class="resultsPics"> <img src="results.jpg" class="resultsimg1" alt="">
+          <img src="results1.jpg" class="resultsimg2" alt="">
+        </div>
+
+        <div class="resultsHeader">
+          <p style="color:rgb(14, 11, 11)">You can view results of every semester here......</p>
+        </div>
+
+        <div class="resultsbtn">
+          <p>Click here to view results</p>
+          <a href="/results">View Results</a>
+        </div>
+
+      </article>
     </div>
-  </div>
-  <div class="blogs"></div>
-  <div class="library results" id="results">
-    <picture class="resultsimgs"><img src="results.jpg" class="resultsimg1" alt="">
-      <img src="results1.jpg" class="resultsimg2" alt="">
-    </picture>
-    <p style="color:white">students can view results of every semester here......</p>
-    <div id="resultsLink">
-      <a href="/results">View Results</a>
+    <div class="libReserve">
+      <article class="libReserveContent">
+        <div> <img src="lib1.jpg" class="libimg1" alt="">
+          <img src="lib.jpg" class="libimg2" alt="">
+
+        </div>
+
+        <div class="libHeader">
+          <p style="color:rgb(14, 11, 11)">You can reserve library books here......</p>
+        </div>
+
+        <div class="libbtn">
+          <p>Click here to reserve a book</p>
+          <a href="/signup">Reserve Books</a>
+        </div>
+      </article>
     </div>
+    <div class="blogs"></div>
   </div>
   <a href="/uploadResults">upload</a>
 

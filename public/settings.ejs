@@ -491,24 +491,39 @@
             </div>
             <div class="box-3">
                 <div class="form3">
-                    <form action="/saveProfilePic" method="post" enctype="multipart/form-data">
-                        <% if (profilePicData) { %>
+
+                    <% if (profilePicData) { %>
+                        <form action="/updateProfilePic" method="post" enctype="multipart/form-data">
                             <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>"
                                 id="profilepic" alt="profile pic">
-                            <% } else { %>
+
+                            <h3>Profile Picture</h3>
+                            <p>
+
+                                For best results, use an square image at least 248px x 248px</p>
+                            <label for="pic" class="piclabel">Change Picture</label>
+                            <input type="file" id="pic" name="pic">
+                            <button id="picSave" type="submit"
+                                style="font-size: 18px;margin-top: 20px; margin-bottom: \50px;">Update</button>
+
+                        </form>
+                        <% } else { %>
+                            <form action="/saveProfilePic" method="post" enctype="multipart/form-data">
                                 <img src="avatar.jpg" id="profilepic" alt="">
-                                <% } %>
+
+                                <h3>Profile Picture</h3>
+                                <p>
+
+                                    For best results, use an square image at least 248px x 248px</p>
+                                <label for="pic" class="piclabel">Upload Picture</label>
+                                <input type="file" id="pic" name="pic">
+                                <button id="picSave" type="submit"
+                                    style="font-size: 18px;margin-top: 20px; margin-bottom: \50px;">Save</button>
+                            </form>
+                            <% } %>
 
 
-                                    <h3>Profile Picture</h3>
-                                    <p>
 
-                                        For best results, use an square image at least 248px x 248px</p>
-                                    <label for="pic" class="piclabel">Upload Picture</label>
-                                    <input type="file" id="pic" name="pic">
-                                    <button id="picSave" type="submit"
-                                        style="font-size: 18px;margin-top: 20px; margin-bottom: \50px;">Save</button>
-                    </form>
                 </div>
 
             </div>

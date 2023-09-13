@@ -87,6 +87,9 @@ app.get('/results', (req, res) => {
 app.get('/uploadResults', (req, res) => {
   res.render('uploadResults');
 });
+app.get('/libBookReservation', (req, res) => {
+  res.render('libBookReservation');
+});
 app.get('/signup', (req, res) => {
   res.render('signupform');
 });
@@ -599,12 +602,12 @@ app.post('/signUp', async (req, res) => {
       if (err) {
         console.log('Error:', err);
         const message =
-          "<script>alert('username or email id already in use.Choose diferrent username or email id'); window.location.href='signupform.ejs'</script>";
+          "<script>alert('username or email id already in use.Choose diferrent username or email id'); window.location.href='/login'</script>";
         res.status(500).send(message);
         return;
       }
       const message =
-        "<script>alert('Sign up successful.'); window.location.href='signinform.ejs'</script>";
+        "<script>alert('Sign up successful.'); window.location.href='/login'</script>";
       res.send(message);
     }
   );
@@ -994,6 +997,15 @@ app.post('/saveProfilePic', isAuthUser, (req, res) => {
         console.log(err);
       }
 
+      mysqlConnection.query(
+        'SELECT * FROM usersProfilePics where user_name=?',
+        [userData.user_name],
+        (err, results) => {
+          profilePic = results[0];
+          console.log(profilePic);
+        }
+      );
+
       if (profilePic === 0) {
         res.render('settings', {
           username: userData.user_name,
@@ -1012,6 +1024,36 @@ app.post('/saveProfilePic', isAuthUser, (req, res) => {
     }
   );
   // res.send('uploaded.');
+});
+
+// update profile pic
+
+app.post('/updateProfilePic', isAuthUser, (req, res) => {
+  const { name, data, mimetype } = req.files.pic;
+
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  const userData = req.session.results;
+
+  mysqlConnection.query(
+    'UPDATE usersProfilePics SET user_name=?,file_name=?,mime_type=?,data=? WHERE user_name=?',
+    [userData.user_name, name, mimetype, data, userData.user_name],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+      }
+      res.send('updated');
+    }
+  );
 });
 
 // password reset
