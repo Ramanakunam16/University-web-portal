@@ -3,18 +3,375 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- <meta http-equiv="refresh" content="5"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>book reservation</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: fill;
+        }
 
+        .container {
+            width: 100%;
+            /* padding: 5%; */
+            min-height: 100vh;
+            background-color: black;
+            background-position: center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: none;
+        }
+
+        .search-bar {
+            width: 100%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            border-radius: 60px;
+            padding: 10px 20px;
+            backdrop-filter: blur(4px) saturate(180%);
+            /* margin: auto; */
+            margin-top: 10%;
+
+        }
+
+        .search-bar input {
+            background: transparent;
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 14px 10px;
+            font-size: 20px;
+            color: white;
+        }
+
+        ::placeholder {
+            color: aliceblue;
+        }
+
+        .search-bar button img {
+            width: 40px;
+            border-radius: 50%;
+            color: wheat;
+            /* background wheat; */
+            cursor: pointer;
+            border: 0;
+            position: relative;
+            top: 2px;
+
+        }
+
+        .search-bar button {
+            border: 0;
+            border-radius: 50%;
+
+
+        }
+
+        .search-header {
+            font-size: 50px;
+            position: relative;
+            /* top: -180px; */
+            /* text-align center; */
+
+        }
+
+        .book-container {
+            padding-top: 10%;
+            display: flex;
+            justify-content: space-around;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        /* 
+        .book-container::after {
+            content: " ";
+            width: 250px;
+        } */
+
+        .book {
+            border: 2px solid white;
+            padding: 5%;
+            margin-bottom: 30px;
+        }
+
+        .book>h3 {
+            width: 50%;
+            color: wheat;
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .book>p {
+            color: white;
+        }
+
+
+        .btn1 {
+            border: 1px solid white;
+            padding: 15px;
+            display: inline-block;
+            width: 50%;
+            margin-right: 20px;
+            background-color: rgb(39, 167, 7);
+            font-size: 15px;
+            color: rgb(10, 10, 10);
+            cursor: pointer;
+        }
+
+        .btn1:hover {
+            background-color: rgb(142, 204, 113);
+            cursor: pointer;
+        }
+
+        .btn2 {
+            border: 1px solid white;
+            padding: 12px;
+            display: inline-block;
+            width: 40%;
+            cursor: pointer;
+
+        }
+
+        .bookmodal {
+            position: absolute;
+            top: 150%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            min-height: 80%;
+            background-color: white;
+            padding: 6rem;
+            border-radius: 5px;
+            box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1.2rem;
+            right: 2rem;
+            font-size: 5rem;
+            color: #333;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+
+        /* .flex-start {
+
+            align-items: baseline;
+            ma
+
+
+        } */
     </style>
 </head>
 
 <body>
-    <div class="serach-bar">
-        <input type="text" id="search">
-        <i></i>
+
+    <div class="container ">
+        <h1 class="search-header " style="color:wheat;">Search Your Books <br> Down Here..</h1>
+        <div class="search-bar">
+
+            <input type="search" id="search" placeholder="Search a book" class="searchInput">
+            <button class="searchbtn"><img src="searchicon1.png" alt=""></button>
+
+        </div>
+        <div class="book-container hidden">
+            <div class="book">
+                <img class="book-cover" src="b1.jpg" alt="Book 1 Cover">
+                <h3 class="book-name">The Pragmatic programmer</h3>
+                <button class="btn1">Reserve</button>
+                <button class="btn2">Learn More</button>
+
+                <div class="bookmodal hidden">
+                    <button class="close-modal">&times;</button>
+                    <img class="book-cover" src="b1.jpg" alt="Book 1 Cover">
+                    <h3>Author</h3> - Andrew Hunt, David Thomas
+                    <h3>Latest Edition</h3> - Second (20th Anniversary Edition)
+                    <h3>Publisher</h3> - Addison-Wesley Professional
+
+                    <p>
+                    <h3>About Book:</h3>
+                    Since its creation in 1999 by its authors to aid its clientele to develop better software,
+                    The Pragmatic Programmer has succeeded in becoming one of the highly-revered programming
+                    books. This book is for every coder looking to transcend to be a skilled software developer
+                    and a full-fledged programmer.
+
+
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="book">
+                <img class="book-cover" src="b2.jpg" alt="Book 2 Cover">
+                <h3 class="book-name">Head First Design Patterns</h3>
+                <button class="btn1">Reserve</button>
+                <button class="btn2">Learn More</button>
+
+                <div class="bookmodal hidden">
+
+                    <button class="close-modal">&times;</button>
+                    <img class="book-cover" src="b2.jpg" alt="Book 2 Cover">
+                    <h3>Author</h3> - Eric Freeman, Bert Bates, Kathy Sierra, Elisabeth Robson
+                    <h3>Latest Edition</h3> - First
+                    <h3>Publisher</h3> - O'Reilly Media
+
+                    <p>
+
+                    <h3>About Book:</h3>
+                    The Head First book series is known for its innovative way of breaking down complex topics into
+                    simpler, easy-to-understand units. The Head First Design Patterns: A Brain-Friendly Guide is
+                    compiled based on this tried-and-tested formula.
+
+                    There is a galore of illustrative and brain-stimulating examples in the Head First Design Patterns
+                    book that will make learning both efficient and fun simultaneously. Unlike other text-heavy
+                    programming books, this book features a thought-inducing, visually-rich format.
+
+                    The Head First Design Patterns book effortlessly explains the several software design patterns
+                    employed by proficient software developers and programmers from across the world to build
+                    elegant,fully-functional, flexible, and reusable software.
+                    </p>
+                </div>
+            </div>
+            <div class="book">
+                <img class="book-cover" src="b3.jpg" alt="Book 3 Cover">
+                <h3 class="book-name">Book 3 Title</h3>
+
+                <button class="btn1">Reserve</button>
+                <button class="btn2">Learn More</button>
+
+                <div class="bookmodal hidden">
+                    <button class="close-modal">&times;</button>
+                    <h1></h1>
+                    <p>
+
+                    </p>
+                </div>
+            </div>
+            <div class="book">
+                <img class="book-cover" src="b4.jpg" alt="Book 4 Cover">
+                <h3 class="book-name">Book 4 Title</h3>
+                <button class="btn1">Reserve</button>
+                <button class="btn2">Learn More</button>
+
+            </div>
+            <div class="book">
+                <img class="book-cover" src="b5.jpg" alt="Book 5 Cover">
+                <h3 class="book-name">Book 5 Title</h3>
+                <button class="btn1">Reserve</button>
+                <button class="btn2">Learn More</button>
+                <div class="bookmodal hidden">
+                    <button class="close-modal">&times;</button>
+                    <h1></h1>
+                    <p>
+
+                    </p>
+                </div>
+            </div>
+            <div class="book">
+                <img class="book-cover" src="b6.jpg" alt="Book 6 Cover">
+                <h3 class="book-name">Book 6 Title</h3>
+
+                <button class="btn1">Reserve</button>
+                <button class="btn2">Learn More</button>
+                <div class="bookmodal hidden">
+                    <button class="close-modal">&times;</button>
+                    <h1></h1>
+                    <p>
+
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+
+
     </div>
+
+    <script>
+        const searchbtn = document.querySelector(".searchbtn");
+        const container = document.querySelector(".container");
+        const searchHeader = document.querySelector(".search-header");
+        const booksContainer = document.querySelector(".book-container");
+        const searchInput = document.querySelector(".searchInput");
+        const bookName = document.querySelectorAll(".book-name");
+        console.log(bookName);
+        const book = document.querySelectorAll(".book")
+        console.log(book);
+        searchbtn.addEventListener("click", () => {
+
+            searchHeader.classList.add("hidden");
+
+            booksContainer.classList.remove("hidden");
+        })
+
+        searchInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                searchbtn.click();
+            }
+        })
+
+        const btn2 = document.querySelectorAll(".btn2");
+        const bookmodal = document.querySelectorAll(".bookmodal");
+        const closeModal = document.querySelectorAll(".close-modal")
+        console.log(btn2.length);
+        console.log(bookmodal.length);
+        for (let i = 0; i < btn2.length; i++) {
+            btn2[i].addEventListener("click", () => {
+                bookmodal[i].classList.remove("hidden");
+
+
+
+                closeModal[i].addEventListener("click", () => {
+                    bookmodal[i].classList.add("hidden");
+                })
+
+
+            })
+            // window.addEventListener("click", (e) => {
+            //     if (e.target === bookmodal) {
+            //         bookmodal[i].classList.add("hidden");
+            //     })
+        }
+        searchInput.addEventListener("input", (e) => {
+            const value = e.target.value;
+            console.log(value);
+            for (let i = 0; bookName.length; i++) {
+                let bookNameValue = book[i].getElementsByClassName("book-name")[0];
+                console.log("bookname", bookNameValue);
+
+                if (bookNameValue) {
+                    let textvalue = bookNameValue.textContent || bookNameValue.innerHTML;
+                    console.log(textvalue);
+
+                    if (textvalue.toLowerCase().indexOf(value) > -1) {
+                        book[i].style.display = "";
+                    }
+                    else {
+                        book[i].style.display = "none";
+                    }
+                }
+            }
+        })
+
+    </script>
 </body>
 
 </html>

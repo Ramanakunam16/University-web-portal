@@ -87,7 +87,7 @@ app.get('/results', (req, res) => {
 app.get('/uploadResults', (req, res) => {
   res.render('uploadResults');
 });
-app.get('/libBookReservation', (req, res) => {
+app.get('/libBookReservation', isAuthUser, (req, res) => {
   res.render('libBookReservation');
 });
 app.get('/signup', (req, res) => {
