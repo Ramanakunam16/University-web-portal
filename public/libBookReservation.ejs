@@ -97,23 +97,27 @@
         } */
 
         .book {
-            border: 2px solid white;
-            padding: 5%;
+            /* border: 2px solid white; */
+            padding: 3%;
             margin-bottom: 30px;
         }
 
         .book>h3 {
-            width: 50%;
+            /* width: 50%; */
             color: wheat;
             margin-bottom: 30px;
-            display: flex;
-            flex-direction: row;
+            display: block;
+            flex-direction: column;
         }
 
         .book>p {
             color: white;
         }
 
+        .book:hover {
+            background-color: #3b3939;
+            ;
+        }
 
         .btn1 {
             border: 1px solid white;
@@ -130,6 +134,7 @@
         .btn1:hover {
             background-color: rgb(142, 204, 113);
             cursor: pointer;
+
         }
 
         .btn2 {
@@ -143,11 +148,11 @@
 
         .bookmodal {
             position: absolute;
-            top: 150%;
+            top: 130%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 60%;
-            min-height: 80%;
+            width: 50%;
+            min-height: 60%;
             background-color: white;
             padding: 6rem;
             border-radius: 5px;
@@ -251,7 +256,7 @@
             </div>
             <div class="book">
                 <img class="book-cover" src="b3.jpg" alt="Book 3 Cover">
-                <h3 class="book-name">Book 3 Title</h3>
+                <h3 class="book-name">Artificial Intelligence</h3>
 
                 <button class="btn1">Reserve</button>
                 <button class="btn2">Learn More</button>
@@ -266,14 +271,14 @@
             </div>
             <div class="book">
                 <img class="book-cover" src="b4.jpg" alt="Book 4 Cover">
-                <h3 class="book-name">Book 4 Title</h3>
+                <h3 class="book-name">Eloquent JavaScript</h3>
                 <button class="btn1">Reserve</button>
                 <button class="btn2">Learn More</button>
 
             </div>
             <div class="book">
                 <img class="book-cover" src="b5.jpg" alt="Book 5 Cover">
-                <h3 class="book-name">Book 5 Title</h3>
+                <h3 class="book-name">C++ Primer</h3>
                 <button class="btn1">Reserve</button>
                 <button class="btn2">Learn More</button>
                 <div class="bookmodal hidden">
@@ -286,7 +291,7 @@
             </div>
             <div class="book">
                 <img class="book-cover" src="b6.jpg" alt="Book 6 Cover">
-                <h3 class="book-name">Book 6 Title</h3>
+                <h3 class="book-name">C Programming</h3>
 
                 <button class="btn1">Reserve</button>
                 <button class="btn2">Learn More</button>
@@ -315,18 +320,25 @@
         console.log(bookName);
         const book = document.querySelectorAll(".book")
         console.log(book);
-        searchbtn.addEventListener("click", () => {
+        searchInput.addEventListener("input", (e) => {
+            const value = e.target.value;
 
-            searchHeader.classList.add("hidden");
+            if (value) {
+                searchHeader.classList.add("hidden");
 
-            booksContainer.classList.remove("hidden");
-        })
+                booksContainer.classList.remove("hidden");
+            } else {
+                searchHeader.classList.remove("hidden");
 
-        searchInput.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                searchbtn.click();
+                booksContainer.classList.add("hidden");
             }
         })
+
+        // searchInput.addEventListener("keydown", (e) => {
+        //     if (e.key === "Enter") {
+        //         searchbtn.click();
+        //     }
+        // })
 
         const btn2 = document.querySelectorAll(".btn2");
         const bookmodal = document.querySelectorAll(".bookmodal");

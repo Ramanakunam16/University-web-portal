@@ -1051,7 +1051,31 @@ app.post('/updateProfilePic', isAuthUser, (req, res) => {
       if (err) {
         console.log(err);
       }
-      res.send('updated');
+
+      mysqlConnection.query(
+        'SELECT * FROM usersProfilePics where user_name=?',
+        [userData.user_name],
+        (err, results) => {
+          profilePic = results[0];
+          console.log(profilePic);
+        }
+      );
+
+      if (profilePic === 0) {
+        res.render('settings', {
+          username: userData.user_name,
+          email: userData.user_email,
+          profilePicData: 'no profile pic',
+          profilePicMimeType: 'no profile pic',
+        });
+      } else {
+        res.render('settings', {
+          username: userData.user_name,
+          email: userData.user_email,
+          profilePicData: profilePic.data,
+          profilePicMimeType: profilePic.mime_type,
+        });
+      }
     }
   );
 });
