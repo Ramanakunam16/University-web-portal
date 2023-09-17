@@ -17,20 +17,22 @@
             width: 100%;
             /* padding: 5%; */
             min-height: 100vh;
-            background-color: black;
+            background-image: linear-gradient(rgba(167, 157, 143, 0), rgba(167, 157, 143, 0)), url("libimg2.jpg");
             background-position: center;
-            background-size: cover;
+            background-size: cover, ;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             margin: none;
+
         }
+
 
         .search-bar {
             width: 100%;
             max-width: 700px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(233, 225, 225, 0.4);
             display: flex;
             align-items: center;
             border-radius: 60px;
@@ -43,6 +45,7 @@
 
         .search-bar input {
             background: transparent;
+
             flex: 1;
             border: none;
             outline: none;
@@ -52,7 +55,7 @@
         }
 
         ::placeholder {
-            color: aliceblue;
+            color: black;
         }
 
         .search-bar button img {
@@ -115,7 +118,7 @@
         }
 
         .book:hover {
-            background-color: #3b3939;
+            background-color: transparent;
             ;
         }
 
@@ -175,6 +178,21 @@
             background: none;
         }
 
+        @media (max-width:900px) {
+            .search-bar {
+                width: 80%;
+                max-width: 700px;
+                background: rgba(233, 225, 225, 0.4);
+                display: flex;
+                align-items: center;
+                border-radius: 60px;
+                padding: 10px 20px;
+                backdrop-filter: blur(4px) saturate(180%);
+                /* margin: auto; */
+                margin-top: 10%;
+
+            }
+        }
 
         /* .flex-start {
 
@@ -189,7 +207,7 @@
 <body>
 
     <div class="container ">
-        <h1 class="search-header " style="color:wheat;">Search Your Books <br> Down Here..</h1>
+        <h1 class="search-header " style="color:black;">Search Your Books <br> Down Here..</h1>
         <div class="search-bar">
 
             <input type="search" id="search" placeholder="Search a book" class="searchInput">
@@ -373,7 +391,7 @@
                     let textvalue = bookNameValue.textContent || bookNameValue.innerHTML;
                     console.log(textvalue);
 
-                    if (textvalue.toLowerCase().indexOf(value) > -1) {
+                    if (textvalue.toUpperCase().indexOf(value.toUpperCase()) > -1) {
                         book[i].style.display = "";
                     }
                     else {

@@ -3,7 +3,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const app = express();
-const port = 8007;
+const port = 8009;
 const bodyParser = require('body-parser');
 const lodash = require('lodash');
 const { exec } = require('child_process');
@@ -667,7 +667,6 @@ app.post('/check-Availability', (req, res) => {
   );
 });
 
-app.get('/resetPassword');
 // let results1 = {};
 
 let profilePic;
@@ -786,7 +785,7 @@ app.get('/dashBoard', isAuthUser, (req, res) => {
   const userData = req.session.results;
   console.log(userData);
 
-  if (profilePic.length === 0) {
+  if (!profilePic) {
     res.render('dashBoard', {
       username: userData.user_name,
       email: userData.user_email,
@@ -1043,7 +1042,7 @@ app.post('/updateProfilePic', isAuthUser, (req, res) => {
   });
 
   const userData = req.session.results;
-
+  console.log('session data in this route:', userData);
   mysqlConnection.query(
     'UPDATE usersProfilePics SET user_name=?,file_name=?,mime_type=?,data=? WHERE user_name=?',
     [userData.user_name, name, mimetype, data, userData.user_name],
@@ -1069,53 +1068,19 @@ app.post('/updateProfilePic', isAuthUser, (req, res) => {
           profilePicMimeType: 'no profile pic',
         });
       } else {
-        res.render('settings', {
-          username: userData.user_name,
-          email: userData.user_email,
-          profilePicData: profilePic.data,
-          profilePicMimeType: profilePic.mime_type,
-        });
+        res.redirect('/dashBoard');
       }
     }
   );
 });
 
 // password reset
-app.post('/resetPassword', async (req, res) => {
+
+let secret;
+let otp;
+
+app.post('/generateOTP', async (req, res) => {
   const email = req.body.email;
-  const newPassword = req.body.npasswd;
-
-  const secret = speakeasy.generateSecret();
-  const otp = speakeasy.totp({
-    secret: secret.base32,
-    encoding: 'base32',
-  });
-
-  const transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: 'drbraufinalyearproject@gmail.com',
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
-
-  const mailOptions = {
-    from: 'drbraufinalyearproject@gmail.com',
-    to: email,
-    subject: 'your one time password(OTP)',
-    text: `Your OTP is :${otp}`,
-  };
-
-  transporter.sendMail(mailOptions, (err, info) => {
-    if (err) {
-      console.error('error sennding mail', error);
-    } else {
-      console.log('email sent', info.response);
-      res.render('otpAuth');
-    }
-  });
-
-  const newHashedPassword = await bcrypt.hash(newPassword, 10);
 
   //db connection
   const mysqlConnection = createDbConnection();
@@ -1129,52 +1094,96 @@ app.post('/resetPassword', async (req, res) => {
   });
 
   mysqlConnection.query(
-    'SELECT * FROM users WHERE user_name=? OR user_email=? ',
-    [usernameOrEmail, usernameOrEmail],
+    'SELECT * FROM users WHERE user_email=? ',
+    [email],
     async (err, results) => {
       if (err) {
-        console.log(err);
       } else {
         const userData = results[0];
-        res.send('invalid username or email id');
-      }
+        if (email == userData.user_email) {
+          secret = speakeasy.generateSecret();
+          otp = speakeasy.totp({
+            secret: secret.base32,
+            encoding: 'base32',
+          });
 
-      const passwordMatch = bcrypt.compare(
-        oldPassword,
-        userData.hashedPassword
-      );
+          console.log('secret token shared between client and server', secret);
+          console.log('one time password', otp);
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'ramanakunam16@gmail.com',
+              pass: 'bgdjppxbdfvtlcub',
+            },
+          });
 
-      if (passwordMatch) {
-        mysqlConnection.query(
-          'UPDATE users SET hashedPassword=?',
-          [newHashedPassword],
-          (err, results) => {
+          const mailOptions = {
+            from: 'ramanakunam16@gmail.com',
+            to: email,
+            subject: 'your one time password(OTP)',
+            text: `Your OTP is :${otp}`,
+          };
+          console.log(email);
+
+          transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
-              console.log(err);
-            }
-            if (profilePic === 0) {
-              res.render('settings', {
-                username: userData.user_name,
-                email: userData.user_email,
-                profilePicData: 'no profile pic',
-                profilePicMimeType: 'no profile pic',
-              });
+              console.error('error sennding mail', err);
             } else {
-              res.render('settings', {
-                username: userData.user_name,
-                email: userData.user_email,
-                profilePicData: profilePic.data,
-                profilePicMimeType: profilePic.mime_type,
-              });
+              console.log('email sent', info.response);
             }
-          }
-        );
-      } else {
-        res.send('wrong old password .retry again!');
+          });
+
+          res.render('otpVerification');
+        }
       }
     }
   );
 });
+
+app.post('/otp', (req, res) => {
+  const userEnteredOTP = req.body.otpInput;
+
+  const isValidOTP = speakeasy.totp.verify({
+    secret: secret.base32,
+    encoding: 'base32',
+    token: userEnteredOTP,
+    window: 1,
+  });
+
+  if (isValidOTP) {
+    res.render('resetPassword');
+  } else {
+    res.send('invalid otp');
+  }
+});
+
+app.post('/resetPassword', async (req, res) => {
+  const email = req.body.email;
+  const newPassword = req.body.npasswd;
+  const newHashedPassword = await bcrypt.hash(newPassword, 10);
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query(
+    'UPDATE users SET hashedPassword=? WHERE user_email=?',
+    [newHashedPassword, email],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+      }
+      res.render('resetSuccess');
+    }
+  );
+});
+
 app.listen(port, '0.0.0.0', () => {
   console.log(`app listening on port ${port}`);
 });
