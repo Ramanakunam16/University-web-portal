@@ -2,4 +2,8 @@ node_modules/
 sqlDbCredentials.js
 uploads/
 .env
+<<<<<<< HEAD
 rough
+=======
+rough
+>>>>>>> refs/remotes/origin/main
