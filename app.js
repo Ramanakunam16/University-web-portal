@@ -3,14 +3,14 @@
 const express = require('express');
 const mysql = require('mysql');
 const app = express();
-const port = 8009;
+const port = 8007;
 const bodyParser = require('body-parser');
 const lodash = require('lodash');
 const { exec } = require('child_process');
 const { execSync } = require('child_process');
 const node_xlsx = require('node-xlsx').default;
 const fs = require('fs');
-const fileUpload = require('express-fileupload');
+// const fileUpload = require('express-fileupload');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const multer = require('multer');
@@ -32,7 +32,8 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
-
+const memoryStorage = multer.memoryStorage();
+const memoryUpload = multer({ storage: memoryStorage });
 // Function to always retrive latest uploaded file from uploads folder
 function getlatestUploadedFile(uploadDir) {
   const files = fs.readdirSync(uploadDir);
@@ -56,7 +57,7 @@ function getlatestUploadedFile(uploadDir) {
 // expressjs middleware
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(fileUpload());
+// app.use(fileUpload());
 app.use(express.json());
 app.set('views', __dirname + '/public');
 app.set('view engine', 'ejs');
@@ -467,6 +468,7 @@ app.post('/upload', upload.single('myfile1'), (req, res) => {
           console.log('Invalid query', err);
         } else {
           console.log(results);
+          res.send('uploaded successfully');
         }
       }
     );
@@ -789,6 +791,7 @@ app.get('/dashBoard', isAuthUser, (req, res) => {
     res.render('dashBoard', {
       username: userData.user_name,
       email: userData.user_email,
+      userPic: profilePic.user_name,
       profilePicData: 'no profile pic',
       profilePicMimeType: 'no profile pic',
     });
@@ -796,6 +799,7 @@ app.get('/dashBoard', isAuthUser, (req, res) => {
     res.render('dashBoard', {
       username: userData.user_name,
       email: userData.user_email,
+      userPic: profilePic.user_name,
       profilePicData: profilePic.data,
       profilePicMimeType: profilePic.mime_type,
     });
@@ -811,6 +815,7 @@ app.get('/settings', isAuthUser, (req, res) => {
     res.render('settings', {
       username: userData.user_name,
       email: userData.user_email,
+      userPic: profilePic.user_name,
       profilePicData: 'no profile pic',
       profilePicMimeType: 'no profile pic',
     });
@@ -818,6 +823,7 @@ app.get('/settings', isAuthUser, (req, res) => {
     res.render('settings', {
       username: userData.user_name,
       email: userData.user_email,
+      userPic: profilePic.user_name,
       profilePicData: profilePic.data,
       profilePicMimeType: profilePic.mime_type,
     });
@@ -972,107 +978,123 @@ app.post('/changePasswd', isAuthUser, async (req, res) => {
 });
 
 // profile pic upload.
-app.post('/saveProfilePic', isAuthUser, (req, res) => {
-  const { name, data, mimetype } = req.files.pic;
-  console.log(name, data, mimetype);
+app.post(
+  '/saveProfilePic',
+  memoryUpload.single('pic'),
+  isAuthUser,
+  (req, res) => {
+    console.log(req.file);
+    const originalname = req.file.originalname;
+    const buffer = req.file.buffer;
+    const mimetype = req.file.mimetype;
+    console.log(originalname, buffer, mimetype);
 
-  //db connection
-  const mysqlConnection = createDbConnection();
+    //db connection
+    const mysqlConnection = createDbConnection();
 
-  mysqlConnection.connect(err => {
-    if (err) {
-      console.error('Error connecting to MySQL:', err);
-      return;
-    }
-    console.log('Connected to MySQL');
-  });
-  const userData = req.session.results;
-
-  mysqlConnection.query(
-    'INSERT INTO usersProfilePics VALUES (?,?,?,?)',
-    [userData.user_name, name, mimetype, data],
-    (err, results) => {
+    mysqlConnection.connect(err => {
       if (err) {
-        console.log(err);
+        console.error('Error connecting to MySQL:', err);
+        return;
       }
+      console.log('Connected to MySQL');
+    });
+    const userData = req.session.results;
 
-      mysqlConnection.query(
-        'SELECT * FROM usersProfilePics where user_name=?',
-        [userData.user_name],
-        (err, results) => {
-          profilePic = results[0];
-          console.log(profilePic);
+    mysqlConnection.query(
+      'INSERT INTO usersProfilePics VALUES (?,?,?,?)',
+      [userData.user_name, originalname, mimetype, buffer],
+      (err, results) => {
+        console.log(results);
+
+        if (err) {
+          console.log(err);
         }
-      );
 
-      if (profilePic === 0) {
-        res.render('settings', {
-          username: userData.user_name,
-          email: userData.user_email,
-          profilePicData: 'no profile pic',
-          profilePicMimeType: 'no profile pic',
-        });
-      } else {
-        res.render('settings', {
-          username: userData.user_name,
-          email: userData.user_email,
-          profilePicData: profilePic.data,
-          profilePicMimeType: profilePic.mime_type,
-        });
+        mysqlConnection.query(
+          'SELECT * FROM usersProfilePics where user_name=?',
+          [userData.user_name],
+          (err, results) => {
+            profilePic = results[0];
+            console.log('prifile pic data', profilePic);
+          }
+        );
+
+        if (profilePic === 0) {
+          res.render('settings', {
+            username: userData.user_name,
+            email: userData.user_email,
+            profilePicData: 'no profile pic',
+            profilePicMimeType: 'no profile pic',
+          });
+        } else {
+          res.render('settings', {
+            username: userData.user_name,
+            email: userData.user_email,
+            profilePicData: profilePic.data,
+            profilePicMimeType: profilePic.mime_type,
+          });
+        }
       }
-    }
-  );
-  // res.send('uploaded.');
-});
+    );
+    // res.send('uploaded.');
+  }
+);
 
 // update profile pic
 
-app.post('/updateProfilePic', isAuthUser, (req, res) => {
-  const { name, data, mimetype } = req.files.pic;
+app.post(
+  '/updateProfilePic',
+  memoryUpload.single('pic'),
+  isAuthUser,
+  (req, res) => {
+    const { originalname, buffer, mimetype } = req.file;
+    console.log('file uploaded', req.file);
+    // const latestUploadedFile = getlatestUploadedFile('uploads/');
+    //db connection
+    const mysqlConnection = createDbConnection();
 
-  //db connection
-  const mysqlConnection = createDbConnection();
-
-  mysqlConnection.connect(err => {
-    if (err) {
-      console.error('Error connecting to MySQL:', err);
-      return;
-    }
-    console.log('Connected to MySQL');
-  });
-
-  const userData = req.session.results;
-  console.log('session data in this route:', userData);
-  mysqlConnection.query(
-    'UPDATE usersProfilePics SET user_name=?,file_name=?,mime_type=?,data=? WHERE user_name=?',
-    [userData.user_name, name, mimetype, data, userData.user_name],
-    (err, results) => {
+    mysqlConnection.connect(err => {
       if (err) {
-        console.log(err);
+        console.error('Error connecting to MySQL:', err);
+        return;
       }
+      console.log('Connected to MySQL');
+    });
 
-      mysqlConnection.query(
-        'SELECT * FROM usersProfilePics where user_name=?',
-        [userData.user_name],
-        (err, results) => {
-          profilePic = results[0];
-          console.log(profilePic);
+    const userData = req.session.results;
+    console.log('session data in this route:', userData);
+    mysqlConnection.query(
+      'UPDATE usersProfilePics SET user_name=?,file_name=?,mime_type=?,data=? WHERE user_name=?',
+      [userData.user_name, originalname, mimetype, buffer, userData.user_name],
+      (err, results) => {
+        if (err) {
+          console.log(err);
         }
-      );
 
-      if (profilePic === 0) {
-        res.render('settings', {
-          username: userData.user_name,
-          email: userData.user_email,
-          profilePicData: 'no profile pic',
-          profilePicMimeType: 'no profile pic',
-        });
-      } else {
-        res.redirect('/dashBoard');
+        mysqlConnection.query(
+          'SELECT * FROM usersProfilePics where user_name=?',
+          [userData.user_name],
+          (err, results) => {
+            profilePic = results[0];
+            console.log(profilePic);
+          }
+        );
+
+        if (profilePic === 0) {
+          res.render('settings', {
+            username: userData.user_name,
+            email: userData.user_email,
+            profilePicData: 'no profile pic',
+            profilePicMimeType: 'no profile pic',
+          });
+        } else {
+          res.redirect('/dashBoard');
+        }
       }
-    }
-  );
-});
+    );
+  }
+);
 
 // password reset
 
