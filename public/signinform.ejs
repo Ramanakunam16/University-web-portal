@@ -11,18 +11,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <style>
-    .form {
+    .studentLoginForm,
+    .facultyLoginForm {
 
-        width: 28em;
+        width: 28%;
         max-width: 80%;
         margin: auto;
         border-radius: 20px;
-        background-color: #dbd1d1;
+        background-color: #91c7b9;
         padding: 40px;
         height: 100%;
-        opacity: 1;
+        opacity: 0.9;
 
-        filter: drop-shadow(0 0 10px #e4ce0ee6);
+        filter: drop-shadow(0 0 10px #555345e6);
+
+
     }
 
     label {
@@ -46,7 +49,7 @@
     }
 
     .loginbtn:hover {
-        background-color: rgb(194, 135, 87);
+        background-color: rgb(87, 146, 194);
         border-color: rgb(0, 0, 255);
 
         cursor: pointer;
@@ -75,8 +78,8 @@
     body {
         margin-top: 10%;
         background-image: linear-gradient(90deg,
-                rgb(102, 90, 67) 20%,
-                rgb(119, 95, 95));
+                rgba(56, 166, 199, 0.6),
+                rgb(117, 142, 148));
     }
 
     input:hover {
@@ -94,12 +97,11 @@
 
     .fp {
         display: flex;
-
-
         color: red;
     }
 
     .fp span {
+
         color: #0d8b8b;
     }
 
@@ -188,17 +190,38 @@
         transform: rotate(60deg);
     }
 
+    .btns {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+
+    }
+
+    .facultybtn,
+    .studentbtn {
+        width: min-content;
+        height: min-content;
+        padding: 15px;
+        font-size: 20px;
+        margin-bottom: 20px;
+        border: none;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .active {
+        background-color: #0d8b8b;
+    }
 
 
     @media (max-width: 768px) {
 
-        .form {
-            flex-direction: column;
+        .studentLoginForm,
+        .facultyLoginForm {
 
-            align-items: center;
-
-
-            width: 70%;
+            width: 80%;
         }
 
 
@@ -213,8 +236,13 @@
 
 <!-- <div class="student"> <button>faculty Login</button></div>
 <div class="faculty"> <button>Student Login</button></div> -->
-<h2 style="text-align: center;">Login To Dr.Brau university Campus connect</h2>
-<div class="form">
+<h2 style="text-align: center;">Login To Dr.B.R Ambedkar University Campus connect</h2>
+<div class="btns">
+    <button class="studentbtn ">Student</>
+        <button class="facultybtn active">Faculty
+</div>
+</div>
+<div class="studentLoginForm hidden">
     <form id="signin" action="/signIn" , method="post">
 
         <div class="label1">
@@ -245,13 +273,43 @@
             <p>Did not have an Account?</p>
             <a href="/signup"><span>CREATE ACCOUNT</span></a>
         </div>
-</div>
+    </form>>
 </div>
 
+<div class="facultyLoginForm">
+    <form id="signin" action="/facultysignIn" , method="post">
+
+        <div class="label1">
+            <label for="unameOrEmail" name="unameOrEmail">Username or Email Id :<input type="text" id="unameOrEmail"
+                    name="unameOrEmail" , placeholder="Enter your user or email id" required></label>
+
+            <span id="error"></span>
+
+        </div>
+        <div class="label2">
+            <label for="passwd" name="passwd">Password :<input type="password" id="passwd" name="passwd"
+                    placeholder="password" required>
+            </label>
+            <label class="eye" for="check"><input id="check" type="checkbox">
+                <span class="line"></span>
+                <span><img src="icons8-eye-32.jpg" alt=""></span>
+            </label>
 
 
-</form>
+        </div>
+
+        <button class="loginbtn" id="loginbtn">Log in</button>
+        <div class="fp">
+            <p>Did you forgot your password?</p>
+            <a href="/forgotPassword"><span>Reset Password</span></a>
+        </div>
+        <div class="signupbtn">
+            <p>Did not have an Account?</p>
+            <a href="/signup"><span>CREATE ACCOUNT</span></a>
+        </div>
+    </form>>
 </div>
+
 
 
 <!-- <script>
@@ -341,6 +399,29 @@
             passwd.type = "password";
         }
     }
+
+    const facultybtn = document.querySelector(".facultybtn")
+    const studentbtn = document.querySelector(".studentbtn")
+    const facultysignin = document.querySelector(".facultyLoginForm")
+    const studentsignin = document.querySelector(".studentLoginForm")
+
+    facultybtn.addEventListener("click", () => {
+        studentbtn.classList.remove("active")
+        studentsignin.classList.add('hidden')
+        facultysignin.classList.remove("hidden")
+        facultybtn.classList.add("active");
+
+
+
+    })
+
+    studentbtn.addEventListener("click", () => {
+        studentsignin.classList.remove("hidden")
+        facultysignin.classList.add("hidden")
+        facultybtn.classList.remove("active")
+        studentbtn.classList.add("active")
+    })
+
 
 
 

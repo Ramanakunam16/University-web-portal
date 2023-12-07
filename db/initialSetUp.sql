@@ -1,23 +1,23 @@
 -- -- --Database creation
-CREATE DATABASE studentDatabase;
+-- CREATE DATABASE studentDatabase;
 
 -- --Table Creation 
 USE studentDatabase;
 
-CREATE TABLE studentDetails (
-    registrationNumber INT ,
-    studentName CHAR(50),
-    sem INT,
-    totalResults FLOAT
-);
+-- CREATE TABLE studentDetails (
+--     registrationNumber INT ,
+--     studentName CHAR(50),
+--     sem INT,
+--     totalResults FLOAT
+-- );
 
-CREATE TABLE studentMarksDetails (
-    registrationNumber INT,
-    sem INT,
-    subjectName CHAR(50),
+-- CREATE TABLE studentMarksDetails (
+--     registrationNumber INT,
+--     sem INT,
+--     subjectName CHAR(50),
 
-    gradePoints INT
-);
+--     gradePoints INT
+-- );
 
 
 
@@ -33,16 +33,23 @@ CREATE TABLE studentMarksDetails (
 -- -- --     sGPA FLOAT
 -- -- -- );
 
-CREATE TABLE users (
+-- CREATE TABLE users (
+-- user_name  VARCHAR(255) PRIMARY KEY,
+-- user_email VARCHAR(255),
+-- hashedPassword VARCHAR(255)
+-- );
+-- CREATE TABLE usersProfilePics (
+-- user_name VARCHAR(255),
+-- file_name TEXT,
+-- mime_type TEXT,
+-- data LONGBLOB
+
+
+
+-- );
+
+CREATE TABLE faculty (
 user_name  VARCHAR(255) PRIMARY KEY,
 user_email VARCHAR(255),
 hashedPassword VARCHAR(255)
-);
-CREATE TABLE usersProfilePics (
-user_name VARCHAR(255),
-file_name TEXT,
-mime_type TEXT,
-data LONGBLOB
-
-
 );

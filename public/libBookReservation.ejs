@@ -87,10 +87,9 @@
 
         .book-container {
             padding-top: 10%;
-            display: flex;
-            justify-content: space-around;
-            flex-direction: row;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(4, auto);
+            grid-gap: 80px;
         }
 
         /* 
@@ -105,7 +104,7 @@
             margin-bottom: 30px;
         }
 
-        .book>h3 {
+        .book h3 {
             /* width: 50%; */
             color: wheat;
             margin-bottom: 30px;

@@ -9,19 +9,31 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
   <style>
-    .form {
+    .studentsignupForm,
+    .facultysignupForm {
       width: 40em;
       max-width: 80%;
       margin: auto;
       border-radius: 20px;
-      background-color: #dbd1d1;
+      background-color: #91c7b9;
+      ;
       padding: 40px;
 
 
       height: 100%;
       opacity: 1;
 
-      filter: drop-shadow(0 0 10px #e4ce0ee6);
+      filter: drop-shadow(0 0 10px #555345e6);
+    }
+
+    .facultybtn,
+    .studentbtn {
+      width: min-content;
+      height: min-content;
+      padding: 15px;
+      font-size: 20px;
+      margin-bottom: 20px;
+      border: none;
     }
 
     label {
@@ -32,7 +44,7 @@
     }
 
     input,
-    button {
+    button:not(.facultybtn, .studentbtn) {
       display: block;
       margin: 20px 0px 12px 6px;
       width: 100%;
@@ -49,15 +61,18 @@
 
     }
 
-    button:hover {
+    button:hover:not(.facultybtn, .studentbtn) {
       background-color: rgb(194, 135, 87);
       border-color: rgb(0, 0, 255);
 
       cursor: pointer;
 
+
     }
 
-    button {
+
+
+    button:not(.facultybtn, .studentbtn) {
       width: 50%;
       height: 50px;
       margin: auto;
@@ -76,8 +91,8 @@
 
       margin-top: 10%;
       background-image: linear-gradient(90deg,
-          rgb(102, 90, 67) 20%,
-          rgb(119, 95, 95));
+          rgba(56, 166, 199, 0.6),
+          rgb(117, 142, 148));
     }
 
     input:hover {
@@ -159,15 +174,33 @@
       margin-left: 30px;
     }
 
+    .btns {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+
+    }
+
+
+
+    .hidden {
+      display: none;
+    }
+
+    .active {
+      background-color: #0d8b8b;
+    }
+
+
+
     @media (max-width: 900px) {
 
-      .form {
-        flex-direction: column;
-
-        align-items: center;
+      .studentsignupForm,
+      .facultysignupForm {
 
 
-        min-width: 24em;
+
+        min-width: 30em;
         max-width: 40em;
 
       }
@@ -176,44 +209,85 @@
 
 </head>
 
-<div class="main">
 
-  <h2 style="text-align: center;">SignUP To Dr.Brau university Campus connect</h2>
-  <div class="form" style="width: 30%">
 
-    <form id="signup" action="/signUp" method="post">
-      <div <div>
-        <label for="email">Enter your email</label>
-        <input type="email" id="email" name="email" required>
-        <span id="emailAvailability"></span>
-        <!-- <button class="continue-button">Continue</button> -->
-      </div>
+<h2 style="text-align: center;">SignUP To Dr.Brau university Campus connect</h2>
 
-      <div>
-        <label for="uname">Create a username</label>
-        <input type="text" id="uname" name="uname" required>
-        <span id="userAvailability"></span>
-        <!-- <button class="continue-button">Continue</button> -->
-      </div>
-      <div>
-        <label for="passwd">Create a password</label>
-        <input type="password" id="passwd" name="passwd" required>
-        <label class="eye" for="check"><input id="check" type="checkbox">
-          <span class="line"></span>
-          <span><img src="icons8-eye-32.jpg" alt=""></span>
-        </label>
-        <!-- <button class="continue-button">Continue</button> -->
-      </div>
+<div class="btns">
+  <button class="studentbtn ">Student</>
+    <button class="facultybtn active">Faculty
+</div>
 
-      <button type="submit" onclick="validateForm()">Create Account</button>
+<div class="studentsignupForm hidden">
 
-    </form>
-    <div class="signinbtn">
-      <p> Already have an Account?</p>
-      <a href="/login"><span style="font-size: 24px;" id="signinbtn">LOG IN</span></a>
+  <form id="signup" action="/facultysignUp" method="post">
+    <div>
+      <label for="email">Enter email</label>
+      <input type="email" id="email" name="email" placeholder="Enter email address" required>
+      <span id="emailAvailability"></span>
+      <!-- <button class="continue-button">Continue</button> -->
     </div>
+
+    <div>
+      <label for="uname">Create a username</label>
+      <input type="text" id="uname" name="uname" placeholder="Enter user name" required>
+      <span id="userAvailability"></span>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+    <div>
+      <label for="passwd">Create a password</label>
+      <input type="password" id="passwd" name="passwd" placeholder="create secure password" required>
+      <label class="eye" for="check"><input id="check" type="checkbox">
+        <span class="line"></span>
+        <span><img src="icons8-eye-32.jpg" alt=""></span>
+      </label>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+
+    <button type="submit" onclick="validateForm()">Create Account</button>
+
+  </form>
+  <div class="signinbtn">
+    <p> Already have an Account?</p>
+    <a href="/login"><span style="font-size: 24px;" id="signinbtn">LOG IN</span></a>
   </div>
 </div>
+
+<div class="facultysignupForm" style="width: 30%">
+
+  <form id="signup" action="/facultysignUp" method="post">.
+    <div>
+      <label for="email">Enter your email</label>
+      <input type="email" id="email" name="email" placeholder="Enter email address" required>
+      <span id="emailAvailability"></span>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+
+    <div>
+      <label for="uname">Create a username</label>
+      <input type="text" id="uname" name="uname" placeholder="Enter user name" required>
+      <span id="userAvailability"></span>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+    <div>
+      <label for="passwd">Create a password</label>
+      <input type="password" id="passwd" name="passwd" placeholder="create secure password" required>
+      <label class="eye" for="check"><input id="check" type="checkbox">
+        <span class="line"></span>
+        <span><img src="icons8-eye-32.jpg" alt=""></span>
+      </label>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+
+    <button type="submit" onclick="validateForm()">Create Account</button>
+
+  </form>
+  <div class="signinbtn">
+    <p> Already have an Account?</p>
+    <a href="/login"><span style="font-size: 24px;" id="signinbtn">LOG IN</span></a>
+  </div>
+</div>
+
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
@@ -335,6 +409,34 @@
       return false;
     }
   }
+
+
+
+  const facultybtn = document.querySelector(".facultybtn")
+  const studentbtn = document.querySelector(".studentbtn")
+  const facultysignup = document.querySelector(".facultysignupForm")
+  const studentsignup = document.querySelector(".studentsignupForm")
+
+  facultybtn.addEventListener("click", () => {
+    studentbtn.classList.remove("active")
+    studentsignup.classList.add('hidden')
+    facultysignup.classList.remove("hidden")
+    facultybtn.classList.add("active");
+
+
+
+  })
+
+  studentbtn.addEventListener("click", () => {
+    studentsignup.classList.remove("hidden")
+    facultysignup.classList.add("hidden")
+    facultybtn.classList.remove("active")
+    studentbtn.classList.add("active")
+  })
+
+
+
+
 
 
 

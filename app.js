@@ -668,6 +668,37 @@ app.post('/check-Availability', (req, res) => {
     }
   );
 });
+app.post('/facultysignUp', async (res, req) => {
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  const uname = req.body.uname;
+  const email = req.body.email;
+  const passwd = req.body.passwd;
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(passwd, 10);
+  mysqlConnection.query(
+    'INSERT INTO faculty VALUES (?, ?, ?)',
+    [uname, email, hashedPassword],
+    (err, results) => {
+      if (err) {
+        console.log('Error:', err);
+        const message =
+          "<script>alert('username or email id already in use.Choose diferrent username or email id'); window.location.href='/login'</script>";
+        res.status(500).send(message);
+        return;
+      }
+    }
+  );
+});
 
 // let results1 = {};
 
@@ -757,6 +788,12 @@ app.post('/signIn', async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+app.post('/facultysignIn', (res, req) => {
+  const usernameOrEmail = req.body.unameOrEmail;
+  const password = req.body.passwd;
+  console.log(usernameOrEmail);
 });
 
 function isAuthUser(req, res, next) {
