@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rserved Books</title>
+    <style>
+        *,
+        *::after,
+        *::before {
+            box-sizing: border-box;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .headline {
+            text-align: center;
+            margin-top: 5%;
+        }
+
+        .main {
+            border: 1px solid black;
+            margin: 40px 40px;
+            width: auto;
+            /* text-align: center; */
+        }
+
+
+
+
+        .bookCover {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            width: 10%;
+            height: 70%;
+        }
+
+        .container,
+        .reservedBook {
+            display: flex;
+            width: 80%;
+            min-width: 90%;
+            justify-content: space-around;
+            margin: 20px 20px;
+            margin-left: 80px;
+            /* text-align: center; */
+            border: 1px solid black;
+            padding: 20px;
+
+        }
+
+        .bookInfo {
+            display: block;
+            margin: 20px;
+        }
+
+
+
+
+        .bookInfo h4 {
+            /* display: block; */
+            color: rgb(72, 112, 112);
+        }
+
+        .bookInfo p {
+            display: inline-block;
+            padding-left: 20px;
+        }
+
+        .bookDetails {
+            color: black;
+        }
+
+        .controls {
+            display: inline;
+            padding: 20px;
+        }
+
+
+
+        .complete {
+            border: 1px solid black;
+            padding: 10px;
+            margin: 10px 10px;
+            background-color: rgb(21, 71, 163);
+            color: white;
+        }
+
+        .complete:hover {
+            cursor: pointer;
+            background-color: rgb(82, 111, 167);
+        }
+
+        .completedMsg {
+            color: rgb(49, 216, 49);
+        }
+
+        .reject {
+            border: 1px solid black;
+            padding: 10px;
+            background-color: rgb(206, 125, 125);
+        }
+
+        .reject:hover {
+            cursor: pointer;
+            background-color: rgb(192, 68, 68);
+        }
+
+        .reason label {
+            display: block;
+            padding: 10px;
+
+        }
+
+        .reasonbtn {
+            border: none;
+            background-color: rgb(62, 62, 155);
+            padding: 10px;
+            width: 80px;
+            margin-left: 5%;
+            color: white;
+        }
+
+        .reasonbtn:hover {
+            cursor: pointer;
+            box-shadow: 2px 2px black;
+        }
+
+        .reasonCancelbtn {
+            border: none;
+            background-color: rgb(166, 166, 177);
+            padding: 10px;
+            width: 80px;
+            margin-left: 30%;
+            color: white;
+        }
+
+        .reasonCancelbtn:hover {
+            cursor: pointer;
+            box-shadow: 2px 2px black;
+        }
+
+        .cancel {
+            border: 1px solid black;
+            padding: 10px;
+            background-color: rgb(241, 237, 237);
+        }
+
+        .cancel:hover {
+            cursor: pointer;
+            background-color: rgb(224, 169, 169);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+
+        @media (max-width:900px) {
+
+            .main {
+                width: max-content;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2 class="headline">Student Reserved Books</h2>
+    <div class="main"></div>
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        const main = document.querySelector(".main");
+        const bookCover = document.querySelector(".bookCover");
+        const rejectBtns = document.querySelectorAll(".reject")
+
+
+        axios.get("/reservedBooks").then(response => {
+            let reservedBooks = response.data
+            console.log(reservedBooks);
+
+            reservedBooks.forEach(book => {
+
+                const html = `<div class="container"> 
+                    <div class="reservedBook">
+            <img class="bookCover" src="b${book.book_id}.jpg" alt="book img">
+            <div class= "bookInfo" >
+                <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>
+                <h4>Book title:<p class="bookDetails">${book.book_title}</p></h4>
+                <h4>Author:<p class="bookDetails">${book.author}</p></h4>
+                <h4>publishers:<p class="bookDetails">${book.publishers}</p></h4>
+                <h4>book edition:<p class="bookDetails">${book.book_edition}</p></h4>
+
+            </div >
+                <div class="controls">
+                    <button class="complete">mark as complete</button>
+                    <button class="reject">Reject</button>
+                    <button class="cancel hidden">remove from list</button>
+
+                </div>
+         
+                <h2 class="completedMsg hidden">Completed</h2>
+    </div>
+    <div class="reason hidden">
+        <h4>Provide reason for Rejection--</h4>
+        <form action="/rejectedBooks" id="reason">
+            <label for="reason1"> <input type="radio" name="reason" id="reason1" value="Availble books are already reserved by another students"> Availble books are already reserved by another students.</label> 
+                <label for="reason2"><input type="radio" name="reason" id="reason2"  value="You didn't apply for library registration.Please register for libray identity card"> You didn't apply for library registration.Please register for libray identity card. <a href="#">click here to apply</a>.</label> 
+                <label for="reason3"><input type="radio" name="reason" id="reason3"  value="Duplicate reservation requests for the same book"> Duplicate reservation requests for the same book.</label> 
+                <label for="reason4"><input type="radio" name="reason" id="reason4"  value="Incomplete or inaccurate information provided in the reservation"> Incomplete or inaccurate information provided in the reservation.</label> 
+                <label for="reason5"><input type="radio" name="reason" id="reason5"  value=" The student has exceeded the maximum allowed reservations"> The student has exceeded the maximum allowed reservations.</label>
+
+                <button class="reasonCancelbtn">Cancel</button>
+                <button class="reasonbtn">Submit</button>
+
+        </form>
+    </div>
+        </div >`
+
+                main.insertAdjacentHTML('afterbegin', html)
+
+
+                const rejectBtn = document.querySelector(".reject")
+                const reservedBook = document.querySelector(".reservedBook")
+                const container = document.querySelector(".container")
+                const reason = container.querySelector(".reason")
+                const reasonbtn = container.querySelector(".reasonbtn")
+
+
+
+                //reject btn event handler
+                rejectBtn.addEventListener("click", () => {
+
+                    reservedBook.classList.add("hidden")
+                    container.querySelector(".reason").classList.remove("hidden")
+                })
+
+                //submiting reason event handler
+                reasonbtn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    rejectedBooks(container, book)
+                })
+                //reason component cancel btn 
+                document.querySelector(".reasonCancelbtn").addEventListener("click", (e) => {
+                    e.preventDefault();
+                    reservedBook.classList.remove("hidden")
+                    container.querySelector(".reason").classList.add("hidden")
+                })
+
+
+                //complete btn event handling
+                document.querySelector(".complete").addEventListener("click", () => {
+                    container.style.filter = "grayscale()"
+                    container.querySelector(".completedMsg").classList.remove("hidden");
+                    rejectBtn.classList.add("hidden")
+                    container.querySelector(".complete").classList.add("hidden")
+
+                    setTimeout(() => {
+                        container.style.display = "none"
+                        completedBooks(book)
+                    }, 3000)
+
+
+                })
+
+                //cancel btn event handling
+
+            });
+
+
+        }
+        )
+
+
+        // delete rejected books
+        async function rejectedBooks(container, book) {
+
+            const reasonForm = container.querySelector("#reason");
+            const selecetdReason = reasonForm.querySelector("input[name='reason']:checked")
+
+            if (selecetdReason) {
+                const reasonValue = selecetdReason.value;
+                await axios.post("/rejectedBooks", { reason: reasonValue, book: book }).then(response => {
+                    const deleted = response.data;
+                    if (deleted) {
+
+                        container.style.display = "none"
+                    }
+
+                })
+            } else {
+                alert("Please select a reason before submitting.");
+            }
+        }
+
+        async function completedBooks(book) {
+
+            await axios.post("/completedBooks", { book: book })
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>

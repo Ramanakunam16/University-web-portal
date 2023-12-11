@@ -48,6 +48,19 @@
         padding: 10px;
     }
 
+    #acctVerify {
+
+        display: inline-block;
+        width: max-content;
+        height: 30px;
+        background-color: #0d8b8b;
+        border-radius: 20px;
+        border: 1px solid black;
+        padding: 10px;
+        margin-bottom: 20px;
+
+    }
+
     .loginbtn:hover {
         background-color: rgb(87, 146, 194);
         border-color: rgb(0, 0, 255);
@@ -76,7 +89,7 @@
     }
 
     body {
-        margin-top: 10%;
+        margin-top: 5%;
         background-image: linear-gradient(90deg,
                 rgba(56, 166, 199, 0.6),
                 rgb(117, 142, 148));
@@ -134,7 +147,7 @@
     }
 
     .signupbtn span,
-    a {
+    a:not(.acctVerify) {
         text-decoration: none;
         color: red;
 
@@ -150,7 +163,7 @@
     }
 
     h2 {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
     }
 
     #check {
@@ -216,7 +229,7 @@
     }
 
 
-    @media (max-width: 768px) {
+    @media (max-width: 900px) {
 
         .studentLoginForm,
         .facultyLoginForm {
@@ -243,13 +256,18 @@
 </div>
 </div>
 <div class="studentLoginForm hidden">
+
+    <div class="accctVerify">
+        <p>Please verify your identity if yourn't before. </p>
+        <a href="/studentacctVerify" id="acctVerify">Verify Account</a>
+    </div>
     <form id="signin" action="/signIn" , method="post">
 
         <div class="label1">
-            <label for="unameOrEmail" name="unameOrEmail">Username or Email Id :<input type="text" id="unameOrEmail"
-                    name="unameOrEmail" , placeholder="Enter your username or email id" required></label>
+            <label for="studentId" name="studentId">Student Id :<input type="integer" id="studentId" name="studentId" ,
+                    placeholder="Enter student id" required></label>
 
-            <span id="error"></span>
+
 
         </div>
         <div class="label2">
@@ -269,21 +287,22 @@
             <p>Did you forgot your password?</p>
             <a href="/forgotPassword"><span>Reset Password</span></a>
         </div>
-        <div class="signupbtn">
-            <p>Did not have an Account?</p>
-            <a href="/signup"><span>CREATE ACCOUNT</span></a>
-        </div>
+
     </form>>
 </div>
 
 <div class="facultyLoginForm">
+    <div class="accctVerify">
+        <p>Please verify your identity if yourn't before. </p>
+        <a href="/facultyacctVerify" id="acctVerify">Verify Account</a>
+    </div>
     <form id="signin" action="/facultysignIn" , method="post">
 
         <div class="label1">
-            <label for="unameOrEmail" name="unameOrEmail">Username or Email Id :<input type="text" id="unameOrEmail"
-                    name="unameOrEmail" , placeholder="Enter your user or email id" required></label>
+            <label for="facultyId" name="facultyId">Faculty Id :<input type="text" id="facultyId" name="facultyId" ,
+                    placeholder="Enter faculty id" required></label>
 
-            <span id="error"></span>
+
 
         </div>
         <div class="label2">
@@ -292,7 +311,7 @@
             </label>
             <label class="eye" for="check"><input id="check" type="checkbox">
                 <span class="line"></span>
-                <span><img src="icons8-eye-32.jpg" alt=""></span>
+                <!-- <span><img src="icons8-eye-32.jpg" alt=""></span> -->
             </label>
 
 
@@ -303,10 +322,7 @@
             <p>Did you forgot your password?</p>
             <a href="/forgotPassword"><span>Reset Password</span></a>
         </div>
-        <div class="signupbtn">
-            <p>Did not have an Account?</p>
-            <a href="/signup"><span>CREATE ACCOUNT</span></a>
-        </div>
+
     </form>>
 </div>
 
@@ -324,7 +340,7 @@
         }); -->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-    const userOrEmailInput = document.getElementById("unameOrEmail");
+    const userOrEmailInput = document.getElementById("studentId");
     const error = document.getElementById("error")
     const passwdInput = document.getElementById("passwd");
     const loginForm = document.getElementById("loginbtn");
@@ -354,30 +370,30 @@
     // })
 
 
-    userOrEmailInput.addEventListener("blur", () => {
-        const usernameOrEmail = userOrEmailInput.value;
-        console.log(usernameOrEmail);
-        if (usernameOrEmail) {
-            axios.post("/check-Validity", { usernameOrEmail })
-                .then(response => {
-                    console.log(response.data.isValidity);
-                    if (response.data.isValidity) {
+    // userOrEmailInput.addEventListener("blur", () => {
+    //     const usernameOrEmail = userOrEmailInput.value;
+    //     console.log(usernameOrEmail);
+    //     if (usernameOrEmail) {
+    //         axios.post("/check-Validity", { usernameOrEmail })
+    //             .then(response => {
+    //                 console.log(response.data.isValidity);
+    //                 if (response.data.isValidity) {
 
-                        userOrEmailInput.style.border = "2px solid red";
-                        error.textContent = " 🚫 Invalid userName or email Id"
+    //                     userOrEmailInput.style.border = "2px solid red";
+    //                     error.textContent = " 🚫 Invalid userName or email Id"
 
-                    }
-                    else {
-                        userOrEmailInput.style.border = "2px solid green";
-                        error.textContent = "User Found ✅"
-                    }
-                })
-                .catch(error => {
-                    console.log("error in checking", error);
-                })
-        }
+    //                 }
+    //                 else {
+    //                     userOrEmailInput.style.border = "2px solid green";
+    //                     error.textContent = "User Found ✅"
+    //                 }
+    //             })
+    //             .catch(error => {
+    //                 console.log("error in checking", error);
+    //             })
+    //     }
 
-    })
+    // })
 
 
 

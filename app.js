@@ -3,7 +3,7 @@
 const express = require('express');
 const mysql = require('mysql');
 const app = express();
-const port = 8007;
+const port = 8005;
 const bodyParser = require('body-parser');
 const lodash = require('lodash');
 const { exec } = require('child_process');
@@ -91,8 +91,11 @@ app.get('/uploadResults', (req, res) => {
 app.get('/libBookReservation', isAuthUser, (req, res) => {
   res.render('libBookReservation');
 });
-app.get('/signup', (req, res) => {
-  res.render('signupform');
+app.get('/facultyacctVerify', (req, res) => {
+  res.render('facultyacctVerify');
+});
+app.get('/studentacctVerify', (req, res) => {
+  res.render('studentacctVerify');
 });
 app.get('/login', (req, res) => {
   res.render('signinform');
@@ -576,139 +579,357 @@ app.post('/upload', upload.single('myfile1'), (req, res) => {
 });
 
 // user account creation
-app.post('/signUp', async (req, res) => {
-  const mysqlConnection = createDbConnection();
+// app.post('/signUp', async (req, res) => {
+//   const mysqlConnection = createDbConnection();
 
-  mysqlConnection.connect(err => {
-    if (err) {
-      console.error('Error connecting to MySQL:', err);
-      return;
-    }
-    console.log('Connected to MySQL');
-  });
+//   mysqlConnection.connect(err => {
+//     if (err) {
+//       console.error('Error connecting to MySQL:', err);
+//       return;
+//     }
+//     console.log('Connected to MySQL');
+//   });
 
-  const uname = req.body.uname;
-  const email = req.body.email;
-  const passwd = req.body.passwd;
+//   const uname = req.body.uname;
+//   const email = req.body.email;
+//   const passwd = req.body.passwd;
 
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(passwd, 10);
+//   // Hash the password
+//   const hashedPassword = await bcrypt.hash(passwd, 10);
 
-  console.log(hashedPassword);
+//   console.log(hashedPassword);
 
-  // Insert the user
-  mysqlConnection.query(
-    'INSERT INTO users VALUES (?, ?, ?)',
-    [uname, email, hashedPassword],
-    (err, results) => {
-      if (err) {
-        console.log('Error:', err);
-        const message =
-          "<script>alert('username or email id already in use.Choose diferrent username or email id'); window.location.href='/login'</script>";
-        res.status(500).send(message);
-        return;
-      }
-      const message =
-        "<script>alert('Sign up successful.'); window.location.href='/login'</script>";
-      res.send(message);
-    }
-  );
-  // } .catch (error) {
-  //   console.error('Error:', error);
-  //   res.status(500).send('An error occurred while signing up.');
-  // }
-});
+//   // Insert the user
+//   mysqlConnection.query(
+//     'INSERT INTO users VALUES (?, ?, ?)',
+//     [uname, email, hashedPassword],
+//     (err, results) => {
+//       if (err) {
+//         console.log('Error:', err);
+//         const message =
+//           "<script>alert('username or email id already in use.Choose diferrent username or email id'); window.location.href='/login'</script>";
+//         res.status(500).send(message);
+//         return;
+//       }
+//       const message =
+//         "<script>alert('Sign up successful.'); window.location.href='/login'</script>";
+//       res.send(message);
+//     }
+//   );
+//   // } .catch (error) {
+//   //   console.error('Error:', error);
+//   //   res.status(500).send('An error occurred while signing up.');
+//   // }
+// });
 
-// checking availability of user crenditials
-app.post('/check-Availability', (req, res) => {
-  const { userName, email } = req.body;
+// // checking availability of user crenditials
+// app.post('/check-Availability', (req, res) => {
+//   const { userName, email } = req.body;
 
-  console.log({ email, userName });
+//   console.log({ email, userName });
 
-  const mysqlConnection = createDbConnection();
+//   const mysqlConnection = createDbConnection();
 
-  mysqlConnection.connect(err => {
-    if (err) {
-      console.error('Error connecting to MySQL:', err);
-      return;
-    }
-    console.log('Connected to MySQL');
-    // Your code here
-  });
+//   mysqlConnection.connect(err => {
+//     if (err) {
+//       console.error('Error connecting to MySQL:', err);
+//       return;
+//     }
+//     console.log('Connected to MySQL');
+//     // Your code here
+//   });
 
-  mysqlConnection.query(
-    'SELECT COUNT(*) AS userNameCount FROM users WHERE user_name=?',
-    [userName],
-    (err, userNameResults) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error checking email availability');
-        return;
-      }
+//   mysqlConnection.query(
+//     'SELECT COUNT(*) AS userNameCount FROM users WHERE user_name=?',
+//     [userName],
+//     (err, userNameResults) => {
+//       if (err) {
+//         console.error(err);
+//         res.status(500).send('Error checking email availability');
+//         return;
+//       }
 
-      mysqlConnection.query(
-        'SELECT COUNT(*) AS emailCount FROM users WHERE user_email= ?',
-        [email],
-        (err, emailResults) => {
-          if (err) {
-            console.error(err);
-            res.status(500).send('Error checking email availability');
-            return;
-          }
+//       mysqlConnection.query(
+//         'SELECT COUNT(*) AS emailCount FROM users WHERE user_email= ?',
+//         [email],
+//         (err, emailResults) => {
+//           if (err) {
+//             console.error(err);
+//             res.status(500).send('Error checking email availability');
+//             return;
+//           }
 
-          const emailExists = emailResults[0].emailCount > 0;
-          const userNameExists = userNameResults[0].userNameCount > 0;
+//           const emailExists = emailResults[0].emailCount > 0;
+//           const userNameExists = userNameResults[0].userNameCount > 0;
 
-          res.json({
-            email: emailExists,
-            userName: userNameExists,
-          });
-        }
-      );
-    }
-  );
-});
-app.post('/facultysignUp', async (res, req) => {
-  const mysqlConnection = createDbConnection();
+//           res.json({
+//             email: emailExists,
+//             userName: userNameExists,
+//           });
+//         }
+//       );
+//     }
+//   );
+// });
+// app.post('/facultysignUp', async (req, res) => {
+//   const mysqlConnection = createDbConnection();
 
-  mysqlConnection.connect(err => {
-    if (err) {
-      console.error('Error connecting to MySQL:', err);
-      return;
-    }
-    console.log('Connected to MySQL');
-  });
+//   mysqlConnection.connect(err => {
+//     if (err) {
+//       console.error('Error connecting to MySQL:', err);
+//       return;
+//     }
+//     console.log('Connected to MySQL');
+//   });
 
-  const uname = req.body.uname;
-  const email = req.body.email;
-  const passwd = req.body.passwd;
+//   const uname = req.body.funame;
+//   const email = req.body.femail;
+//   const passwd = req.body.fpasswd;
+//   console.log(uname, email, passwd);
 
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(passwd, 10);
-  mysqlConnection.query(
-    'INSERT INTO faculty VALUES (?, ?, ?)',
-    [uname, email, hashedPassword],
-    (err, results) => {
-      if (err) {
-        console.log('Error:', err);
-        const message =
-          "<script>alert('username or email id already in use.Choose diferrent username or email id'); window.location.href='/login'</script>";
-        res.status(500).send(message);
-        return;
-      }
-    }
-  );
-});
+//   // Hash the password
+//   const hashedPassword = await bcrypt.hash(passwd, 10);
+//   mysqlConnection.query(
+//     'INSERT INTO faculty VALUES (?, ?, ?)',
+//     [uname, email, hashedPassword],
+//     (err, results) => {
+//       if (err) {
+//         console.log('Error:', err);
+//         const message =
+//           "<script>alert('username or email id already in use.Choose diferrent username or email id'); window.location.href='/login'</script>";
+//         res.status(500).send(message);
+//         return;
+//       }
+//     }
+//   );
+// });
 
 // let results1 = {};
+
+app.post('/studentacctVerify', (req, res) => {
+  const studentId = req.body.studentId;
+  const password = req.body.createPasswd;
+  console.log(studentId);
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+  // excute query
+
+  mysqlConnection.query(
+    'SELECT * FROM studentLoginInfo WHERE user_id=?',
+    [studentId],
+    async (err, results) => {
+      console.log(results);
+      if (err) {
+        console.log(err);
+      }
+
+      console.log(results[0].user_id);
+
+      if (results[0].user_id === +studentId) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        mysqlConnection.query(
+          'UPDATE studentLoginInfo SET hashedPassword=? WHERE user_id=?',
+          [hashedPassword, studentId],
+          (err, results) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log('password  updated');
+            }
+          }
+        );
+        mysqlConnection.end();
+      } else {
+        console.log('noooo');
+      }
+    }
+  );
+});
+
+app.post('/facultyacctVerify', (req, res) => {
+  const facultyId = req.body.facultyId;
+  // const email = req.body.emailid;
+  console.log(facultyId);
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+  // excute query
+
+  mysqlConnection.query(
+    'SELECT * FROM facultyLoginInfo WHERE user_id=?',
+    [facultyId],
+    async (err, results) => {
+      console.log(results);
+      if (err) {
+        console.log(err);
+      }
+
+      console.log(results[0].user_id);
+
+      if (results[0].user_id === +facultyId) {
+        console.log('successfull');
+        // res.redirect('/generateOTP');
+      } else {
+        res.json({
+          isvalid: false,
+        });
+      }
+    }
+  );
+});
+// password creation
+
+let secret;
+let otp;
+app.post('/generateOTP', async (req, res) => {
+  const email = req.body.emailid;
+
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query(
+    'SELECT * FROM facultyLoginInfo WHERE user_email=? ',
+    [email],
+    async (err, results) => {
+      if (err) {
+      } else {
+        const userData = results[0];
+        if (email === userData.user_email) {
+          secret = speakeasy.generateSecret();
+          otp = speakeasy.totp({
+            secret: secret.base32,
+            encoding: 'base32',
+          });
+
+          console.log('secret token shared between client and server', secret);
+          console.log('one time password', otp);
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'ramanakunam16@gmail.com',
+              pass: 'bgdjppxbdfvtlcub',
+            },
+          });
+
+          const mailOptions = {
+            from: 'ramanakunam16@gmail.com',
+            to: email,
+            subject: 'your one time password(OTP)',
+            text: `Your OTP is :${otp}`,
+          };
+          console.log(email);
+
+          transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+              console.error('error sennding mail', err);
+            } else {
+              console.log('email sent', info.response);
+            }
+          });
+
+          // res.render('otpVerification');
+        }
+      }
+    }
+  );
+});
+app.post('/otp', (req, res) => {
+  const userEnteredOTP = req.body.verifyotp;
+
+  const isValidOTP = speakeasy.totp.verify({
+    secret: secret.base32,
+    encoding: 'base32',
+    token: userEnteredOTP,
+    window: 1,
+  });
+
+  if (isValidOTP) {
+    res.render('createPassword');
+  } else {
+    res.send('invalid otp');
+  }
+});
+app.post('/passwordCreation', (req, res) => {
+  const facultyId = req.body.facultyId;
+  const password = req.body.createPasswd;
+  console.log(facultyId);
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+  // excute query
+
+  mysqlConnection.query(
+    'SELECT * FROM facultyLoginInfo WHERE user_id=?',
+    [facultyId],
+    async (err, results) => {
+      console.log(results);
+      if (err) {
+        console.log(err);
+      }
+
+      console.log(results[0].user_id);
+
+      if (results[0].user_id === +facultyId) {
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        mysqlConnection.query(
+          'UPDATE facultyLoginInfo SET hashedPassword=? WHERE user_id=?',
+          [hashedPassword, facultyId],
+          (err, results) => {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log('password  updated');
+              res.send('password UPDATED');
+            }
+          }
+        );
+        mysqlConnection.end();
+      } else {
+        console.log('noooo');
+      }
+    }
+  );
+});
 
 let profilePic;
 
 // login authentication
 app.post('/signIn', async (req, res) => {
-  const usernameOrEmail = req.body.unameOrEmail;
+  const studentId = req.body.studentId;
   const password = req.body.passwd;
-  console.log(usernameOrEmail);
+  console.log(studentId);
 
   //db connection
   const mysqlConnection = createDbConnection();
@@ -724,8 +945,8 @@ app.post('/signIn', async (req, res) => {
 
   try {
     mysqlConnection.query(
-      'SELECT * FROM users WHERE  user_name=? OR user_email=?',
-      [usernameOrEmail, usernameOrEmail],
+      'SELECT * FROM studentLoginInfo WHERE  user_id=?',
+      [studentId],
       async (err, results) => {
         console.log(results);
         if (err) {
@@ -734,7 +955,7 @@ app.post('/signIn', async (req, res) => {
 
         if (results.length === 0) {
           // res.render("check");
-          res.json({ isInvalidDetails: true });
+          res.send('mell');
         } else if (results.length !== 0) {
           const passwordMatch = await bcrypt.compare(
             password,
@@ -750,8 +971,8 @@ app.post('/signIn', async (req, res) => {
             // req.session.save();
             try {
               mysqlConnection.query(
-                'SELECT * FROM usersProfilePics WHERE user_name=?',
-                [userData.user_name],
+                'SELECT * FROM studentProfilePics WHERE user_id=?',
+                [userData.user_id],
                 async (err, results) => {
                   if (err) {
                     console.log(err);
@@ -789,13 +1010,61 @@ app.post('/signIn', async (req, res) => {
     console.log(error);
   }
 });
-
-app.post('/facultysignIn', (res, req) => {
-  const usernameOrEmail = req.body.unameOrEmail;
-  const password = req.body.passwd;
-  console.log(usernameOrEmail);
+app.get('/getSessionData', (req, res) => {
+  const userData = req.session.results || null;
+  res.json({ userData });
 });
 
+app.post('/facultysignIn', (req, res) => {
+  const facultyId = req.body.facultyId;
+  const password = req.body.passwd;
+  console.log(facultyId);
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query(
+    'SELECT * FROM facultyLoginInfo WHERE  user_id=?',
+    [facultyId],
+    async (err, results) => {
+      console.log(results);
+      if (err) {
+        console.log('Invalid query', err);
+      }
+
+      if (results.length === 0) {
+        // res.render("check");
+        return;
+      } else if (results.length !== 0) {
+        const passwordMatch = await bcrypt.compare(
+          password,
+          results[0].hashedPassword
+        );
+
+        if (passwordMatch) {
+          // results1 = results[0];
+          req.session.results = results[0];
+          const userData = req.session.results;
+          console.log('results', userData);
+          res.render('facultyDashBoard', {
+            username: userData.user_name,
+          });
+        } else {
+          const message =
+            "<script>alert('invalid password'); window.location.href='signinform.html'</script>";
+          res.send(message);
+        }
+      }
+    }
+  );
+});
 function isAuthUser(req, res, next) {
   if (req.session && req.session.results) {
     return next();
@@ -841,6 +1110,154 @@ app.get('/dashBoard', isAuthUser, (req, res) => {
       profilePicMimeType: profilePic.mime_type,
     });
   }
+});
+
+//booksReservation
+
+app.post('/bookReservation', isAuthUser, (req, res) => {
+  const bookInfo = req.body;
+  console.log(bookInfo);
+  const userData = req.session.results;
+  console.log(userData);
+
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query(
+    'INSERT INTO reservedBooks (studentId,book_title,author,publishers,book_edition,book_img,book_id) VALUES(?,?,?,?,?,?,?)',
+    [
+      userData.user_id,
+      bookInfo.book_title,
+      bookInfo.author,
+      bookInfo.publishers,
+      bookInfo.book_edition,
+      bookInfo.book_img,
+      bookInfo.book_id,
+    ]
+  );
+
+  mysqlConnection.end();
+});
+app.post('/rejectedBooks', (req, res) => {
+  const { studentId, book_title, author, publishers, book_edition, book_id } =
+    req.body.book;
+  const reason = req.body.reason;
+  console.log(reason);
+
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query(
+    'INSERT INTO rejectedBooks (studentId,book_title,author,publishers,book_edition,reason,book_id) VALUES(?,?,?,?,?,?,?)',
+    [studentId, book_title, author, publishers, book_edition, reason, book_id]
+  );
+  res.json({
+    deleted: true,
+  });
+
+  mysqlConnection.query(
+    'DELETE FROM reservedBooks WHERE studentId=? AND book_id=? ',
+    [studentId, book_id]
+  );
+  mysqlConnection.end();
+});
+app.post('/completedBooks', (req, res) => {
+  const { studentId, book_title, author, publishers, book_edition, book_id } =
+    req.body.book;
+
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query(
+    'INSERT INTO completedBooks (studentId,book_title,author,publishers,book_edition,book_id) VALUES(?,?,?,?,?,?)',
+    [studentId, book_title, author, publishers, book_edition, book_id]
+  );
+  res.json({
+    deleted: true,
+  });
+
+  mysqlConnection.query(
+    'DELETE FROM reservedBooks WHERE studentId=? AND book_id=? ',
+    [studentId, book_id]
+  );
+  mysqlConnection.end();
+});
+app.get('/reservedBooks', (req, res) => {
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query('SELECT * FROM reservedBooks', (err, results) => {
+    console.log(results);
+
+    res.json(results);
+  });
+});
+
+app.get('/rejectedBooks', (_, res) => {
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query('SELECT * FROM rejectedBooks', (err, results) => {
+    console.log(results);
+
+    res.json(results);
+  });
+});
+
+app.get('/completedBooks', (_, res) => {
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query('SELECT * FROM completedBooks', (err, results) => {
+    console.log(results);
+
+    res.json(results);
+  });
 });
 
 // settings pages
@@ -927,7 +1344,7 @@ app.post('/updateInfo', isAuthUser, (req, res) => {
   const userData = req.session.results;
 
   mysqlConnection.query(
-    'UPDATE users SET user_name=CASE WHEN ? IS NOT NULL THEN ? ELSE user_name END,user_email = CASE WHEN ? IS NOT NULL THEN ? ELSE user_email END WHERE user_name=?',
+    'UPDATE studentLoginInfo SET user_name=CASE WHEN ? IS NOT NULL THEN ? ELSE user_name END,user_email = CASE WHEN ? IS NOT NULL THEN ? ELSE user_email END WHERE user_name=?',
     [username, username, email, email, userData.user_name],
     (err, results) => {
       console.log(results);
@@ -1132,89 +1549,6 @@ app.post(
     );
   }
 );
-
-// password reset
-
-let secret;
-let otp;
-
-app.post('/generateOTP', async (req, res) => {
-  const email = req.body.email;
-
-  //db connection
-  const mysqlConnection = createDbConnection();
-
-  mysqlConnection.connect(err => {
-    if (err) {
-      console.error('Error connecting to MySQL:', err);
-      return;
-    }
-    console.log('Connected to MySQL');
-  });
-
-  mysqlConnection.query(
-    'SELECT * FROM users WHERE user_email=? ',
-    [email],
-    async (err, results) => {
-      if (err) {
-      } else {
-        const userData = results[0];
-        if (email == userData.user_email) {
-          secret = speakeasy.generateSecret();
-          otp = speakeasy.totp({
-            secret: secret.base32,
-            encoding: 'base32',
-          });
-
-          console.log('secret token shared between client and server', secret);
-          console.log('one time password', otp);
-          const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: 'ramanakunam16@gmail.com',
-              pass: 'bgdjppxbdfvtlcub',
-            },
-          });
-
-          const mailOptions = {
-            from: 'ramanakunam16@gmail.com',
-            to: email,
-            subject: 'your one time password(OTP)',
-            text: `Your OTP is :${otp}`,
-          };
-          console.log(email);
-
-          transporter.sendMail(mailOptions, (err, info) => {
-            if (err) {
-              console.error('error sennding mail', err);
-            } else {
-              console.log('email sent', info.response);
-            }
-          });
-
-          res.render('otpVerification');
-        }
-      }
-    }
-  );
-});
-
-app.post('/otp', (req, res) => {
-  const userEnteredOTP = req.body.otpInput;
-
-  const isValidOTP = speakeasy.totp.verify({
-    secret: secret.base32,
-    encoding: 'base32',
-    token: userEnteredOTP,
-    window: 1,
-  });
-
-  if (isValidOTP) {
-    res.render('resetPassword');
-  } else {
-    res.send('invalid otp');
-  }
-});
 
 app.post('/resetPassword', async (req, res) => {
   const email = req.body.email;

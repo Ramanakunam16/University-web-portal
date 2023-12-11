@@ -13,18 +13,22 @@
             box-sizing: fill;
         }
 
+        body {
+            background-image: linear-gradient(rgba(167, 157, 143, 0), rgba(167, 157, 143, 0)), url("libimg2.jpg");
+        }
+
         .container {
             width: 100%;
             /* padding: 5%; */
             min-height: 100vh;
-            background-image: linear-gradient(rgba(167, 157, 143, 0), rgba(167, 157, 143, 0)), url("libimg2.jpg");
+
             background-position: center;
             background-size: cover, ;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin: none;
+            padding-bottom: 10%;
 
         }
 
@@ -143,7 +147,7 @@
             border: 1px solid white;
             padding: 12px;
             display: inline-block;
-            width: 40%;
+            width: max-content;
             cursor: pointer;
 
         }
@@ -177,6 +181,19 @@
             background: none;
         }
 
+        .msg {
+            border: 1px solid black;
+            border-radius: 20px;
+            padding: 20px;
+            background-color: rgb(142, 204, 113);
+            position: fixed;
+            right: 0;
+            font-size: 20px;
+            margin-right: 5%;
+            width: 30%;
+
+        }
+
         @media (max-width:900px) {
             .search-bar {
                 width: 80%;
@@ -190,6 +207,17 @@
                 /* margin: auto; */
                 margin-top: 10%;
 
+            }
+
+            .search-header {
+                display: none;
+            }
+
+
+            .book-container {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
             }
         }
 
@@ -206,6 +234,7 @@
 <body>
 
     <div class="container ">
+        <div class="msg hidden">you reserved your book successfully</div>
         <h1 class="search-header " style="color:black;">Search Your Books <br> Down Here..</h1>
         <div class="search-bar">
 
@@ -213,194 +242,230 @@
             <button class="searchbtn"><img src="searchicon1.png" alt=""></button>
 
         </div>
-        <div class="book-container hidden">
-            <div class="book">
-                <img class="book-cover" src="b1.jpg" alt="Book 1 Cover">
-                <h3 class="book-name">The Pragmatic programmer</h3>
-                <button class="btn1">Reserve</button>
-                <button class="btn2">Learn More</button>
-
-                <div class="bookmodal hidden">
-                    <button class="close-modal">&times;</button>
-                    <img class="book-cover" src="b1.jpg" alt="Book 1 Cover">
-                    <h3>Author</h3> - Andrew Hunt, David Thomas
-                    <h3>Latest Edition</h3> - Second (20th Anniversary Edition)
-                    <h3>Publisher</h3> - Addison-Wesley Professional
-
-                    <p>
-                    <h3>About Book:</h3>
-                    Since its creation in 1999 by its authors to aid its clientele to develop better software,
-                    The Pragmatic Programmer has succeeded in becoming one of the highly-revered programming
-                    books. This book is for every coder looking to transcend to be a skilled software developer
-                    and a full-fledged programmer.
+        <div class="book-container hidden"></div>
 
 
-                    </p>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-                </div>
-            </div>
+        <script>
 
-            <div class="book">
-                <img class="book-cover" src="b2.jpg" alt="Book 2 Cover">
-                <h3 class="book-name">Head First Design Patterns</h3>
-                <button class="btn1">Reserve</button>
-                <button class="btn2">Learn More</button>
+            //Serach features
+            const searchbtn = document.querySelector(".searchbtn");
+            const container = document.querySelector(".container");
+            const searchHeader = document.querySelector(".search-header");
+            const booksContainer = document.querySelector(".book-container");
+            const searchInput = document.querySelector(".searchInput");
+            const bookName = document.querySelectorAll(".book-name");
+            const msg = document.querySelector(".msg")
+            console.log(bookName);
+            const book = document.querySelectorAll(".book")
+            console.log(book);
+            searchInput.addEventListener("input", (e) => {
+                const value = e.target.value;
 
-                <div class="bookmodal hidden">
+                if (value) {
+                    searchHeader.classList.add("hidden");
 
-                    <button class="close-modal">&times;</button>
-                    <img class="book-cover" src="b2.jpg" alt="Book 2 Cover">
-                    <h3>Author</h3> - Eric Freeman, Bert Bates, Kathy Sierra, Elisabeth Robson
-                    <h3>Latest Edition</h3> - First
-                    <h3>Publisher</h3> - O'Reilly Media
+                    booksContainer.classList.remove("hidden");
+                    msg.classList.add("hidden")
+                } else {
+                    searchHeader.classList.remove("hidden");
 
-                    <p>
-
-                    <h3>About Book:</h3>
-                    The Head First book series is known for its innovative way of breaking down complex topics into
-                    simpler, easy-to-understand units. The Head First Design Patterns: A Brain-Friendly Guide is
-                    compiled based on this tried-and-tested formula.
-
-                    There is a galore of illustrative and brain-stimulating examples in the Head First Design Patterns
-                    book that will make learning both efficient and fun simultaneously. Unlike other text-heavy
-                    programming books, this book features a thought-inducing, visually-rich format.
-
-                    The Head First Design Patterns book effortlessly explains the several software design patterns
-                    employed by proficient software developers and programmers from across the world to build
-                    elegant,fully-functional, flexible, and reusable software.
-                    </p>
-                </div>
-            </div>
-            <div class="book">
-                <img class="book-cover" src="b3.jpg" alt="Book 3 Cover">
-                <h3 class="book-name">Artificial Intelligence</h3>
-
-                <button class="btn1">Reserve</button>
-                <button class="btn2">Learn More</button>
-
-                <div class="bookmodal hidden">
-                    <button class="close-modal">&times;</button>
-                    <h1></h1>
-                    <p>
-
-                    </p>
-                </div>
-            </div>
-            <div class="book">
-                <img class="book-cover" src="b4.jpg" alt="Book 4 Cover">
-                <h3 class="book-name">Eloquent JavaScript</h3>
-                <button class="btn1">Reserve</button>
-                <button class="btn2">Learn More</button>
-
-            </div>
-            <div class="book">
-                <img class="book-cover" src="b5.jpg" alt="Book 5 Cover">
-                <h3 class="book-name">C++ Primer</h3>
-                <button class="btn1">Reserve</button>
-                <button class="btn2">Learn More</button>
-                <div class="bookmodal hidden">
-                    <button class="close-modal">&times;</button>
-                    <h1></h1>
-                    <p>
-
-                    </p>
-                </div>
-            </div>
-            <div class="book">
-                <img class="book-cover" src="b6.jpg" alt="Book 6 Cover">
-                <h3 class="book-name">C Programming</h3>
-
-                <button class="btn1">Reserve</button>
-                <button class="btn2">Learn More</button>
-                <div class="bookmodal hidden">
-                    <button class="close-modal">&times;</button>
-                    <h1></h1>
-                    <p>
-
-                    </p>
-                </div>
-            </div>
-
-
-        </div>
-
-
-    </div>
-
-    <script>
-        const searchbtn = document.querySelector(".searchbtn");
-        const container = document.querySelector(".container");
-        const searchHeader = document.querySelector(".search-header");
-        const booksContainer = document.querySelector(".book-container");
-        const searchInput = document.querySelector(".searchInput");
-        const bookName = document.querySelectorAll(".book-name");
-        console.log(bookName);
-        const book = document.querySelectorAll(".book")
-        console.log(book);
-        searchInput.addEventListener("input", (e) => {
-            const value = e.target.value;
-
-            if (value) {
-                searchHeader.classList.add("hidden");
-
-                booksContainer.classList.remove("hidden");
-            } else {
-                searchHeader.classList.remove("hidden");
-
-                booksContainer.classList.add("hidden");
-            }
-        })
-
-        // searchInput.addEventListener("keydown", (e) => {
-        //     if (e.key === "Enter") {
-        //         searchbtn.click();
-        //     }
-        // })
-
-        const btn2 = document.querySelectorAll(".btn2");
-        const bookmodal = document.querySelectorAll(".bookmodal");
-        const closeModal = document.querySelectorAll(".close-modal")
-        console.log(btn2.length);
-        console.log(bookmodal.length);
-        for (let i = 0; i < btn2.length; i++) {
-            btn2[i].addEventListener("click", () => {
-                bookmodal[i].classList.remove("hidden");
-
-
-
-                closeModal[i].addEventListener("click", () => {
-                    bookmodal[i].classList.add("hidden");
-                })
-
-
+                    booksContainer.classList.add("hidden");
+                    msg.classList.add("hidden")
+                }
             })
-            // window.addEventListener("click", (e) => {
-            //     if (e.target === bookmodal) {
-            //         bookmodal[i].classList.add("hidden");
-            //     })
-        }
-        searchInput.addEventListener("input", (e) => {
-            const value = e.target.value;
-            console.log(value);
-            for (let i = 0; bookName.length; i++) {
-                let bookNameValue = book[i].getElementsByClassName("book-name")[0];
-                console.log("bookname", bookNameValue);
 
-                if (bookNameValue) {
-                    let textvalue = bookNameValue.textContent || bookNameValue.innerHTML;
-                    console.log(textvalue);
 
-                    if (textvalue.toUpperCase().indexOf(value.toUpperCase()) > -1) {
-                        book[i].style.display = "";
-                    }
-                    else {
-                        book[i].style.display = "none";
+
+            // searchInput.addEventListener("keydown", (e) => {
+            //     if (e.key === "Enter") {
+            //         searchbtn.click();
+            //     }
+            // })
+
+
+
+            const books = [
+                {
+                    book_id: 1,
+                    book_title: 'The Pragmatic programmer',
+                    author: 'Andrew Hunt, David Thomas',
+                    latest_edition: 'Second (20th Anniversary Edition)',
+                    publishers: 'Addison-Wesley Professional',
+                    book_img: 'b1.jpg',
+                    book_discription:
+                        ' Since its creation in 1999 by its authors to aid its clientele to develop better software,The Pragmatic Programmer has succeeded in becoming one of the highly-revered programming books. This book is for every coder looking to transcend to be a skilled software developer and a full-fledged programmer.',
+                },
+                {
+                    book_id: 2,
+                    book_title: 'Head First Design Patterns',
+                    author: 'Eric Freeman',
+                    latest_edition: 'First',
+                    publishers: "O'Reilly Media",
+                    book_img: 'b2.jpg',
+                    book_discription:
+                        'The Head First book series is known for its innovative way of breaking down complex topics intosimpler, easy-to-understand units. The Head First Design Patterns: A Brain-Friendly Guide is compiled based on this tried-and-tested formula.There is a galore of illustrative and brain-stimulating examples in the Head First Design Patternsbook that will make learning both efficient and fun simultaneously.',
+                },
+                {
+                    book_id: 3,
+                    book_title: 'Artificial Intelligence',
+                    author: 'Jhon paul',
+                    latest_edition: '',
+                    publishers: 'pearson',
+                    book_img: 'b3.jpg',
+                    book_discription: '',
+                },
+                {
+                    book_id: 4,
+                    book_title: 'Eloquent JavaScript',
+                    author: 'marjin',
+                    latest_edition: '',
+                    publishers: 'pearson',
+                    book_img: 'b4.jpg',
+                    book_discription: '',
+                },
+
+                {
+                    book_id: 5,
+                    book_title: 'C++ Primer',
+                    author: 'stanly,josee,barbara',
+                    latest_edition: '',
+                    publishers: 'pearson',
+                    book_img: 'b5.jpg',
+                    book_discription: '',
+                },
+                {
+                    book_id: 6,
+                    book_title: 'C Programming',
+                    author: 'greg perry',
+                    publishers: 'perason',
+                    latest_edition: '',
+                    book_img: 'b6.jpg',
+                    book_discription: '',
+                },
+                {
+                    book_id: 7,
+                    book_title: 'Head First Java',
+                    author: 'Eric',
+                    publishers: "O'relly",
+                    latest_edition: 'greg perry',
+                    book_img: 'b7.jpg',
+                    book_discription: '',
+                },
+            ];
+
+            const bookContainer = document.querySelector('.book-container');
+            const reservebtns = document.querySelectorAll('.btn1');
+            let count = 0;
+            let disabled = false;
+            books.forEach(book => {
+                const html = `  <div class="book">
+  <img class="book-cover" src="${book.book_img}" alt="Book 1 Cover">
+  <h3 class="book-name">${book.book_title}</h3>
+  <button class="btn1">Reserve</button>
+  <button class="btn2">Learn More</button>
+
+  <div class="bookmodal hidden">
+      <button class="close-modal">&times;</button>
+      <img class="book-cover" src="${book.book_img}" alt="Book 1 Cover">
+      <h3>Author</h3> - ${book.author}
+      <h3>Latest Edition</h3> - ${book.latest_edition}
+      <h3>Publisher</h3> -${book.publishers}
+
+      <h3>About Book:</h3>
+      <p>${book.book_discription}</p>
+
+  </div>
+</div>`;
+
+                bookContainer.insertAdjacentHTML('afterbegin', html);
+                if (!disabled) {
+                    const reserveBtn = bookContainer.querySelector('.btn1');
+                    reserveBtn.addEventListener("click", () => {
+                        reserveBook(book);
+                        reserveBtn.textContent = "Booked"
+                        reserveBtn.style.backgroundColor = "grey";
+
+
+
+                        setTimeout(() => {
+                            msg.classList.remove("hidden")
+                            reserveBtn.style.display = "none"
+                        }, 1000)
+                        setTimeout(() => {
+                            msg.classList.add("hidden")
+                            // reserveBtn.style.display = "none"
+                        }, 5000)
+
+                        count++
+                        msg.textContent = `you reserved ${count} books for now. Feel free to book again!`
+                        // msg.textContent = "you reserved 2 books for now.it was limited for day."
+
+
+                    });
+
+                }
+            });
+
+            async function reserveBook(book) {
+
+                await axios.post("/bookReservation", book).then(response => {
+                    console.log(response)
+                }
+                )
+
+
+            }
+
+
+
+            const btn2 = document.querySelectorAll(".btn2");
+            const bookmodal = document.querySelectorAll(".bookmodal");
+            const closeModal = document.querySelectorAll(".close-modal")
+            console.log(btn2.length);
+            console.log(bookmodal.length);
+            for (let i = 0; i < btn2.length; i++) {
+                btn2[i].addEventListener("click", () => {
+                    bookmodal[i].classList.remove("hidden");
+
+
+
+                    closeModal[i].addEventListener("click", () => {
+                        bookmodal[i].classList.add("hidden");
+                    })
+
+
+                })
+                // window.addEventListener("click", (e) => {
+                //     if (e.target === bookmodal) {
+                //         bookmodal[i].classList.add("hidden");
+                //     })
+            }
+            searchInput.addEventListener("input", (e) => {
+                const value = e.target.value;
+                console.log(value);
+                for (let i = 0; bookName.length; i++) {
+                    let bookNameValue = book[i].getElementsByClassName("book-name")[0];
+                    console.log("bookname", bookNameValue);
+
+                    if (bookNameValue) {
+                        let textvalue = bookNameValue.textContent || bookNameValue.innerHTML;
+                        console.log(textvalue);
+
+                        if (textvalue.toUpperCase().indexOf(value.toUpperCase()) > -1) {
+                            book[i].style.display = "";
+                        }
+                        else {
+                            book[i].style.display = "none";
+                        }
                     }
                 }
-            }
-        })
+            })
 
-    </script>
+
+
+        </script>
 </body>
 
 </html>

@@ -220,7 +220,7 @@
 
 <div class="studentsignupForm hidden">
 
-  <form id="signup" action="/facultysignUp" method="post">
+  <form id="signup" action="/signUp" method="post">
     <div>
       <label for="email">Enter email</label>
       <input type="email" id="email" name="email" placeholder="Enter email address" required>
@@ -255,23 +255,23 @@
 
 <div class="facultysignupForm" style="width: 30%">
 
-  <form id="signup" action="/facultysignUp" method="post">.
+  <form id="facultysignup" action="/facultysignUp" method="post">.
     <div>
-      <label for="email">Enter your email</label>
-      <input type="email" id="email" name="email" placeholder="Enter email address" required>
+      <label for="femail">Enter your email</label>
+      <input type="email" id="femail" name="femail" placeholder="Enter email address" required>
       <span id="emailAvailability"></span>
       <!-- <button class="continue-button">Continue</button> -->
     </div>
 
     <div>
-      <label for="uname">Create a username</label>
-      <input type="text" id="uname" name="uname" placeholder="Enter user name" required>
+      <label for="funame">Create a username</label>
+      <input type="text" id="funame" name="funame" placeholder="Enter user name" required>
       <span id="userAvailability"></span>
       <!-- <button class="continue-button">Continue</button> -->
     </div>
     <div>
-      <label for="passwd">Create a password</label>
-      <input type="password" id="passwd" name="passwd" placeholder="create secure password" required>
+      <label for="fpasswd">Create a password</label>
+      <input type="password" id="fpasswd" name="fpasswd" placeholder="create secure password" required>
       <label class="eye" for="check"><input id="check" type="checkbox">
         <span class="line"></span>
         <span><img src="icons8-eye-32.jpg" alt=""></span>
@@ -279,7 +279,7 @@
       <!-- <button class="continue-button">Continue</button> -->
     </div>
 
-    <button type="submit" onclick="validateForm()">Create Account</button>
+    <button type="submit">Create Account</button>
 
   </form>
   <div class="signinbtn">

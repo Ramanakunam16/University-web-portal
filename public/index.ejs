@@ -78,17 +78,23 @@
       color: rgb(82, 103, 219);
     }
 
-
-
-
-    .loginSignup {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin-top: 40px;
+    .info h3 {
+      margin: 20px;
+      color: rgb(82, 103, 219);
+      font-size: 20px;
     }
 
-    .loginSignup .signInbtn {
+
+
+    .login {
+      display: flex;
+      /* justify-content: center; */
+      margin-top: 40px;
+      margin-left: 10%;
+      margin-bottom: 15%;
+    }
+
+    .login .signInbtn {
       width: 20%;
       text-align: center;
       font-size: 20px;
@@ -99,30 +105,22 @@
     }
 
 
-    .loginSignup a {
+    .login a {
       text-decoration: none;
       color: white;
     }
 
-    .loginSignup .signUpbtn {
-      width: 20%;
-      text-align: center;
-      font-size: 20px;
 
-      border: 1px solid rgb(108, 70, 211);
-      padding: 10px;
-      background-color: rgb(65, 105, 180);
-    }
-
-    .container {
+    .container:not(.features) {
       width: 100%;
       height: 800px;
       /* background-color: #f0e9de; */
       display: flex;
       gap: 4%;
       justify-content: space-between;
-
+      border-top: 1px solid black;
     }
+
 
     .results {
       margin-top: 10%;
@@ -142,7 +140,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding-top: 30%;
+      padding-top: 20%;
       font-size: 20px;
 
 
@@ -191,7 +189,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding-top: 30%;
+      padding-top: 20%;
       font-size: 20px;
     }
 
@@ -230,7 +228,33 @@
       border: 2px solid black;
       border-radius: 20px;
       animation: boxAnim 2s ease-in-out 0s 2 normal forwards;
+      text-align: center;
 
+    }
+
+
+
+
+    .blogbtn {
+      margin-top: 60%;
+      font-size: 20px;
+      border: 2px solid #222;
+      border-radius: 20px;
+
+      padding: 20px;
+
+      background-color: rgb(238, 147, 43);
+
+    }
+
+    .major {
+      color: rgb(196, 60, 60);
+      font-size: 40px;
+      margin-top: 60%;
+    }
+
+    .hidden {
+      display: none;
     }
 
     .footer {
@@ -240,7 +264,7 @@
       position: relative;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width:920px) {
 
 
       .container {
@@ -301,21 +325,21 @@
 
     </div>
 
-    <p class="topic">Student Zone</p>
+    <p class="topic">Your Academic Space</p>
 
     <h2>Navigate your success <br> story with ease</h2>
     <br>
-    <p>Access your <strong>semester results</strong>,</p>
+    <p><b>Students</b>, check your grades and reserve library books effortlessly</p>
     <br>
-    <p><b>Reserve</b> your favorite <strong>library books</strong>,
-      and</p>
+    <p><b>Faculty</b>, manage results and guide students with ease</p>
     <br>
-    <p>Share your thoughts through our vibrant <strong>blog space</strong>.</p>
+    <p> This is where learning meets convenience for both students and educators</p>
+    <h3> Welcome to your dedicated academic portal</h3>
   </div>
 
-  <div class="loginSignup">
+  <div class="login">
     <a class="signInbtn" href="/login" id="signin">Login</a>
-    <a class="signUpbtn" href="/signup" id="signup">Sign Up</a>
+
 
   </div>
 
@@ -325,6 +349,12 @@
   </div>
 
   <div class="container">
+
+    <!-- <div class="features">
+      <h2>Insights Center:</h2>
+      <P>Results, Reservations, Blogs</P>
+
+    </div> -->
     <div class="results">
 
       <article class="resultsContent">
@@ -356,13 +386,18 @@
 
         <div class="libbtn">
           <p>Click here to reserve a book</p>
-          <a href="/signup">Reserve Books</a>
+          <a href="/login">Reserve Books</a>
         </div>
       </article>
     </div>
-    <div class="blogs"></div>
+    <div class="blogs">
+
+
+      <button class="blogbtn">Blogs</button>
+      <h2 class="major hidden"> majaor work</h2>
+    </div>
   </div>
-  <a href="/uploadResults">upload</a>
+
 
   <!-- </div> -->
 
@@ -379,7 +414,14 @@
     })
     // history.go(-1);
     // location.reload("/public/dashBoard.ejs");
+    const blogsbtn = document.querySelector(".blogbtn")
+    const major = document.querySelector(".major")
 
+    blogsbtn.addEventListener("click", () => {
+
+      major.classList.remove("hidden")
+      blogsbtn.classList.add("hidden")
+    })
   </script>
 
 </body>
