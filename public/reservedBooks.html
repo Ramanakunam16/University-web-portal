@@ -200,6 +200,7 @@
                 <h4>Author:<p class="bookDetails">${book.author}</p></h4>
                 <h4>publishers:<p class="bookDetails">${book.publishers}</p></h4>
                 <h4>book edition:<p class="bookDetails">${book.book_edition}</p></h4>
+                <h4>booked date:<p class="bookDetails">${book.booked_date}</p></h4>
 
             </div >
                 <div class="controls">
@@ -248,7 +249,17 @@
                 //submiting reason event handler
                 reasonbtn.addEventListener("click", (e) => {
                     e.preventDefault();
-                    rejectedBooks(container, book)
+                    const date = new Date().getDate()
+                    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fir", "Sat"]
+                    const day = new Date().getDay();
+                    const year = new Date().getFullYear()
+                    const hours = new Date().getHours()
+                    const minutes = new Date().getMinutes();
+                    const seconds = new Date().getSeconds();
+                    // console.log(time)
+                    const rejectedDate = `${date} ${days[day]} ${year} at ${hours}:${minutes}:${seconds}`
+
+                    rejectedBooks(container, book, rejectedDate)
                 })
                 //reason component cancel btn 
                 document.querySelector(".reasonCancelbtn").addEventListener("click", (e) => {
@@ -267,7 +278,20 @@
 
                     setTimeout(() => {
                         container.style.display = "none"
-                        completedBooks(book)
+                        const date = new Date().getDate()
+                        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fir", "Sat"]
+                        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+                        const day = new Date().getDay();
+                        const month = new Date().getMonth()
+                        console.log(month)
+                        const year = new Date().getFullYear()
+                        const hours = new Date().getHours()
+                        const minutes = new Date().getMinutes();
+                        const seconds = new Date().getSeconds();
+                        // console.log(time)
+                        const completedDate = `${days[day]} ${date} ${months[month]} ${year} at ${hours}:${minutes}:${seconds}`
+
+                        completedBooks(book, completedDate)
                     }, 3000)
 
 
@@ -283,14 +307,14 @@
 
 
         // delete rejected books
-        async function rejectedBooks(container, book) {
+        async function rejectedBooks(container, book, rejectedDate) {
 
             const reasonForm = container.querySelector("#reason");
             const selecetdReason = reasonForm.querySelector("input[name='reason']:checked")
 
             if (selecetdReason) {
                 const reasonValue = selecetdReason.value;
-                await axios.post("/rejectedBooks", { reason: reasonValue, book: book }).then(response => {
+                await axios.post("/rejectedBooks", { reason: reasonValue, book: book, rejectedDate: rejectedDate }).then(response => {
                     const deleted = response.data;
                     if (deleted) {
 
@@ -303,9 +327,9 @@
             }
         }
 
-        async function completedBooks(book) {
+        async function completedBooks(book, completedDate) {
 
-            await axios.post("/completedBooks", { book: book })
+            await axios.post("/completedBooks", { book: book, completedDate: completedDate })
         }
 
 

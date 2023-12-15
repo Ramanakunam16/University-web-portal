@@ -50,6 +50,7 @@
             color: #f34f44;
         }
 
+
         #results-table2 {
 
             text-align: center;
@@ -78,7 +79,7 @@
         <img src="ambedkar-university-sklm.jpg">
         <h1>Dr.B.R Ambedkar University,Srikakulam</h1>
         <p>College of Engineering.</p>
-        <p>Btech V Sem Results</p>
+        <p>Btech Semeter Results</p>
     </div>
 
     <div class="results" align="center">
@@ -93,6 +94,7 @@
                 <thead>
                     <h3>Student Details</h3>
                 </thead>
+                <!-- <div class="sdetails"> -->
                 <tr>
                     <th>Registration Number</th>
 
@@ -100,6 +102,7 @@
 
                     <th>sGPA</th>
                 </tr>
+                <!-- </div> -->
                 <!-- <tr>
                     <td>Registration number:</td>
                     <td style="width:30%"> </td>
@@ -126,6 +129,7 @@
                     <h3>Subject Wise Grade Points</h3>
                 </thead>
                 <tr>
+                    <th>Subject Code</th>
                     <th> Subject Name</th>
                     <th> Grade points</th>
                 </tr>
@@ -211,10 +215,14 @@
                         }
                         response.data.forEach(
                             (subject) => {
+                                const subject_name = subject.subjectName.slice(3);
+                                const subject_code = subject.subjectName.slice(0, 3)
                                 const row = results_table2.insertRow();
-                                const subjectName = row.insertCell(0);
-                                subjectName.textContent = subject.subjectName;
-                                const gradePoints = row.insertCell(1);
+                                const subjectCode = row.insertCell(0);
+                                subjectCode.textContent = subject_code
+                                const subjectName = row.insertCell(1);
+                                subjectName.textContent = subject_name;
+                                const gradePoints = row.insertCell(2);
                                 gradePoints.textContent = subject.gradePoints;
 
                             }

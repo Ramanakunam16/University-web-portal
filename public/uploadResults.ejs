@@ -8,10 +8,19 @@
         .header {
             padding: 5px;
             text-align: center;
-            background: #FFFFC2;
+
             color: #F4A460;
 
 
+        }
+
+        button {
+            padding: 10px;
+        }
+
+        button:hover {
+            cursor: pointer;
+            background-color: aqua;
         }
 
 
@@ -27,6 +36,10 @@
         .inner_divs {
             margin-left: 20%;
 
+        }
+
+        img {
+            height: 60px;
         }
 
 
@@ -59,10 +72,10 @@
 <body>
 
     <div class="header">
-        <img src="/public/imgs/ambedkar-university-sklm.jpg" style="float:center;width:72px;height:42px;">
+        <img src="./ambedkar-university-sklm.jpg" alt="logo">
         <h1>Dr.B.R Ambedkar University,Srikakulam</h1>
         <p>College of Engineering.</p>
-        <p>Btech V Sem Results</p>
+        <p>Btech Semeter Results</p>
     </div>
 
 
@@ -103,7 +116,7 @@
     <form action="/upload" method="POST" enctype="multipart/form-data" class="fileUpload">
 
         <h3>Upload Results Data</h3>
-        <label for="resultsFileUpload">Upload File<input type="file" accept=".mdb" name="myfile1"
+        <label for="resultsFileUpload">Upload File: <input type="file" accept=".mdb" name="myfile1"
                 id="resultsFileUpload"></label>
         <button>Upload</button>
     </form>

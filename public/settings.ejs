@@ -222,7 +222,7 @@
             display: none;
             position: absolute;
             right: 70%;
-            background-color: #d8a371;
+            background-color: #76cfaa;
             min-width: 250px;
             /* border: 2px solid black; */
             border-radius: 20px;
@@ -244,6 +244,15 @@
 
         .dropdown-content a:hover {
             color: #504e4e;
+        }
+
+        #dbicon {
+            width: 20px;
+        }
+
+        #dbicon:hover {
+            cursor: pointer;
+            background-color: #504e4e;
         }
 
         .active {
@@ -297,6 +306,12 @@
             background-color: rgb(7, 115, 151);
         }
 
+        .studentInfo {
+            display: flex;
+            justify-content: space-between;
+            gap: 10%;
+        }
+
         .box-2 {
             background-color: #91c7b9;
             border: 2px solid rgb(7, 115, 151);
@@ -304,31 +319,13 @@
             min-width: 65%;
             /* height: 40em; */
             max-height: 100em;
-
-
         }
 
-
-
         .box-3 {
-            background-image: linear-gradient(90deg,
-                    rgb(180, 167, 141) 20%,
-                    rgb(180, 167, 141) 20%, );
             border-radius: 20px;
-
+            /* border: 1px solid black; */
             height: 20em;
-            min-width: 10%;
-            /* 
-            position: absolute;
-
-            top: 50%;
-
-            left: 50%;
-
-            transform: translate(80%, -50%);
- */
-
-
+            width: 60%;
         }
 
         .box-4 {
@@ -366,8 +363,26 @@
             background-color: #4383be;
         }
 
-        .reasonContainer {
-            border-top: 1px solid black;
+        .date {
+            margin-left: 20px;
+            width: 20%;
+        }
+
+        .reason {
+            /* margin-left: 10px; */
+            position: relative;
+            top: -5px;
+            /* margin-bottom: 150px; */
+
+        }
+
+        .reason h2 {
+            color: #c76565;
+        }
+
+        .reason p {
+            color: #000000;
+            font-size: 18px;
         }
 
         .completedBtn:hover {
@@ -391,20 +406,21 @@
 
         .reservedBooks {
             display: flex;
-            width: 80%;
-            min-width: 90%;
+            width: 98%;
             justify-content: space-around;
             margin: 20px 20px;
-            margin-left: 40px;
+            margin-left: 20px;
             /* text-align: center; */
             border: 1px solid black;
             padding: 20px;
+            gap: 25px;
 
         }
 
         .bookInfo {
             display: block;
             margin: 20px;
+            width: max-content;
 
         }
 
@@ -526,18 +542,25 @@
 
             }
 
-            .piclabel {
-                /* min-width: 30%; */
-
-                max-width: 50%;
-            }
 
             .form2 {
                 margin-top: 80px;
                 width: 45px;
             }
 
+            .studentInfo {
+                display: block;
+            }
 
+            .form3 p,
+            h3,
+            .piclabel {
+                width: max-content;
+            }
+
+            .piclabel {
+                width: max-content;
+            }
 
             /* .box-3 {
                 position: absolute;
@@ -548,6 +571,9 @@
                 transform: translate(-50%, -50%);
 
             } */
+            .reservedBooks {
+                width: 93%;
+            }
 
             .header {
                 display: flex;
@@ -587,9 +613,9 @@
                     <img src="avatar.jpg" id="avatar" alt="">
                     <% } %>
 
-                        <button style="width:30px; margin-right: 47px;" class="dropdown-btn">
-                            <span>🔻 </span>
-                        </button>
+                        <i style="width:30px; margin-right: 47px;" class="dropdown-btn">
+                            <span><img src="dropdown5.jpg" alt="dropDownbtn" id="dbicon"></span>
+                        </i>
                         <div class="dropdown-content">
                             <a href="/settings">⚙ Platform settings</a>
                             <a href="/logout">↩ Sign Out</a>
@@ -609,62 +635,63 @@
         <div class="overlay hidden"></div>
         <div class="form1 form2 form3 box-2 " id="box-2">
 
+            <div class="studentInfo">
+                <div class="form1" style="width: 30%">
+                    <h3>personal Info</h3>
+                    <form id="updateInfo" action="/updateInfo" method="post">
+                        <div>
+                            <label for="email">Update Your Email Id:</label>
+                            <input type="email" id="email" name="email" value="<%= email %>" />
 
-            <div class="form1" style="width: 30%">
-                <h3>personal Info</h3>
-                <form id="updateInfo" action="/updateInfo" method="post">
-                    <div>
-                        <label for="email">Update Your Email Id:</label>
-                        <input type="email" id="email" name="email" value="<%= email %>" />
+                            <!-- <button class="continue-button">Continue</button>  -->
+                        </div>
 
-                        <!-- <button class="continue-button">Continue</button>  -->
-                    </div>
+                        <div>
+                            <label for="uname">Change Your Username:</label>
+                            <input type="text" id="uname" name="uname" value="<%= username%>">
 
-                    <div>
-                        <label for="uname">Change Your Username:</label>
-                        <input type="text" id="uname" name="uname" value="<%= username%>">
+                        </div>
+                        <button type="submit">Update Profile</button>
+                    </form>
+                </div>
+                <div class="box-3">
+                    <div class="form3">
 
-                    </div>
-                    <button type="submit">Update Profile</button>
-                </form>
-            </div>
-            <div class="box-3">
-                <div class="form3">
-
-                    <% if (profilePicData) { %>
-                        <form action="/updateProfilePic" method="post" enctype="multipart/form-data">
-                            <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>"
-                                id="profilepic" alt="profile pic">
-
-                            <h3>Profile Picture</h3>
-                            <p>
-
-                                For best results, use an square image at least 248px x 248px</p>
-                            <label for="pic" class="piclabel">Change Picture</label>
-                            <input type="file" id="pic" name="pic" en>
-                            <button id="picSave" type="submit"
-                                style="font-size: 18px;margin-top: 20px; margin-bottom: \50px;">Update</button>
-
-                        </form>
-                        <% } else { %>
-                            <form action="/saveProfilePic" method="post" enctype="multipart/form-data">
-                                <img src="avatar.jpg" id="profilepic" alt="">
+                        <% if (profilePicData) { %>
+                            <form action="/updateProfilePic" method="post" enctype="multipart/form-data">
+                                <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>"
+                                    id="profilepic" alt="profile pic">
 
                                 <h3>Profile Picture</h3>
                                 <p>
 
                                     For best results, use an square image at least 248px x 248px</p>
-                                <label for="pic" class="piclabel">Upload Picture</label>
-                                <input type="file" id="pic" name="pic">
+                                <label for="pic" class="piclabel">Change Picture</label>
+                                <input type="file" id="pic" name="pic" en>
                                 <button id="picSave" type="submit"
-                                    style="font-size: 18px;margin-top: 20px; margin-bottom: \50px;">Save</button>
+                                    style="font-size: 18px;margin-top: 20px; margin-bottom: \50px;">Update</button>
+
                             </form>
-                            <% } %>
+                            <% } else { %>
+                                <form action="/saveProfilePic" method="post" enctype="multipart/form-data">
+                                    <img src="avatar.jpg" id="profilepic" alt="">
+
+                                    <h3>Profile Picture</h3>
+                                    <p>
+
+                                        For best results, use an square image at least 248px x 248px</p>
+                                    <label for="pic" class="piclabel">Upload Picture</label>
+                                    <input type="file" id="pic" name="pic">
+                                    <button id="picSave" type="submit"
+                                        style="font-size: 18px;margin-top: 20px; margin-bottom: \50px;">Save</button>
+                                </form>
+                                <% } %>
 
 
+
+                    </div>
 
                 </div>
-
             </div>
             <div class="form2" style="width: 30%;margin-top: 50px;">
                 <form id="changePasswd" action="/changePasswd" method="post">
@@ -711,109 +738,109 @@
             <div class="completedContainer hidden"></div>
             <div class="rejectedContainer hidden">
                 <div class="reasonContainer"></div>
+
+
             </div>
-
         </div>
-    </div>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-    <script>
-        //profile pic feature
-        const pic = document.getElementById("profilepic");
-
-
-        const input = document.getElementById("pic");
-
-        input.addEventListener("change", (event) => {
-            pic.src = URL.createObjectURL(event.target.files[0])
-
-        })
-
-        //dropDown feature
-        const dropdownbtn = document.querySelector(".dropdown-btn")
-        const overlay = document.querySelector(".overlay")
-
-        let dropdown = document.getElementsByClassName("dropdown-btn");
-        let i;
-
-        for (i = 0; i < dropdown.length; i++) {
-            dropdown[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.style.display === "block") {
-                    dropdownContent.style.display = "none";
-                } else {
-                    dropdownContent.style.display = "block";
-                }
-            });
-        }
-        dropdownbtn.addEventListener("click", () => {
-            console.log(dropdownbtn);
-            overlay.classList.remove("hidden");
-        })
-
-        overlay.addEventListener("click", () => {
-            console.log("clicked");
-            document.querySelector(".dropdown-content").style.display = "none";
-            overlay.classList.add("hidden");
-        })
-
-        //library book reservation 
-        const libreservebtn = document.querySelector(".libReserve");
-        const box_2 = document.querySelector(".box-2");
-        const box_4 = document.querySelector(".box-4");
-        const profileSettings
-            = document.querySelector(".profileSettings")
-        profileSettings.style.backgroundColor = "#077397"
-
-        let studentReservationHistory = [];
-        let reservationHistory = []
+        <script>
+            //profile pic feature
+            const pic = document.getElementById("profilepic");
 
 
+            const input = document.getElementById("pic");
 
-        libreservebtn.addEventListener("click", async () => {
+            input.addEventListener("change", (event) => {
+                pic.src = URL.createObjectURL(event.target.files[0])
 
+            })
 
-            console.log("btn clicked");
-            box_2.classList.add("hidden");
-            box_4.classList.remove("hidden");
-            libreservebtn.classList.add("active")
-            libreservebtn.style.backgroundColor = "#077397"
-            profileSettings.style.backgroundColor = ""
+            //dropDown feature
+            const dropdownbtn = document.querySelector(".dropdown-btn")
+            const overlay = document.querySelector(".overlay")
+
+            let dropdown = document.getElementsByClassName("dropdown-btn");
+            let i;
+
+            for (i = 0; i < dropdown.length; i++) {
+                dropdown[i].addEventListener("click", function () {
+                    // this.classList.toggle("active");
+                    var dropdownContent = this.nextElementSibling;
+                    if (dropdownContent.style.display === "block") {
+                        dropdownContent.style.display = "none";
+                    } else {
+                        dropdownContent.style.display = "block";
+                    }
+                });
+            }
+            dropdownbtn.addEventListener("click", () => {
+                console.log(dropdownbtn);
+                overlay.classList.remove("hidden");
+            })
+
+            overlay.addEventListener("click", () => {
+                console.log("clicked");
+                document.querySelector(".dropdown-content").style.display = "none";
+                overlay.classList.add("hidden");
+            })
+
+            //library book reservation 
+            const libreservebtn = document.querySelector(".libReserve");
+            const box_2 = document.querySelector(".box-2");
+            const box_4 = document.querySelector(".box-4");
+            const profileSettings
+                = document.querySelector(".profileSettings")
+            profileSettings.style.backgroundColor = "#077397"
+
+            let studentReservationHistory = [];
+            let reservationHistory = []
 
 
 
-        })
-        async function studentreservedBooks() {
-            await axios.get("getSessionData").then(async (response) => {
-                const data = response.data;
-                console.log(data)
+            libreservebtn.addEventListener("click", async () => {
 
 
-                await axios.get("/reservedBooks").then(response => {
-                    const reservedBooks = response.data
-                    console.log(reservedBooks)
-
-                    reservationHistory.push(reservedBooks)
-
-
-                })
-                reservationHistory[0].filter(book => {
-                    console.log("book", book)
-                    console.log("data", data)
-                    if (book.studentId === data.userData.user_id) { studentReservationHistory.push(book) }
-                })
+                console.log("btn clicked");
+                box_2.classList.add("hidden");
+                box_4.classList.remove("hidden");
+                libreservebtn.classList.add("active")
+                libreservebtn.style.backgroundColor = "#077397"
+                profileSettings.style.backgroundColor = ""
 
 
 
             })
+            async function studentreservedBooks() {
+                await axios.get("getSessionData").then(async (response) => {
+                    const data = response.data;
+                    console.log(data)
 
-            console.log("reserved Books:", reservationHistory)
-            console.log("specific student books:", studentReservationHistory);
-            studentReservationHistory.forEach((book) => {
-                console.log(book)
-                const html = `<div class="reservedBooks"> 
+
+                    await axios.get("/reservedBooks").then(response => {
+                        const reservedBooks = response.data
+                        console.log(reservedBooks)
+
+                        reservationHistory.push(reservedBooks)
+
+
+                    })
+                    reservationHistory[0].filter(book => {
+                        console.log("book", book)
+                        console.log("data", data)
+                        if (book.studentId === data.userData.user_id) { studentReservationHistory.push(book) }
+                    })
+
+
+
+                })
+
+                console.log("reserved Books:", reservationHistory)
+                console.log("specific student books:", studentReservationHistory);
+                studentReservationHistory.forEach((book) => {
+                    console.log(book)
+                    const html = `<div class="reservedBooks"> 
             <img class="bookCover" src="b${book.book_id}.jpg" alt="book img">
             <div class= "bookInfo" >
                 <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>
@@ -824,7 +851,7 @@
 
             </div >
             <div class="date">
-               <h4>Booked On :</h4><p class="bookDetails">${new Date()}</p>
+               <h4>Booked On :</h4><p class="bookDetails">${book.booked_date}</p>
               </div>
 
             
@@ -832,42 +859,42 @@
 
         </div >`
 
-                document.querySelector(".reservedContainer").insertAdjacentHTML('beforeend', html)
+                    document.querySelector(".reservedContainer").insertAdjacentHTML('afterbegin', html)
 
-            })
-        }
+                })
+            }
 
-        let rejectedBooks = [];
-        let rejectedBooksHistory = [];
-        async function studentRejectedBooks() {
-            await axios.get("getSessionData").then(async (response) => {
-                const data = response.data;
-                console.log(data)
+            let rejectedBooks = [];
+            let rejectedBooksHistory = [];
+            async function studentRejectedBooks() {
+                await axios.get("getSessionData").then(async (response) => {
+                    const data = response.data;
+                    console.log(data)
 
 
-                await axios.get("/rejectedBooks").then(response => {
-                    const books = response.data
-                    console.log("rejected Books", books)
+                    await axios.get("/rejectedBooks").then(response => {
+                        const books = response.data
+                        console.log("rejected Books", books)
 
-                    rejectedBooks.push(books)
+                        rejectedBooks.push(books)
+
+
+                    })
+                    rejectedBooks[0].filter(book => {
+                        console.log("rejected book", book)
+                        console.log(" user data", data)
+                        if (book.studentId === data.userData.user_id) { rejectedBooksHistory.push(book) }
+                    })
+
 
 
                 })
-                rejectedBooks[0].filter(book => {
-                    console.log("rejected book", book)
-                    console.log(" user data", data)
-                    if (book.studentId === data.userData.user_id) { rejectedBooksHistory.push(book) }
-                })
 
-
-
-            })
-
-            console.log("rejected Books:", rejectedBooks)
-            console.log("specific studentrejected books:", rejectedBooksHistory);
-            rejectedBooksHistory.forEach((book) => {
-                console.log(book)
-                const html = `<div class="reservedBooks"> 
+                console.log("rejected Books:", rejectedBooks)
+                console.log("specific studentrejected books:", rejectedBooksHistory);
+                rejectedBooksHistory.forEach((book) => {
+                    console.log(book)
+                    const html = `<div class="reservedBooks"> 
             <img class="bookCover" src="b${book.book_id}.jpg" alt="book img">
             <div class= "bookInfo" >
                 <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>
@@ -878,56 +905,56 @@
 
             </div >
             <div class="date">
-               <h4>rejected On :</h4><p class="bookDetails">${new Date()}</p>
+               <h4>rejected On :</h4><p class="bookDetails">${book.rejected_date}</p>
               </div>
 
              
-
+              <div class="reason">
+                  <h2>Reason:</h2>
+                 <p>${book.reason}</p>
+                 </div>
             
               
 
         </div >`
-                // const reason = ` <div class="reason">
-                // <h2>Reason:</h2>
-                // <p>${book.reason}</p>
-                // </div>`
-
-                document.querySelector(".rejectedContainer").insertAdjacentHTML('afterbegin', html)
-                // document.querySelector(".rejectedContainer").document.querySelector(".reasonContainer").insertAdjacentHTML("afterbegin", reason)
-            })
-        }
-
-        let completedBooks = [];
-        let completedBooksHistory = [];
-        async function studentCompletedBooks() {
-            await axios.get("getSessionData").then(async (response) => {
-                const data = response.data;
-                console.log(data)
 
 
-                await axios.get("/completedBooks").then(response => {
-                    const books = response.data
-                    console.log("completed Books", books)
+                    document.querySelector(".rejectedContainer").insertAdjacentHTML('afterbegin', html)
 
-                    completedBooks.push(books)
+                })
+            }
+
+            let completedBooks = [];
+            let completedBooksHistory = [];
+            async function studentCompletedBooks() {
+                await axios.get("getSessionData").then(async (response) => {
+                    const data = response.data;
+                    console.log(data)
+
+
+                    await axios.get("/completedBooks").then(response => {
+                        const books = response.data
+                        console.log("completed Books", books)
+
+                        completedBooks.push(books)
+
+
+                    })
+                    completedBooks[0].filter(book => {
+                        console.log("completed book", book)
+                        console.log(" user data", data)
+                        if (book.studentId === data.userData.user_id) { completedBooksHistory.push(book) }
+                    })
+
 
 
                 })
-                completedBooks[0].filter(book => {
-                    console.log("completed book", book)
-                    console.log(" user data", data)
-                    if (book.studentId === data.userData.user_id) { completedBooksHistory.push(book) }
-                })
 
-
-
-            })
-
-            console.log("completed Books:", completedBooks)
-            console.log("specific studentcompleted books:", completedBooksHistory);
-            completedBooksHistory.forEach((book) => {
-                console.log(book)
-                const html = `<div class="reservedBooks"> 
+                console.log("completed Books:", completedBooks)
+                console.log("specific studentcompleted books:", completedBooksHistory);
+                completedBooksHistory.forEach((book) => {
+                    console.log(book)
+                    const html = `<div class="reservedBooks"> 
             <img class="bookCover" src="b${book.book_id}.jpg" alt="book img">
             <div class= "bookInfo" >
                 <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>
@@ -938,7 +965,7 @@
 
             </div >
             <div class="date">
-               <h4>completed On :</h4><p class="bookDetails">${new Date()}</p>
+               <h4>completed On :</h4><p class="bookDetails">${book.completed_date}</p>
               </div>
 
             
@@ -946,69 +973,69 @@
 
         </div >`
 
-                document.querySelector(".completedContainer").insertAdjacentHTML('afterbegin', html)
+                    document.querySelector(".completedContainer").insertAdjacentHTML('afterbegin', html)
 
+                })
+            }
+            studentreservedBooks();
+            studentRejectedBooks();
+            studentCompletedBooks();
+
+
+            //profile Settings contents
+            profileSettings.addEventListener("click", () => {
+                box_2.classList.remove("hidden");
+                box_4.classList.add("hidden");
+                libreservebtn.style.backgroundColor = "";
+                profileSettings.style.backgroundColor = "#077397"
             })
-        }
-        studentreservedBooks();
-        studentRejectedBooks();
-        studentCompletedBooks();
 
 
-        //profile Settings contents
-        profileSettings.addEventListener("click", () => {
-            box_2.classList.remove("hidden");
-            box_4.classList.add("hidden");
-            libreservebtn.style.backgroundColor = "";
-            profileSettings.style.backgroundColor = "#077397"
-        })
-
-
-        // library book reservation features
-        const completedBtn = document.querySelector(".completedBtn")
-        const rejectedBtn = document.querySelector(".rejectedBtn")
-        const reservedBtn = document.querySelector(".reservedBtn")
-        reservedBtn.style.backgroundColor = "#4383be";
-        const reserveBooksContainer = document.querySelector(".reservedContainer")
-        const completedBooksContainer = document.querySelector(".completedContainer")
-        const rejectedBooksContainer = document.querySelector(".rejectedContainer")
-
-        document.addEventListener("DOMContentLoaded", function () {
-            completedBtn.addEventListener("click", () => {
-                reserveBooksContainer.classList.add("hidden")
-                completedBooksContainer.classList.remove("hidden")
-                completedBtn.style.backgroundColor = "#06eeee"
-                reservedBtn.style.backgroundColor = "";
-                rejectedBtn.style.backgroundColor = ""
-                rejectedBooksContainer.classList.add("hidden")
-                const html = ``;
-            })
-        })
-        reservedBtn.addEventListener("click", () => {
-            reserveBooksContainer.classList.remove("hidden")
-            rejectedBtn.classList.add("hidden");
-            completedBtn.classList.add("hidden");
-            completedBooksContainer.classList.add('hidden')
-            rejectedBooksContainer.classList.add('hidden')
+            // library book reservation features
+            const completedBtn = document.querySelector(".completedBtn")
+            const rejectedBtn = document.querySelector(".rejectedBtn")
+            const reservedBtn = document.querySelector(".reservedBtn")
             reservedBtn.style.backgroundColor = "#4383be";
-            completedBtn.style.backgroundColor = "";
-            rejectedBtn.style.backgroundColor = ""
+            const reserveBooksContainer = document.querySelector(".reservedContainer")
+            const completedBooksContainer = document.querySelector(".completedContainer")
+            const rejectedBooksContainer = document.querySelector(".rejectedContainer")
+
+            document.addEventListener("DOMContentLoaded", function () {
+                completedBtn.addEventListener("click", () => {
+                    reserveBooksContainer.classList.add("hidden")
+                    completedBooksContainer.classList.remove("hidden")
+                    completedBtn.style.backgroundColor = "#06eeee"
+                    reservedBtn.style.backgroundColor = "";
+                    rejectedBtn.style.backgroundColor = ""
+                    rejectedBooksContainer.classList.add("hidden")
+                    const html = ``;
+                })
+            })
+            reservedBtn.addEventListener("click", () => {
+                reserveBooksContainer.classList.remove("hidden")
+                rejectedBtn.classList.add("hidden");
+                completedBtn.classList.add("hidden");
+                completedBooksContainer.classList.add('hidden')
+                rejectedBooksContainer.classList.add('hidden')
+                reservedBtn.style.backgroundColor = "#4383be";
+                completedBtn.style.backgroundColor = "";
+                rejectedBtn.style.backgroundColor = ""
 
 
-        })
-        rejectedBtn.addEventListener("click", () => {
-            reserveBooksContainer.classList.add("hidden")
-            rejectedBooksContainer.classList.remove("hidden")
-            completedBooksContainer.classList.add("hidden")
-            completedBtn.classList.add("hidden");
-            rejectedBtn.classList.add("hidden");
-            reservedBtn.style.backgroundColor = "";
-            completedBtn.style.backgroundColor = "";
-            rejectedBtn.style.backgroundColor = "#c76565";
-        })
+            })
+            rejectedBtn.addEventListener("click", () => {
+                reserveBooksContainer.classList.add("hidden")
+                rejectedBooksContainer.classList.remove("hidden")
+                completedBooksContainer.classList.add("hidden")
+                completedBtn.classList.add("hidden");
+                rejectedBtn.classList.add("hidden");
+                reservedBtn.style.backgroundColor = "";
+                completedBtn.style.backgroundColor = "";
+                rejectedBtn.style.backgroundColor = "#c76565";
+            })
 
 
-    </script>
+        </script>
 </body>
 
 </html>

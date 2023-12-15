@@ -708,7 +708,7 @@ app.post('/upload', upload.single('myfile1'), (req, res) => {
 
 app.post('/studentacctVerify', (req, res) => {
   const studentId = req.body.studentId;
-  const password = req.body.createPasswd;
+  // const password = req.body.createPasswd;
   console.log(studentId);
   //db connection
   const mysqlConnection = createDbConnection();
@@ -734,22 +734,12 @@ app.post('/studentacctVerify', (req, res) => {
       console.log(results[0].user_id);
 
       if (results[0].user_id === +studentId) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        mysqlConnection.query(
-          'UPDATE studentLoginInfo SET hashedPassword=? WHERE user_id=?',
-          [hashedPassword, studentId],
-          (err, results) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log('password  updated');
-            }
-          }
-        );
-        mysqlConnection.end();
+        console.log('successfull');
+        // res.redirect('/generateOTP');
       } else {
-        console.log('noooo');
+        res.json({
+          isvalid: false,
+        });
       }
     }
   );
@@ -797,6 +787,68 @@ app.post('/facultyacctVerify', (req, res) => {
 
 let secret;
 let otp;
+app.post('/studentgenerateOTP', async (req, res) => {
+  const email = req.body.emailid;
+  console.log(email);
+
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query(
+    'SELECT * FROM studentLoginInfo WHERE user_email=? ',
+    [email],
+    async (err, results) => {
+      console.log(results);
+      if (err) {
+      } else {
+        const userData = results[0];
+        if (email === userData.user_email) {
+          secret = speakeasy.generateSecret();
+          otp = speakeasy.totp({
+            secret: secret.base32,
+            encoding: 'base32',
+          });
+
+          console.log('secret token shared between client and server', secret);
+          console.log('one time password', otp);
+          const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: 'ramanakunam16@gmail.com',
+              pass: 'bgdjppxbdfvtlcub',
+            },
+          });
+
+          const mailOptions = {
+            from: 'ramanakunam16@gmail.com',
+            to: email,
+            subject: 'your one time password(OTP)',
+            text: `Your OTP is :${otp}`,
+          };
+          console.log(email);
+
+          transporter.sendMail(mailOptions, (err, info) => {
+            if (err) {
+              console.error('error sennding mail', err);
+            } else {
+              console.log('email sent', info.response);
+            }
+          });
+
+          // res.render('otpVerification');
+        }
+      }
+    }
+  );
+});
 app.post('/generateOTP', async (req, res) => {
   const email = req.body.emailid;
 
@@ -873,8 +925,25 @@ app.post('/otp', (req, res) => {
     res.send('invalid otp');
   }
 });
+app.post('/studentotp', (req, res) => {
+  const userEnteredOTP = req.body.verifyotp;
+
+  const isValidOTP = speakeasy.totp.verify({
+    secret: secret.base32,
+    encoding: 'base32',
+    token: userEnteredOTP,
+    window: 1,
+  });
+
+  if (isValidOTP) {
+    res.render('studentCreatePassword');
+  } else {
+    res.send('invalid otp');
+  }
+});
 app.post('/passwordCreation', (req, res) => {
   const facultyId = req.body.facultyId;
+  const studentId = req.body.studentId;
   const password = req.body.createPasswd;
   console.log(facultyId);
   //db connection
@@ -888,39 +957,73 @@ app.post('/passwordCreation', (req, res) => {
     console.log('Connected to MySQL');
   });
   // excute query
+  if (facultyId) {
+    mysqlConnection.query(
+      'SELECT * FROM facultyLoginInfo WHERE user_id=?',
+      [facultyId],
+      async (err, results) => {
+        console.log(results);
+        if (err) {
+          console.log(err);
+        }
 
-  mysqlConnection.query(
-    'SELECT * FROM facultyLoginInfo WHERE user_id=?',
-    [facultyId],
-    async (err, results) => {
-      console.log(results);
-      if (err) {
-        console.log(err);
-      }
+        console.log(results[0].user_id);
 
-      console.log(results[0].user_id);
+        if (results[0].user_id === +facultyId) {
+          const hashedPassword = await bcrypt.hash(password, 10);
 
-      if (results[0].user_id === +facultyId) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        mysqlConnection.query(
-          'UPDATE facultyLoginInfo SET hashedPassword=? WHERE user_id=?',
-          [hashedPassword, facultyId],
-          (err, results) => {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log('password  updated');
-              res.send('password UPDATED');
+          mysqlConnection.query(
+            'UPDATE facultyLoginInfo SET hashedPassword=? WHERE user_id=?',
+            [hashedPassword, facultyId],
+            (err, results) => {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log('password  updated');
+                res.redirect('login');
+              }
             }
-          }
-        );
-        mysqlConnection.end();
-      } else {
-        console.log('noooo');
+          );
+          mysqlConnection.end();
+        } else {
+          console.log('noooo');
+        }
       }
-    }
-  );
+    );
+  } else {
+    mysqlConnection.query(
+      'SELECT * FROM studentLoginInfo WHERE user_id=?',
+      [studentId],
+      async (err, results) => {
+        console.log(results);
+        if (err) {
+          console.log(err);
+        }
+
+        console.log(results[0].user_id);
+
+        if (results[0].user_id === +studentId) {
+          const hashedPassword = await bcrypt.hash(password, 10);
+
+          mysqlConnection.query(
+            'UPDATE studentLoginInfo SET hashedPassword=? WHERE user_id=?',
+            [hashedPassword, studentId],
+            (err, results) => {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log('password  updated');
+                res.redirect('login');
+              }
+            }
+          );
+          mysqlConnection.end();
+        } else {
+          console.log('noooo');
+        }
+      }
+    );
+  }
 });
 
 let profilePic;
@@ -1115,8 +1218,8 @@ app.get('/dashBoard', isAuthUser, (req, res) => {
 //booksReservation
 
 app.post('/bookReservation', isAuthUser, (req, res) => {
-  const bookInfo = req.body;
-  console.log(bookInfo);
+  const { book, bookedDate } = req.body;
+  console.log(book, bookedDate);
   const userData = req.session.results;
   console.log(userData);
 
@@ -1132,15 +1235,16 @@ app.post('/bookReservation', isAuthUser, (req, res) => {
   });
 
   mysqlConnection.query(
-    'INSERT INTO reservedBooks (studentId,book_title,author,publishers,book_edition,book_img,book_id) VALUES(?,?,?,?,?,?,?)',
+    'INSERT INTO reservedBooks (studentId,book_title,author,publishers,book_edition,book_img,book_id,booked_date) VALUES(?,?,?,?,?,?,?,?)',
     [
       userData.user_id,
-      bookInfo.book_title,
-      bookInfo.author,
-      bookInfo.publishers,
-      bookInfo.book_edition,
-      bookInfo.book_img,
-      bookInfo.book_id,
+      book.book_title,
+      book.author,
+      book.publishers,
+      book.book_edition,
+      book.book_img,
+      book.book_id,
+      bookedDate,
     ]
   );
 
@@ -1149,6 +1253,7 @@ app.post('/bookReservation', isAuthUser, (req, res) => {
 app.post('/rejectedBooks', (req, res) => {
   const { studentId, book_title, author, publishers, book_edition, book_id } =
     req.body.book;
+  const rejectedDate = req.body.rejectedDate;
   const reason = req.body.reason;
   console.log(reason);
 
@@ -1164,8 +1269,17 @@ app.post('/rejectedBooks', (req, res) => {
   });
 
   mysqlConnection.query(
-    'INSERT INTO rejectedBooks (studentId,book_title,author,publishers,book_edition,reason,book_id) VALUES(?,?,?,?,?,?,?)',
-    [studentId, book_title, author, publishers, book_edition, reason, book_id]
+    'INSERT INTO rejectedBooks (studentId,book_title,author,publishers,book_edition,reason,book_id,rejected_date) VALUES(?,?,?,?,?,?,?,?)',
+    [
+      studentId,
+      book_title,
+      author,
+      publishers,
+      book_edition,
+      reason,
+      book_id,
+      rejectedDate,
+    ]
   );
   res.json({
     deleted: true,
@@ -1180,6 +1294,7 @@ app.post('/rejectedBooks', (req, res) => {
 app.post('/completedBooks', (req, res) => {
   const { studentId, book_title, author, publishers, book_edition, book_id } =
     req.body.book;
+  const completedDate = req.body.completedDate;
 
   //db connection
   const mysqlConnection = createDbConnection();
@@ -1193,8 +1308,16 @@ app.post('/completedBooks', (req, res) => {
   });
 
   mysqlConnection.query(
-    'INSERT INTO completedBooks (studentId,book_title,author,publishers,book_edition,book_id) VALUES(?,?,?,?,?,?)',
-    [studentId, book_title, author, publishers, book_edition, book_id]
+    'INSERT INTO completedBooks (studentId,book_title,author,publishers,book_edition,book_id,completed_date) VALUES(?,?,?,?,?,?,?)',
+    [
+      studentId,
+      book_title,
+      author,
+      publishers,
+      book_edition,
+      book_id,
+      completedDate,
+    ]
   );
   res.json({
     deleted: true,

@@ -47,22 +47,27 @@
             color: rgb(82, 103, 219);
         }
 
+        .hidden {
+            display: none;
+        }
+
         button {
             display: block;
             /* margin: 20px 12px 12px 0px; */
             width: max-content;
-            height: 30px;
+            /* height: 30px; */
             background-color: #4cbbbb;
             border-radius: 20px;
             border: none;
             text-align: center;
             padding: 20px;
-            font-size: 15px;
+            font-size: 20px;
 
         }
 
         button:hover {
             cursor: pointer;
+            background-color: white;
         }
 
 
@@ -85,6 +90,12 @@
             padding: 10px;
         }
 
+        span {
+            font-size: small;
+            padding: 10px 10px;
+            color: red;
+        }
+
         @media (max-width: 900px) {
 
             .container {
@@ -104,35 +115,93 @@
     </div> -->
     <div class="container">
         <h2>Create password to access our features..</h2>
-        <form action="/studentacctVerify" method='post' id="form">
-            <label for="studentId">Enter student Id:</label>
-            <input type="text" id="studentId" name="studentId" required>
-            <label for="createPasswd">Enter New Password:</label>
-            <input type="password" id="createPasswd" name="createPasswd" required>
-            <label for="confirmCreatePasswd">Confirm Password:</label>
-            <input type="password" id="confirmCreatePasswd" name="confirmCreatePasswd" required>
-            <button id="btn"> Create Password</button>
+
+        <div class="acctVerify">
+            <form action="/studentacctVerify" method='post' id="form1">
+
+                <div class="id">
+                    <label for="studentId">Enter student Id:</label>
+                    <input type="text" id="studentId" name="studentId" required>
+                </div>
+
+                <button id="verifyAcct">Verify Account</button>
+            </form>
+        </div>
+
+        <div class="generateOtp hidden">
+            <form action="/studentgenerateOTP" method="post" id="form2">
+
+                <div class="emailid">
+
+                    <label for="emailid">Enter college provided email Id:</label>
+
+                    <span>example:20819510**@brau.edu.in</span>
+                    <input type="email" id="emailid" name="emailid" required>
+                    <Button class="generateotpBtn">generate otp</Button>
+                </div>
+            </form>
+        </div>
+        <div class="verifyotp hidden">
+            <form action="/studentotp" method="post" id="form2">
+
+
+
+                <label for="verifyotp">
+                    verify Otp
+
+                    <input type="integer" id="verifyotp" name="verifyotp" min="6" required>
+                    <Button class="verifyotpBtn">verify otp</Button>
+        </div>
         </form>
     </div>
+
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <script>
 
-        // const btn = document.querySelector("#btn")
-        // const msg = document.querySelector(".msg")
+        const form1 = document.getElementById("form1")
+        const form2 = document.querySelector("#form2")
+        const form3 = document.querySelector("#form3")
+        const verifyAcctBtn = document.querySelector("#verifyAcct")
+        const verifyOtpBtn = document.querySelector("#verifyOtp")
+        const verifyAccount = document.querySelector(".acctVerify")
+        const generateOtp = document.querySelector(".generateOtp")
+        const generateOtpBtn = document.querySelector(".generateotpBtn")
+        const verifyotpBtn = document.querySelector(".verifyotpBtn")
+        const verifyotp = document.querySelector(".verifyotp")
+        const otp = document.querySelector(".otp")
 
-        // btn.addEventListener("click", (e) => {
+
+        // form1.addEventListener("submit", async (e) => {
         //     e.preventDefault();
-        //     msg.classList.remove("hidden")
+
+        //     const formData = new FormData(form1)
+        //     console.log(formData)
+        //     await axios.post("/facultyacctVerify", formData).then(response => {
+        //         console.log(response.data)
+        //         generateOtpBtn.classList.remove("hidden");
+        //         verifyAccount.classList.add("hidden")
+
+        //     })
+
 
         // })
+        verifyAcctBtn.addEventListener('click', () => {
+            verifyAccount.classList.add("hidden")
+            generateOtp.classList.remove("hidden")
 
-        // const form = document.querySelector("#form")
-        // const formData = new FormData(e.target);
-        // form.addEventListener("submit"), async (e) => {
-        //     e.preventDetault();
+        })
+        generateOtpBtn.addEventListener("click", () => {
+            generateOtp.classList.add("hidden")
+            verifyotp.classList.remove("hidden")
 
-        //     await axios.post("/studentacctVerify", formData)
 
-        // }
+        })
+
+
+
+
 
     </script>
 </body>

@@ -22,10 +22,17 @@
         padding: 40px;
         height: 100%;
         opacity: 0.9;
-
+        /* -webkit-animation-name: ani;
+        -webkit-animation-duration: 1s; */
+        animation-name: studentLoginFormAni;
+        animation-duration: 3s;
         filter: drop-shadow(0 0 10px #555345e6);
 
 
+    }
+
+    .facultyLoginForm {
+        background-color: #72c6cc;
     }
 
     label {
@@ -52,13 +59,18 @@
 
         display: inline-block;
         width: max-content;
-        height: 30px;
+        /* height: 30px; */
         background-color: #0d8b8b;
         border-radius: 20px;
         border: 1px solid black;
         padding: 10px;
         margin-bottom: 20px;
+        color: #f0f3f3
+    }
 
+    #acctVerify:hover {
+        cursor: pointer;
+        background-color: #437769;
     }
 
     .loginbtn:hover {
@@ -110,12 +122,18 @@
 
     .fp {
         display: flex;
+        margin-left: 70px;
         color: red;
     }
 
     .fp span {
+        text-decoration: underline;
+        color: #0f4242;
+        font-size: 18px;
+    }
 
-        color: #0d8b8b;
+    .fp span:hover {
+        color: white
     }
 
     .student,
@@ -126,6 +144,7 @@
         width: 40%;
         height: 40px;
         padding: 20px;
+
     }
 
     .student button,
@@ -134,6 +153,7 @@
         display: inline-block;
         background-color: #dbd1d1;
         border: none;
+
     }
 
     .signupbtn {
@@ -206,7 +226,7 @@
     .btns {
         display: flex;
         justify-content: center;
-        gap: 40px;
+        gap: 90px;
 
     }
 
@@ -220,14 +240,85 @@
         border: none;
     }
 
+
+    .studentbtn:hover {
+        cursor: pointer;
+        background-color: ;
+        background-color: #91c7b9;
+
+
+    }
+
+    .facultybtn:hover {
+        cursor: pointer;
+        background-color: #72c6cc
+    }
+
     .hidden {
         display: none;
     }
 
-    .active {
-        background-color: #0d8b8b;
+    .sactive {
+        background-color: #91c7b9;
     }
 
+    .factive {
+        background-color: #72c6cc;
+    }
+
+    .loader {
+        border: 5px solid #f3f3f3;
+        /* Light grey */
+        border-top-color: #1d1f1e;
+        /* Blue */
+        border-radius: 60%;
+        width: 60px;
+        height: 60px;
+        margin-left: 47%;
+        margin-top: 10%;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        50% {
+
+            transform: rotate(180deg);
+
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @keyframes studentLoginFormAni {
+
+        from {
+            bottom: -100px;
+            opacity: 0
+        }
+
+        to {
+            bottom: 0;
+            opacity: 1
+        }
+    }
+
+    @-webkit-keyframes ani {
+        from {
+            bottom: -100px;
+            opacity: 0
+        }
+
+        to {
+            bottom: 0px;
+            opacity: 1
+        }
+    }
 
     @media (max-width: 900px) {
 
@@ -249,14 +340,14 @@
 
 <!-- <div class="student"> <button>faculty Login</button></div>
 <div class="faculty"> <button>Student Login</button></div> -->
-<h2 style="text-align: center;">Login To Dr.B.R Ambedkar University Campus connect</h2>
+<h2 style="text-align: center;">Login To Dr.B.R Ambedkar University web portal</h2>
 <div class="btns">
     <button class="studentbtn ">Student</>
-        <button class="facultybtn active">Faculty
+        <button class="facultybtn factive">Faculty
 </div>
 </div>
 <div class="studentLoginForm hidden">
-
+    <h2>Student Login:</h2>
     <div class="accctVerify">
         <p>Please verify your identity if yourn't before. </p>
         <a href="/studentacctVerify" id="acctVerify">Verify Account</a>
@@ -275,8 +366,8 @@
                     placeholder="password" required>
             </label>
             <label class="eye" for="check"><input id="check" type="checkbox">
-                <span class="line"></span>
-                <span><img src="icons8-eye-32.jpg" alt=""></span>
+                <!-- <span class="line"></span>
+                <span><img src="icons8-eye-32.jpg" alt=""></span> -->
             </label>
 
 
@@ -288,10 +379,11 @@
             <a href="/forgotPassword"><span>Reset Password</span></a>
         </div>
 
-    </form>>
+    </form>
 </div>
 
 <div class="facultyLoginForm">
+    <h2>Faculty Login:</h2>
     <div class="accctVerify">
         <p>Please verify your identity if yourn't before. </p>
         <a href="/facultyacctVerify" id="acctVerify">Verify Account</a>
@@ -323,7 +415,11 @@
             <a href="/forgotPassword"><span>Reset Password</span></a>
         </div>
 
-    </form>>
+    </form>
+</div>
+
+<div class="loader hidden">
+
 </div>
 
 
@@ -344,7 +440,7 @@
     const error = document.getElementById("error")
     const passwdInput = document.getElementById("passwd");
     const loginForm = document.getElementById("loginbtn");
-
+    const loader = document.querySelector(".loader")
 
 
 
@@ -422,20 +518,32 @@
     const studentsignin = document.querySelector(".studentLoginForm")
 
     facultybtn.addEventListener("click", () => {
-        studentbtn.classList.remove("active")
+        loader.classList.remove("hidden")
         studentsignin.classList.add('hidden')
-        facultysignin.classList.remove("hidden")
-        facultybtn.classList.add("active");
+        setTimeout(() => {
+            studentbtn.classList.remove("sactive")
+            studentsignin.classList.add('hidden')
+            facultysignin.classList.remove("hidden")
+            facultybtn.classList.add("factive");
+            loader.classList.add("hidden");
+        }, 1000)
+
 
 
 
     })
 
     studentbtn.addEventListener("click", () => {
-        studentsignin.classList.remove("hidden")
+        loader.classList.remove("hidden")
         facultysignin.classList.add("hidden")
-        facultybtn.classList.remove("active")
-        studentbtn.classList.add("active")
+        setTimeout(() => {
+            studentsignin.classList.remove("hidden")
+            facultysignin.classList.add("hidden")
+            facultybtn.classList.remove("factive")
+            studentbtn.classList.add("sactive")
+            loader.classList.add("hidden")
+        }, 1000)
+
     })
 
 

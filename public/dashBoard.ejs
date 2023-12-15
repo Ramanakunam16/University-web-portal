@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" features="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Expires" features="0">
+    <meta http-equiv="Pragma" features="no-cache">
+    <meta name="viewport" features="width=device-width, initial-scale=1.0">
 
     <title>Document</title>
 
@@ -20,6 +20,8 @@
                     rgb(117, 142, 148));
 
             font-family: 'Courier New', Courier, monospace;
+            animation-name: ani;
+            animation-duration: 4s;
         }
 
 
@@ -35,9 +37,9 @@
             display: inline-block;
             position: absolute;
             top: 25;
-            margin-top: 2px;
+
             margin-left: 5px;
-            margin-top: 25px;
+            margin-top: 30px;
             color: rgb(0, 0, 0);
         }
 
@@ -72,7 +74,10 @@
         .dropbtn {
 
             border: none;
+            border-radius: 50%;
             cursor: pointer;
+            position: relative;
+            top: 20px;
         }
 
         .dropdown {
@@ -80,19 +85,20 @@
             display: inline-block;
         }
 
-        .dropdown-content {
+        .dropdown-features {
             display: none;
             position: absolute;
             right: 70%;
-            background-color: #d8a371;
+            /* top: 20px; */
+            background-color: #76cfaa;
             min-width: 250px;
             /* border: 2px solid black; */
             border-radius: 20px;
             /* box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); */
-            z-index: 1;
+            z-index: 5;
         }
 
-        .dropdown-content a {
+        .dropdown-features a {
             color: rgb(255, 254, 254);
             padding: 12px 16px;
             text-decoration: none;
@@ -103,8 +109,18 @@
 
         }
 
-        .dropdown-content a:hover {
+        .dropdown-features a:hover {
             color: #504e4e;
+        }
+
+        #dbicon {
+            width: 20px;
+
+        }
+
+        #dbicon:hover {
+            cursor: pointer;
+            background-color: #504e4e;
         }
 
         .active {
@@ -124,7 +140,7 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(3px);
-            z-index: 0;
+            z-index: 1;
 
         }
 
@@ -161,6 +177,12 @@
             background-color: rgb(108, 70, 211);
         }
 
+        .letsGo:hover {
+            cursor: pointer;
+            box-shadow: 3px 3px black;
+
+        }
+
         .shape {
             width: 160px;
             height: 160px;
@@ -187,20 +209,20 @@
         }
 
 
-        .content {
+        .features {
             width: 100%;
             height: 800px;
             /* background-color: #f0e9de; */
             display: flex;
             gap: 4%;
-            justify-content: space-between;
+            justify-content: center;
 
         }
 
         .results {
             margin-top: 10%;
             margin-left: 40px;
-            height: 70%;
+            height: 60%;
             width: 30%;
             border: 2px solid black;
             border-radius: 20px;
@@ -209,20 +231,21 @@
 
         }
 
-        .resultsContent {
+        .resultsfeatures {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-top: 30%;
+            padding-top: 20%;
             font-size: 20px;
 
 
         }
 
-        .resultsContent p {
+        .resultsfeatures p {
+            text-align: center;
             padding-top: 20px;
-            margin-left: 10px;
+            margin-left: 20px;
         }
 
         .resultsbtn a {
@@ -243,33 +266,42 @@
         }
 
         .resultsbtn p {
-            padding-top: 40%;
-            color: rgb(221, 96, 87);
+
+            margin: 40px 0;
+            color: rgb(17, 16, 16);
+        }
+
+        .resultsbtn,
+        .libbtn {
+            width: 50%;
         }
 
         .libReserve {
             margin-top: 10%;
             /* margin-right: 40px; */
 
-            height: 70%;
+            height: 60%;
             width: 30%;
             border: 2px solid black;
             border-radius: 20px;
         }
 
-        .libReserveContent {
+        .libReservefeatures {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding-top: 30%;
+            padding-top: 20%;
             font-size: 20px;
         }
 
-        .libReserveContent p {
+        .libReservefeatures p {
+            text-align: center;
             padding-top: 20px;
             margin-left: 10px;
+            */
         }
+
 
         .libbtn a {
 
@@ -289,18 +321,20 @@
         }
 
         .libbtn p {
-            padding-top: 36%;
-            color: rgb(221, 96, 87);
+            /* padding: 20%; */
+            text-align: center;
+            margin: 40px 0;
+            color: rgb(17, 16, 16);
         }
 
-        .blogs {
+        /* .blogs {
             margin-top: 10%;
             margin-right: 40px;
             height: 70%;
             width: 30%;
             border: 2px solid black;
             border-radius: 20px;
-        }
+        } */
 
         #username {
             font-size: 3rem;
@@ -321,18 +355,31 @@
             box-sizing: border-box;
         }
 
+        @keyframes ani {
+
+            from {
+                bottom: -100px;
+                opacity: 0
+            }
+
+            to {
+                bottom: 0;
+                opacity: 1
+            }
+        }
+
         @media (max-width:900px) {
             .header {
                 display: flex;
                 justify-content: space-between;
             }
 
-            .content {
+            .features {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                min-height: 130rem;
+                min-height: 80rem;
                 /* min-height: 100%; */
             }
 
@@ -341,6 +388,20 @@
                 /* min-height: 50%; */
             }
 
+            .resultsfeatures,
+            .libReservefeatures {
+                padding-top: 10%;
+            }
+
+            /* #avatar {
+                margin-left: 30%;
+            }
+
+            #dbicon {
+                width: 20px;
+                margin-left: 65%;
+              
+            } */
 
 
 
@@ -382,11 +443,11 @@
                     <img src="avatar.jpg" id="avatar" alt="">
                     <% } %>
 
-                        <button style="width:30px; margin-right: 47px;" class="dropdown-btn">
-                            <span>🔻 </span>
-                        </button>
+                        <i style="width:30px; margin-right: 47px;" class="dropdown-btn">
+                            <span><img src="dropdown5.jpg" alt="dropDownbtn" id="dbicon"></span>
+                        </i>
 
-                        <div class="dropdown-content">
+                        <div class="dropdown-features">
                             <a href="/settings" class="settings">⚙ Platform settings</a>
                             <a href="/logout">↩ Sign Out</a>
 
@@ -402,7 +463,7 @@
 
         <p class="topic">Student Zone</p>
 
-        <h2>Navigate your success <br> story with ease</h2>
+        <h2>Explore & excel <br>Results|Library|Blogs </h2>
         <br>
         <p>Access your <strong>semester results</strong>,</p>
         <br>
@@ -415,26 +476,24 @@
 
         <p>Click here to view features..</p>
 
-        <div class="username">
-            <h2>welcome</h2>
-            <p>Mr.<%= username%>
-            </p>
-        </div>
+
         . <div class="shape">
 
         </div>
         <div class="username">
             <h2>welcome</h2>
-            <p>Mr.<%= username%>
+            <p>
+                <%= username%>
             </p>
         </div>
 
     </div>
 
-    <div class="content">
+    <div class="features">
+        <h2>Features:</h2>
         <div class="results">
 
-            <article class="resultsContent">
+            <article class="resultsfeatures">
                 <div class="resultsPics"> <img src="results.jpg" class="resultsimg1" alt="">
                     <img src="results1.jpg" class="resultsimg2" alt="">
                 </div>
@@ -451,7 +510,7 @@
             </article>
         </div>
         <div class="libReserve">
-            <article class="libReserveContent">
+            <article class="libReservefeatures">
                 <div> <img src="lib1.jpg" class="libimg1" alt="">
                     <img src="lib.jpg" class="libimg2" alt="">
 
@@ -481,12 +540,12 @@
 
         for (i = 0; i < dropdown.length; i++) {
             dropdown[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var dropdownContent = this.nextElementSibling;
-                if (dropdownContent.style.display === "block") {
-                    dropdownContent.style.display = "none";
+                // this.classList.toggle("active");
+                var dropdownfeatures = this.nextElementSibling;
+                if (dropdownfeatures.style.display === "block") {
+                    dropdownfeatures.style.display = "none";
                 } else {
-                    dropdownContent.style.display = "block";
+                    dropdownfeatures.style.display = "block";
                 }
             });
         }
@@ -501,9 +560,19 @@
 
         overlay.addEventListener("click", () => {
             console.log("clicked");
-            document.querySelector(".dropdown-content").style.display = "none";
+            document.querySelector(".dropdown-features").style.display = "none";
 
             overlay.classList.add("hidden");
+        })
+
+        const lestGobtn = document.querySelector(".letsGo")
+        const featuresSection = document.querySelector(".features")
+        lestGobtn.addEventListener("click", () => {
+            const scrollTo = featuresSection.getBoundingClientRect();
+
+            featuresSection.scrollIntoView({
+                behavior: "smooth", inline: "center"
+            })
         })
 
 
