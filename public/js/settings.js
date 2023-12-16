@@ -79,7 +79,7 @@ async function studentreservedBooks() {
   studentReservationHistory.forEach(book => {
     console.log(book);
     const html = `<div class="reservedBooks"> 
- <img class="bookCover" src="b${book.book_id}.jpg" alt="book img">
+ <img class="bookCover" src="./imgs/b${book.book_id}.jpg" alt="book img">
  <div class= "bookInfo" >
      <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>
      <h4>Book title:<p class="bookDetails">${book.book_title}</p></h4>
@@ -130,7 +130,7 @@ async function studentRejectedBooks() {
   rejectedBooksHistory.forEach(book => {
     console.log(book);
     const html = `<div class="reservedBooks"> 
- <img class="bookCover" src="b${book.book_id}.jpg" alt="book img">
+ <img class="bookCover" src="./imgs/b${book.book_id}.jpg" alt="book img">
  <div class= "bookInfo" >
      <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>
      <h4>Book title:<p class="bookDetails">${book.book_title}</p></h4>
@@ -186,7 +186,7 @@ async function studentCompletedBooks() {
   completedBooksHistory.forEach(book => {
     console.log(book);
     const html = `<div class="reservedBooks"> 
- <img class="bookCover" src="b${book.book_id}.jpg" alt="book img">
+ <img class="bookCover" src="./imgs/b${book.book_id}.jpg" alt="book img">
  <div class= "bookInfo" >
      <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>
      <h4>Book title:<p class="bookDetails">${book.book_title}</p></h4>

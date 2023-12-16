@@ -14,7 +14,7 @@
 <body>
     <div class="header">
         <div>
-            <img id="logo" src="ambedkar-university-sklm.jpg">
+            <img id="logo" src="./imgs/ambedkar-university-sklm.jpg">
 
         </div>
 
@@ -29,11 +29,11 @@
                 <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>" id="avatar"
                     alt="profile pic">
                 <% } else { %>
-                    <img src="avatar.jpg" id="avatar" alt="">
+                    <img src="./imgs/avatar.jpg" id="avatar" alt="">
                     <% } %>
 
                         <i style="width:30px; margin-right: 47px;" class="dropdown-btn">
-                            <span><img src="dropdown5.jpg" alt="dropDownbtn" id="dbicon"></span>
+                            <span><img src="./imgs/dropdown5.jpg" alt="dropDownbtn" id="dbicon"></span>
                         </i>
                         <div class="dropdown-content">
                             <a href="/settings">⚙ Platform settings</a>
@@ -93,7 +93,7 @@
                             </form>
                             <% } else { %>
                                 <form action="/saveProfilePic" method="post" enctype="multipart/form-data">
-                                    <img src="avatar.jpg" id="profilepic" alt="">
+                                    <img src="./imgs/avatar.jpg" id="profilepic" alt="">
 
                                     <h3>Profile Picture</h3>
                                     <p>

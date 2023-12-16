@@ -106,7 +106,7 @@ let count = 0;
 let disabled = false;
 books.forEach(book => {
   const html = `  <div class="book">
-  <img class="book-cover" src="${book.book_img}" alt="Book 1 Cover">
+  <img class="book-cover" src="./imgs/${book.book_img}" alt="Book 1 Cover">
   <h3 class="book-name">${book.book_title}</h3>
   <button class="btn1">Reserve</button>
   <button class="btn2">Learn More</button>
