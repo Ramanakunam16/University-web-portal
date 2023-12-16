@@ -1159,11 +1159,11 @@ app.post('/facultysignIn', (req, res) => {
 
         if (passwordMatch) {
           // results1 = results[0];
-          req.session.results = results[0];
-          const userData = req.session.results;
-          console.log('results', userData);
+          // req.session.results = results[0];
+          // const userData = req.session.results;
+          // console.log('results', userData);
           res.render('facultyDashBoard', {
-            username: userData.user_name,
+            username: results[0].user_name,
           });
         } else {
           const message =
