@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <link rel="stylesheet" href="pu/css/signupform.css">
+
+</head>
+
+
+
+<h2 style="text-align: center;">SignUP To Dr.Brau university Campus connect</h2>
+
+<div class="btns">
+  <button class="studentbtn ">Student</>
+    <button class="facultybtn active">Faculty
+</div>
+
+<div class="studentsignupForm hidden">
+
+  <form id="signup" action="/signUp" method="post">
+    <div>
+      <label for="email">Enter email</label>
+      <input type="email" id="email" name="email" placeholder="Enter email address" required>
+      <span id="emailAvailability"></span>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+
+    <div>
+      <label for="uname">Create a username</label>
+      <input type="text" id="uname" name="uname" placeholder="Enter user name" required>
+      <span id="userAvailability"></span>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+    <div>
+      <label for="passwd">Create a password</label>
+      <input type="password" id="passwd" name="passwd" placeholder="create secure password" required>
+      <label class="eye" for="check"><input id="check" type="checkbox">
+        <span class="line"></span>
+        <span><img src="icons8-eye-32.jpg" alt=""></span>
+      </label>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+
+    <button type="submit" onclick="validateForm()">Create Account</button>
+
+  </form>
+  <div class="signinbtn">
+    <p> Already have an Account?</p>
+    <a href="/login"><span style="font-size: 24px;" id="signinbtn">LOG IN</span></a>
+  </div>
+</div>
+
+<div class="facultysignupForm" style="width: 30%">
+
+  <form id="facultysignup" action="/facultysignUp" method="post">.
+    <div>
+      <label for="femail">Enter your email</label>
+      <input type="email" id="femail" name="femail" placeholder="Enter email address" required>
+      <span id="emailAvailability"></span>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+
+    <div>
+      <label for="funame">Create a username</label>
+      <input type="text" id="funame" name="funame" placeholder="Enter user name" required>
+      <span id="userAvailability"></span>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+    <div>
+      <label for="fpasswd">Create a password</label>
+      <input type="password" id="fpasswd" name="fpasswd" placeholder="create secure password" required>
+      <label class="eye" for="check"><input id="check" type="checkbox">
+        <span class="line"></span>
+        <span><img src="icons8-eye-32.jpg" alt=""></span>
+      </label>
+      <!-- <button class="continue-button">Continue</button> -->
+    </div>
+
+    <button type="submit">Create Account</button>
+
+  </form>
+  <div class="signinbtn">
+    <p> Already have an Account?</p>
+    <a href="/login"><span style="font-size: 24px;" id="signinbtn">LOG IN</span></a>
+  </div>
+</div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+<script src="./js/signupform.js"></script>
+</script>
+
+
+
+
+
+</body>
+
+</html>

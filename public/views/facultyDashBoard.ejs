@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/facultyDashBoard.css">
+</head>
+<div class="header">
+    <div class="logo">
+        <img src="ambedkar-university-sklm.jpg" id="logo">
+        <h2>Dr Brau</h2>
+    </div>
+    <nav>
+        <a href="#blogs">Blogs</a>
+        <a href="#libraryFeatures">Library</a>
+        <a href="#uploadResults">Results</a>
+        <a href="/logout">Logout</a>
+
+    </nav>
+</div>
+
+
+<div class="info">
+
+
+
+    <p class="topic">Faculty </p>
+
+    <h2>Beyond the classroom</h2>
+    <br>
+    <p>Manage student request ,</p>
+    <br>
+    <p>Provide specific topics to students through blogs</p>
+    <br>
+    <p>Where students can learn beyond the class.</p>
+
+    <button class="letsGo">Let's Go</button>
+
+    <p>Click here to view features..</p>
+
+    <!-- <div class="username">
+        <h2>welcome</h2>
+        <p>Mr.<%= username%>
+        </p>
+    </div> -->
+    . <div class="shape">
+
+    </div>
+    <div class="username">
+        <h2>welcome</h2>
+        <p>
+            <%= username%>
+        </p>
+    </div>
+
+</div>
+
+
+<div class="libraryFeatures" id="libraryFeatures">
+    <h2>Library book Reservation</h2>
+    <p>Manage student Books Reservations and </p>
+    <br>
+    <p>Upload New Books Available...</p>
+    <br>
+
+    <div class="options">
+        <a class="uploadBooks" href="/uploadBooks">Upload new Books
+        </a>
+        <a class="reservedBooks" href="/studentReservedBooks" id="signup">View Reserved Books</a>
+
+    </div>
+
+</div>
+<div class="uploadResults" id="uploadResults">
+    <h2>upload semester results </h2>
+    <p>upload student Results and </p>
+    <br>
+
+
+    <div class="options">
+        <a class="uploadResultsBtn" href="/uploadResults">Upload Semester results
+        </a>
+    </div>
+</div>
+
+<div class="blogs" id="blogs">
+    <h2>Blogs</h2>
+    <p>Post intresting Blogs, </p>
+    <br>
+    <p>Which helps your students on specific topics...</p>
+    <br>
+
+</div>
+
+<script src="./js/facultyDashBoard.js"></script>
+</body>
+
+</html>

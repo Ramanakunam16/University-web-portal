@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<title> login
+</title>
+
+
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="stylesheet" href="./css/signinform.css">
+</head>
+
+<h2 style="text-align: center;">Login To Dr.B.R Ambedkar University web portal</h2>
+<div class="btns">
+    <button class="studentbtn ">Student</>
+        <button class="facultybtn factive">Faculty
+</div>
+</div>
+<div class="studentLoginForm hidden">
+    <h2>Student Login:</h2>
+    <div class="accctVerify">
+        <p>Please verify your identity if yourn't before. </p>
+        <a href="/studentacctVerify" id="acctVerify">Verify Account</a>
+    </div>
+    <form id="signin" action="/signIn" , method="post">
+
+        <div class="label1">
+            <label for="studentId" name="studentId">Student Id :<input type="integer" id="studentId" name="studentId" ,
+                    placeholder="Enter student id" required></label>
+
+
+
+        </div>
+        <div class="label2">
+            <label for="passwd" name="passwd">Password :<input type="password" id="passwd" name="passwd"
+                    placeholder="password" required>
+            </label>
+            <label class="eye" for="check"><input id="check" type="checkbox">
+                <!-- <span class="line"></span>
+                <span><img src="icons8-eye-32.jpg" alt=""></span> -->
+            </label>
+
+
+        </div>
+
+        <button class="loginbtn" id="loginbtn">Log in</button>
+        <div class="fp">
+            <p>Did you forgot your password?</p>
+            <a href="/forgotPassword"><span>Reset Password</span></a>
+        </div>
+
+    </form>
+</div>
+
+<div class="facultyLoginForm">
+    <h2>Faculty Login:</h2>
+    <div class="accctVerify">
+        <p>Please verify your identity if yourn't before. </p>
+        <a href="/facultyacctVerify" id="acctVerify">Verify Account</a>
+    </div>
+    <form id="signin" action="/facultysignIn" , method="post">
+
+        <div class="label1">
+            <label for="facultyId" name="facultyId">Faculty Id :<input type="text" id="facultyId" name="facultyId" ,
+                    placeholder="Enter faculty id" required></label>
+
+
+
+        </div>
+        <div class="label2">
+            <label for="passwd" name="passwd">Password :<input type="password" id="passwd" name="passwd"
+                    placeholder="password" required>
+            </label>
+            <label class="eye" for="check"><input id="check" type="checkbox">
+                <span class="line"></span>
+                <!-- <span><img src="icons8-eye-32.jpg" alt=""></span> -->
+            </label>
+
+
+        </div>
+
+        <button class="loginbtn" id="loginbtn">Log in</button>
+        <div class="fp">
+            <p>Did you forgot your password?</p>
+            <a href="/forgotPassword"><span>Reset Password</span></a>
+        </div>
+
+    </form>
+</div>
+
+<div class="loader hidden">
+
+</div>
+
+
+
+<!-- <script>
+        document.getElementById("signin").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Alert a message
+            alert("login failed.try again ..");
+
+            // Redirect to index.html
+            window.location.href = "signinform.html";
+        }); -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./js/signinform.js">
+
+
+
+</script>
+</body>
+
+</html>

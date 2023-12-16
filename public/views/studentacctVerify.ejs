@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>identity verification</title>
+
+    <link rel="stylesheet" href="./css/acctVerify.css">
+</head>
+
+<body>
+    <!-- <div class="msg hidden">
+        Account Created successfully.
+    </div> -->
+    <div class="container">
+        <h2>Create password to access our features..</h2>
+
+        <div class="acctVerify">
+            <form action="/studentacctVerify" method='post' id="form1">
+
+                <div class="id">
+                    <label for="studentId">Enter student Id:</label>
+                    <input type="text" id="studentId" name="studentId" required>
+                </div>
+
+                <button id="verifyAcct">Verify Account</button>
+            </form>
+        </div>
+
+        <div class="generateOtp hidden">
+            <form action="/studentgenerateOTP" method="post" id="form2">
+
+                <div class="emailid">
+
+                    <label for="emailid">Enter college provided email Id:</label>
+
+                    <span>example:20819510**@brau.edu.in</span>
+                    <input type="email" id="emailid" name="emailid" required>
+                    <Button class="generateotpBtn">generate otp</Button>
+                </div>
+            </form>
+        </div>
+        <div class="verifyotp hidden">
+            <form action="/studentotp" method="post" id="form2">
+
+
+
+                <label for="verifyotp">
+                    verify Otp
+
+                    <input type="integer" id="verifyotp" name="verifyotp" min="6" required>
+                    <Button class="verifyotpBtn">verify otp</Button>
+        </div>
+        </form>
+    </div>
+
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script src="./js/studentacctVerify.js">
+    </script>
+</body>
+
+</html>

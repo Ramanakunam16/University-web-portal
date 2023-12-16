@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/settings.css">
+</head>
+
+<body>
+    <div class="header">
+        <div>
+            <img id="logo" src="ambedkar-university-sklm.jpg">
+
+        </div>
+
+        <div class="settings">
+            <p> ⚙ Adminstrator</p>
+            </p>
+
+        </div>
+        <!-- <div id="line"></div> -->
+        <div class="dropdown">
+            <% if (profilePicData) { %>
+                <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>" id="avatar"
+                    alt="profile pic">
+                <% } else { %>
+                    <img src="avatar.jpg" id="avatar" alt="">
+                    <% } %>
+
+                        <i style="width:30px; margin-right: 47px;" class="dropdown-btn">
+                            <span><img src="dropdown5.jpg" alt="dropDownbtn" id="dbicon"></span>
+                        </i>
+                        <div class="dropdown-content">
+                            <a href="/settings">⚙ Platform settings</a>
+                            <a href="/logout">↩ Sign Out</a>
+
+                        </div>
+
+        </div>
+
+    </div>
+
+    <div class="container">
+        <div class="box-1">
+            <button class="profileSettings">⚙ Profile Settings</button>
+            <button class="libReserve">📚 Library Reservations history</button>
+
+        </div>
+        <div class="overlay hidden"></div>
+        <div class="form1 form2 form3 box-2 " id="box-2">
+
+            <div class="studentInfo">
+                <div class="form1" style="width: 30%">
+                    <h3>personal Info</h3>
+                    <form id="updateInfo" action="/updateInfo" method="post">
+                        <div>
+                            <label for="email">Update Your Email Id:</label>
+                            <input type="email" id="email" name="email" value="<%= email %>" />
+
+                            <!-- <button class="continue-button">Continue</button>  -->
+                        </div>
+
+                        <div>
+                            <label for="uname">Change Your Username:</label>
+                            <input type="text" id="uname" name="uname" value="<%= username%>">
+
+                        </div>
+                        <button type="submit">Update Profile</button>
+                    </form>
+                </div>
+                <div class="box-3">
+                    <div class="form3">
+
+                        <% if (profilePicData) { %>
+                            <form action="/updateProfilePic" method="post" enctype="multipart/form-data">
+                                <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>"
+                                    id="profilepic" alt="profile pic">
+
+                                <h3>Profile Picture</h3>
+                                <p>
+
+                                    For best results, use an square image at least 248px x 248px</p>
+                                <label for="pic" class="piclabel">Change Picture</label>
+                                <input type="file" id="pic" name="pic" en>
+                                <button id="picSave" type="submit"
+                                    style="font-size: 18px;margin-top: 20px; margin-bottom: \50px;">Update</button>
+
+                            </form>
+                            <% } else { %>
+                                <form action="/saveProfilePic" method="post" enctype="multipart/form-data">
+                                    <img src="avatar.jpg" id="profilepic" alt="">
+
+                                    <h3>Profile Picture</h3>
+                                    <p>
+
+                                        For best results, use an square image at least 248px x 248px</p>
+                                    <label for="pic" class="piclabel">Upload Picture</label>
+                                    <input type="file" id="pic" name="pic">
+                                    <button id="picSave" type="submit"
+                                        style="font-size: 18px;margin-top: 20px; margin-bottom: \50px;">Save</button>
+                                </form>
+                                <% } %>
+
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="form2" style="width: 30%;margin-top: 50px;">
+                <form id="changePasswd" action="/changePasswd" method="post">
+
+                    <h3>Change Password</h3>
+                    <div>
+                        <label for="opasswd">Enter Your Old Password:</label>
+                        <input type="password" id="opasswd" name="opasswd" required>
+
+                        <!-- <button class="continue-button">Continue</button> -->
+                    </div>
+
+                    <div>
+                        <label for="npasswd">Enter Your New Password:</label>
+                        <input type="password" id="npasswd" name="npasswd">
+
+                    </div>
+
+                    <div>
+                        <label for="repeatNpasswd">Repeat New Password:</label>
+                        <input type="password" id="repeatNpasswd" name="repeatNpasswd">
+
+                    </div>
+
+                    <button type="submit">Change Password</button>
+                </form>
+            </div>
+
+
+
+        </div>
+
+        <!-- <div class="box-4" id="box-4">
+            <h1>RESERVATIONS</h1>
+        </div> -->
+        <div class="box-4 hidden" , id="box-4">
+
+            <div class="features">
+                <button class="reservedBtn">History</button>
+                <button class="completedBtn">Completed</button>
+                <button class="rejectedBtn">Rejected</button>
+            </div>
+            <div class="reservedContainer"></div>
+            <div class="completedContainer hidden"></div>
+            <div class="rejectedContainer hidden">
+                <div class="reasonContainer"></div>
+
+
+            </div>
+        </div>
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+        <script src="./js/settings.js">
+
+
+        </script>
+</body>
+
+</html>

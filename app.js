@@ -59,7 +59,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(fileUpload());
 app.use(express.json());
-app.set('views', __dirname + '/public');
+app.set('views', __dirname + '/public/views');
 app.set('view engine', 'ejs');
 app.use(
   session({
@@ -99,6 +99,12 @@ app.get('/studentacctVerify', (req, res) => {
 });
 app.get('/login', (req, res) => {
   res.render('signinform');
+});
+app.get('/studentReservedBooks', (req, res) => {
+  res.render('reservedBooks');
+});
+app.get('/uploadBooks', (req, res) => {
+  res.render('uploadBooks');
 });
 app.get('/forgotPassword', (req, res) => {
   // const filePath = __dirname + '/public/forgotPassword.html';

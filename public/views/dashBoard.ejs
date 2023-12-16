@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" features="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Expires" features="0">
+    <meta http-equiv="Pragma" features="no-cache">
+    <meta name="viewport" features="width=device-width, initial-scale=1.0">
+
+    <title>student</title>
+    <link rel="stylesheet" href="./css/studentDashBoard.css">
+
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="ambedkar-university-sklm.jpg" id="logo">
+            <h2>Dr Brau</h2>
+        </div>
+        <!-- <div id="line"></div> -->
+        <div class="dropdown">
+            <% if (profilePicData) { %>
+                <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>" id="avatar"
+                    alt="profile pic">
+                <% } else { %>
+                    <img src="avatar.jpg" id="avatar" alt="">
+                    <% } %>
+
+                        <i style="width:30px; margin-right: 47px;" class="dropdown-btn">
+                            <span><img src="dropdown5.jpg" alt="dropDownbtn" id="dbicon"></span>
+                        </i>
+
+                        <div class="dropdown-features">
+                            <a href="/settings" class="settings">⚙ Platform settings</a>
+                            <a href="/logout">↩ Sign Out</a>
+
+                        </div>
+        </div>
+    </div>
+    <div class="overlay hidden"></div>
+
+    <div class="info">
+
+
+
+
+        <p class="topic">Student Zone</p>
+
+        <h2>Explore & excel <br>Results|Library|Blogs </h2>
+        <br>
+        <p>Access your <strong>semester results</strong>,</p>
+        <br>
+        <p><b>Reserve</b> your favorite <strong>library books</strong>,
+            and</p>
+        <br>
+        <p>Share your thoughts through our vibrant <strong>blog space</strong>.</p>
+
+        <button class="letsGo">Let's Go</button>
+
+        <p>Click here to view features..</p>
+
+
+        . <div class="shape">
+
+        </div>
+        <div class="username">
+            <h2>welcome</h2>
+            <p>
+                <%= username%>
+            </p>
+        </div>
+
+    </div>
+
+    <div class="features">
+        <h2>Features:</h2>
+        <div class="results">
+
+            <article class="resultsfeatures">
+                <div class="resultsPics"> <img src="results.jpg" class="resultsimg1" alt="">
+                    <img src="results1.jpg" class="resultsimg2" alt="">
+                </div>
+
+                <div class="resultsHeader">
+                    <p style="color:rgb(14, 11, 11)">You can view results of every semester here......</p>
+                </div>
+
+                <div class="resultsbtn">
+                    <p>Click here to view results</p>
+                    <a href="/results">View Results</a>
+                </div>
+
+            </article>
+        </div>
+        <div class="libReserve">
+            <article class="libReservefeatures">
+                <div> <img src="lib1.jpg" class="libimg1" alt="">
+                    <img src="lib.jpg" class="libimg2" alt="">
+
+                </div>
+
+                <div class="libHeader">
+                    <p style="color:rgb(14, 11, 11)">You can reserve library books here......</p>
+                </div>
+
+                <div class="libbtn">
+                    <p>Click here to reserve a book</p>
+                    <a href="/libBookReservation">Reserve Books</a>
+                </div>
+            </article>
+        </div>
+        <div class="blogs"></div>
+    </div>
+
+
+    <script src="./js/studentDashBoard.js">
+    </script>
+
+</body>
+
+</html>

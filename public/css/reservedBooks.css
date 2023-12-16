@@ -1,0 +1,148 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.headline {
+  text-align: center;
+  margin-top: 5%;
+}
+
+.main {
+  border: 1px solid black;
+  margin: 40px 40px;
+  width: auto;
+  /* text-align: center; */
+}
+
+.bookCover {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 10%;
+  height: 70%;
+}
+
+.container,
+.reservedBook {
+  display: flex;
+  width: 80%;
+  min-width: 90%;
+  justify-content: space-around;
+  margin: 20px 20px;
+  margin-left: 80px;
+  /* text-align: center; */
+  border: 1px solid black;
+  padding: 20px;
+}
+
+.bookInfo {
+  display: block;
+  margin: 20px;
+}
+
+.bookInfo h4 {
+  /* display: block; */
+  color: rgb(72, 112, 112);
+}
+
+.bookInfo p {
+  display: inline-block;
+  padding-left: 20px;
+}
+
+.bookDetails {
+  color: black;
+}
+
+.controls {
+  display: inline;
+  padding: 20px;
+}
+
+.complete {
+  border: 1px solid black;
+  padding: 10px;
+  margin: 10px 10px;
+  background-color: rgb(21, 71, 163);
+  color: white;
+}
+
+.complete:hover {
+  cursor: pointer;
+  background-color: rgb(82, 111, 167);
+}
+
+.completedMsg {
+  color: rgb(49, 216, 49);
+}
+
+.reject {
+  border: 1px solid black;
+  padding: 10px;
+  background-color: rgb(206, 125, 125);
+}
+
+.reject:hover {
+  cursor: pointer;
+  background-color: rgb(192, 68, 68);
+}
+
+.reason label {
+  display: block;
+  padding: 10px;
+}
+
+.reasonbtn {
+  border: none;
+  background-color: rgb(62, 62, 155);
+  padding: 10px;
+  width: 80px;
+  margin-left: 5%;
+  color: white;
+}
+
+.reasonbtn:hover {
+  cursor: pointer;
+  box-shadow: 2px 2px black;
+}
+
+.reasonCancelbtn {
+  border: none;
+  background-color: rgb(166, 166, 177);
+  padding: 10px;
+  width: 80px;
+  margin-left: 30%;
+  color: white;
+}
+
+.reasonCancelbtn:hover {
+  cursor: pointer;
+  box-shadow: 2px 2px black;
+}
+
+.cancel {
+  border: 1px solid black;
+  padding: 10px;
+  background-color: rgb(241, 237, 237);
+}
+
+.cancel:hover {
+  cursor: pointer;
+  background-color: rgb(224, 169, 169);
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .main {
+    width: max-content;
+  }
+}
