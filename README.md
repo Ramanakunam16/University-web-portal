@@ -1,8 +1,8 @@
-# web_app_prototype_1
+# University Web Portal 
 
-semester minor project prototype
+semester project prototype
 
-    # Project Title:
+    
     # Programming languages used : Javascript,HTML,CSS
 
     # API is implemented via express js routes
