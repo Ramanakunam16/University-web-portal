@@ -82,6 +82,9 @@ function createDbConnection() {
 app.get('/', (req, res) => {
   res.render('index');
 });
+app.get('/blogs', (req, res) => {
+  res.render('blogs');
+});
 app.get('/results', (req, res) => {
   res.render('results');
 });
@@ -1073,7 +1076,7 @@ app.post('/signIn', async (req, res) => {
 
           if (passwordMatch) {
             // results1 = results[0];
-            req.session.results = results[0];
+            req.session.results = { type: 'student', user: results[0] };
             const userData = req.session.results;
             console.log('results', userData);
             // console.log(req.session.results);
@@ -1159,11 +1162,11 @@ app.post('/facultysignIn', (req, res) => {
 
         if (passwordMatch) {
           // results1 = results[0];
-          // req.session.results = results[0];
-          // const userData = req.session.results;
-          // console.log('results', userData);
+          req.session.results = { type: 'faculty', user: results[0] };
+          const userData = req.session.results;
+          console.log('results', userData);
           res.render('facultyDashBoard', {
-            username: results[0].user_name,
+            username: userData.user.user_name,
           });
         } else {
           const message =
@@ -1204,16 +1207,16 @@ app.get('/dashBoard', isAuthUser, (req, res) => {
 
   if (!profilePic) {
     res.render('dashBoard', {
-      username: userData.user_name,
-      email: userData.user_email,
+      username: userData.user.user_name,
+      email: userData.user.user_email,
       userPic: profilePic.user_name,
       profilePicData: 'no profile pic',
       profilePicMimeType: 'no profile pic',
     });
   } else {
     res.render('dashBoard', {
-      username: userData.user_name,
-      email: userData.user_email,
+      username: userData.user.user_name,
+      email: userData.user.user_email,
       userPic: profilePic.user_name,
       profilePicData: profilePic.data,
       profilePicMimeType: profilePic.mime_type,
@@ -1243,7 +1246,7 @@ app.post('/bookReservation', isAuthUser, (req, res) => {
   mysqlConnection.query(
     'INSERT INTO reservedBooks (studentId,book_title,author,publishers,book_edition,book_img,book_id,booked_date) VALUES(?,?,?,?,?,?,?,?)',
     [
-      userData.user_id,
+      userData.user.user_id,
       book.book_title,
       book.author,
       book.publishers,
@@ -1396,16 +1399,16 @@ app.get('/settings', isAuthUser, (req, res) => {
   const userData = req.session.results;
   if (profilePic === 0) {
     res.render('settings', {
-      username: userData.user_name,
-      email: userData.user_email,
+      username: userData.user.user_name,
+      email: userData.user.user_email,
       userPic: profilePic.user_name,
       profilePicData: 'no profile pic',
       profilePicMimeType: 'no profile pic',
     });
   } else {
     res.render('settings', {
-      username: userData.user_name,
-      email: userData.user_email,
+      username: userData.user.user_name,
+      email: userData.user.user_email,
       userPic: profilePic.user_name,
       profilePicData: profilePic.data,
       profilePicMimeType: profilePic.mime_type,
@@ -1415,6 +1418,12 @@ app.get('/settings', isAuthUser, (req, res) => {
 
 // logout
 app.get('/logout', (req, res) => {
+  req.session.destroy();
+
+  res.clearCookie('connect.sid');
+  res.redirect('/');
+});
+app.get('/facultylogout', (req, res) => {
   req.session.destroy();
 
   res.clearCookie('connect.sid');
@@ -1474,7 +1483,7 @@ app.post('/updateInfo', isAuthUser, (req, res) => {
 
   mysqlConnection.query(
     'UPDATE studentLoginInfo SET user_name=CASE WHEN ? IS NOT NULL THEN ? ELSE user_name END,user_email = CASE WHEN ? IS NOT NULL THEN ? ELSE user_email END WHERE user_name=?',
-    [username, username, email, email, userData.user_name],
+    [username, username, email, email, userData.user.user_name],
     (err, results) => {
       console.log(results);
       if (err) {
@@ -1487,15 +1496,15 @@ app.post('/updateInfo', isAuthUser, (req, res) => {
       userData.user_email = email;
       if (profilePic === 0) {
         res.render('settings', {
-          username: userData.user_name,
-          email: userData.user_email,
+          username: userData.user.user_name,
+          email: userData.user.user_email,
           profilePicData: 'no profile pic',
           profilePicMimeType: 'no profile pic',
         });
       } else {
         res.render('settings', {
-          username: userData.user_name,
-          email: userData.user_email,
+          username: userData.user.user_name,
+          email: userData.user.user_email,
           profilePicData: profilePic.data,
           profilePicMimeType: profilePic.mime_type,
         });
@@ -1532,7 +1541,7 @@ app.post('/changePasswd', isAuthUser, async (req, res) => {
 
   if (passwordMatch) {
     mysqlConnection.query(
-      'UPDATE users SET hashedPassword=?',
+      'UPDATE studentLoginInfo SET hashedPassword=?',
       [newHashedPassword],
       (err, results) => {
         if (err) {
@@ -1540,15 +1549,15 @@ app.post('/changePasswd', isAuthUser, async (req, res) => {
         }
         if (profilePic === 0) {
           res.render('settings', {
-            username: userData.user_name,
-            email: userData.user_email,
+            username: userData.user.user_name,
+            email: userData.user.user_email,
             profilePicData: 'no profile pic',
             profilePicMimeType: 'no profile pic',
           });
         } else {
           res.render('settings', {
-            username: userData.user_name,
-            email: userData.user_email,
+            username: userData.user.user_name,
+            email: userData.user.user_email,
             profilePicData: profilePic.data,
             profilePicMimeType: profilePic.mime_type,
           });
@@ -1559,125 +1568,6 @@ app.post('/changePasswd', isAuthUser, async (req, res) => {
     res.send('wrong old password.Retry again!');
   }
 });
-
-// profile pic upload.
-app.post(
-  '/saveProfilePic',
-  memoryUpload.single('pic'),
-  isAuthUser,
-  (req, res) => {
-    console.log(req.file);
-    const originalname = req.file.originalname;
-    const buffer = req.file.buffer;
-    const mimetype = req.file.mimetype;
-    console.log(originalname, buffer, mimetype);
-
-    //db connection
-    const mysqlConnection = createDbConnection();
-
-    mysqlConnection.connect(err => {
-      if (err) {
-        console.error('Error connecting to MySQL:', err);
-        return;
-      }
-      console.log('Connected to MySQL');
-    });
-    const userData = req.session.results;
-
-    mysqlConnection.query(
-      'INSERT INTO usersProfilePics VALUES (?,?,?,?)',
-      [userData.user_name, originalname, mimetype, buffer],
-      (err, results) => {
-        console.log(results);
-
-        if (err) {
-          console.log(err);
-        }
-
-        mysqlConnection.query(
-          'SELECT * FROM usersProfilePics where user_name=?',
-          [userData.user_name],
-          (err, results) => {
-            profilePic = results[0];
-            console.log('prifile pic data', profilePic);
-          }
-        );
-
-        if (profilePic === 0) {
-          res.render('settings', {
-            username: userData.user_name,
-            email: userData.user_email,
-            profilePicData: 'no profile pic',
-            profilePicMimeType: 'no profile pic',
-          });
-        } else {
-          res.render('settings', {
-            username: userData.user_name,
-            email: userData.user_email,
-            profilePicData: profilePic.data,
-            profilePicMimeType: profilePic.mime_type,
-          });
-        }
-      }
-    );
-    // res.send('uploaded.');
-  }
-);
-
-// update profile pic
-
-app.post(
-  '/updateProfilePic',
-  memoryUpload.single('pic'),
-  isAuthUser,
-  (req, res) => {
-    const { originalname, buffer, mimetype } = req.file;
-    console.log('file uploaded', req.file);
-    // const latestUploadedFile = getlatestUploadedFile('uploads/');
-    //db connection
-    const mysqlConnection = createDbConnection();
-
-    mysqlConnection.connect(err => {
-      if (err) {
-        console.error('Error connecting to MySQL:', err);
-        return;
-      }
-      console.log('Connected to MySQL');
-    });
-
-    const userData = req.session.results;
-    console.log('session data in this route:', userData);
-    mysqlConnection.query(
-      'UPDATE usersProfilePics SET user_name=?,file_name=?,mime_type=?,data=? WHERE user_name=?',
-      [userData.user_name, originalname, mimetype, buffer, userData.user_name],
-      (err, results) => {
-        if (err) {
-          console.log(err);
-        }
-
-        mysqlConnection.query(
-          'SELECT * FROM usersProfilePics where user_name=?',
-          [userData.user_name],
-          (err, results) => {
-            profilePic = results[0];
-            console.log(profilePic);
-          }
-        );
-
-        if (profilePic === 0) {
-          res.render('settings', {
-            username: userData.user_name,
-            email: userData.user_email,
-            profilePicData: 'no profile pic',
-            profilePicMimeType: 'no profile pic',
-          });
-        } else {
-          res.redirect('/dashBoard');
-        }
-      }
-    );
-  }
-);
 
 app.post('/resetPassword', async (req, res) => {
   const email = req.body.email;
@@ -1695,7 +1585,7 @@ app.post('/resetPassword', async (req, res) => {
   });
 
   mysqlConnection.query(
-    'UPDATE users SET hashedPassword=? WHERE user_email=?',
+    'UPDATE studentLoginInfo SET hashedPassword=? WHERE user_email=?',
     [newHashedPassword, email],
     (err, results) => {
       if (err) {

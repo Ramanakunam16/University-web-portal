@@ -1,0 +1,26 @@
+.blogs {
+  width: 80%;
+  height: auto;
+}
+
+.user-details {
+  width: 100%;
+  height: auto;
+  background-color: rgb(196, 195, 194);
+  border-bottom: 1px solid black;
+}
+.user-details p {
+  margin-left: 30px;
+}
+
+.content {
+  width: 100%;
+  height: auto;
+}
+.interact {
+  width: 20%;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(196, 195, 194);
+  border-top: 1px solid black;
+}

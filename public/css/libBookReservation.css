@@ -9,7 +9,7 @@ body {
       rgba(167, 157, 143, 0),
       rgba(167, 157, 143, 0)
     ),
-    url('libimg2.jpg');
+    url('/imgs/libimg2.jpg');
 }
 
 .container {

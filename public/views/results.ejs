@@ -234,7 +234,7 @@
                 await axios.post("/studentMarksDetails", new URLSearchParams(new FormData(event.target))
                 ).then((response) => {
                     // sample data
-
+                    console.log(response.data)
                     if (response.data.length == 0) {
                         // alert("invalid input");
                         document.getElementById('tableDiv').setAttribute('style', 'display:none;')

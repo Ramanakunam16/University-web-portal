@@ -56,7 +56,7 @@ libreservebtn.addEventListener('click', async () => {
 });
 async function studentreservedBooks() {
   await axios.get('getSessionData').then(async response => {
-    const data = response.data;
+    const data = response.data.userData.user;
     console.log(data);
 
     await axios.get('/reservedBooks').then(response => {
@@ -68,7 +68,7 @@ async function studentreservedBooks() {
     reservationHistory[0].filter(book => {
       console.log('book', book);
       console.log('data', data);
-      if (book.studentId === data.userData.user_id) {
+      if (book.studentId === data.user_id) {
         studentReservationHistory.push(book);
       }
     });
@@ -107,7 +107,7 @@ let rejectedBooks = [];
 let rejectedBooksHistory = [];
 async function studentRejectedBooks() {
   await axios.get('getSessionData').then(async response => {
-    const data = response.data;
+    const data = response.data.userData.user;
     console.log(data);
 
     await axios.get('/rejectedBooks').then(response => {
@@ -119,7 +119,7 @@ async function studentRejectedBooks() {
     rejectedBooks[0].filter(book => {
       console.log('rejected book', book);
       console.log(' user data', data);
-      if (book.studentId === data.userData.user_id) {
+      if (book.studentId === data.user_id) {
         rejectedBooksHistory.push(book);
       }
     });
@@ -163,7 +163,7 @@ let completedBooks = [];
 let completedBooksHistory = [];
 async function studentCompletedBooks() {
   await axios.get('getSessionData').then(async response => {
-    const data = response.data;
+    const data = response.data.userData.user;
     console.log(data);
 
     await axios.get('/completedBooks').then(response => {
@@ -175,7 +175,7 @@ async function studentCompletedBooks() {
     completedBooks[0].filter(book => {
       console.log('completed book', book);
       console.log(' user data', data);
-      if (book.studentId === data.userData.user_id) {
+      if (book.studentId === data.user_id) {
         completedBooksHistory.push(book);
       }
     });
