@@ -78,7 +78,7 @@ async function studentreservedBooks() {
   console.log('specific student books:', studentReservationHistory);
   studentReservationHistory.forEach(book => {
     console.log(book);
-    const html = `<div class="reservedBooks"> 
+    const html = `<div class="books"> 
  <img class="bookCover" src="./imgs/b${book.book_id}.jpg" alt="book img">
  <div class= "bookInfo" >
      <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>
@@ -129,7 +129,7 @@ async function studentRejectedBooks() {
   console.log('specific studentrejected books:', rejectedBooksHistory);
   rejectedBooksHistory.forEach(book => {
     console.log(book);
-    const html = `<div class="reservedBooks"> 
+    const html = `<div class="books"> 
  <img class="bookCover" src="./imgs/b${book.book_id}.jpg" alt="book img">
  <div class= "bookInfo" >
      <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>
@@ -185,7 +185,7 @@ async function studentCompletedBooks() {
   console.log('specific studentcompleted books:', completedBooksHistory);
   completedBooksHistory.forEach(book => {
     console.log(book);
-    const html = `<div class="reservedBooks"> 
+    const html = `<div class="books"> 
  <img class="bookCover" src="./imgs/b${book.book_id}.jpg" alt="book img">
  <div class= "bookInfo" >
      <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>

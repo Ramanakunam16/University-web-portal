@@ -29,7 +29,7 @@ overlay.addEventListener('click', () => {
 });
 
 const lestGobtn = document.querySelector('.letsGo');
-const featuresSection = document.querySelector('.features');
+const featuresSection = document.querySelector('.features-container');
 lestGobtn.addEventListener('click', () => {
   const scrollTo = featuresSection.getBoundingClientRect();
 

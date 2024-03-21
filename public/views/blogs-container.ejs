@@ -1,0 +1,174 @@
+<div class="container">
+
+
+    <div class="blogs">
+
+        <% data.forEach(data=> { %>
+
+            <div class="blog">
+                <a href="">
+                    <div class="user">
+                        <img src="./imgs/icons8-avatar-50.png" alt="avatar" id="avatar">
+                        <p>
+                            <%= data.createdBy.toLowerCase() %>
+                        </p>
+                        <span>
+                            <%= data.createdAt.toDateString() %>
+                        </span>
+
+                    </div>
+                </a>
+
+                <div class="blogsFront">
+                    <a href="/blogContent-<%=data._id%>">
+                        <h2>
+                            <%= data.title %>
+                        </h2>
+                        <p>
+                            <%= data.body?.slice(0,300) %>....
+                        </p>
+                    </a>
+
+                </div>
+                <div class=" tools">
+                    <p>ForntEnd development</p>
+
+                    <div class="save" data-blog='<%=data._id%>'>
+
+                        <% if (data.savedBy.includes(userid)) { %>
+                            <img src="./imgs/icons8-save-24-b.png" alt="">
+                            <% } else { %>
+                                <img src="./imgs/icons8-save-24.png" alt="">
+                                <% } %>
+
+
+
+
+
+
+                    </div>
+
+
+                    <span>...</span>
+                </div>
+            </div>
+
+            <% }) %>
+
+
+
+
+
+
+
+    </div>
+
+    <div class="saved-list">
+        <h2>Recently saved </h2>
+        <div class="saved">
+
+        </div>
+
+
+
+        <a href="/reading-list">see all</a>
+
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        const savebtns = document.querySelectorAll(".save");
+        const savedlist = document.querySelector(".saved")
+        // const saveimg1 = '<img src="./imgs/icons8-save-24.png" alt="">';
+        const saveimg2 = '<img src="./imgs/icons8-save-24-b.png" alt="">';
+
+        // let save = false;
+        savebtns.forEach((savebtn) => {
+
+            const savecontainer = savebtn;
+
+            // savecontainer.innerHTML = save ? saveimg2 : saveimg1;
+
+            savebtn.addEventListener("click", async () => {
+
+
+                if (savecontainer.innerHTML === saveimg2) {
+                    return;
+                }
+                const blogId = savebtn.dataset.blog;
+
+                console.log(blogId)
+
+                savedPost(blogId)
+                // save = !save;
+                // savecontainer.innerHTML = save ? saveimg2 : saveimg1;
+
+                savecontainer.innerHTML = saveimg2
+                // window.location.reload();
+
+
+            });
+
+
+        });
+
+        async function savedPost(blog) {
+
+            await axios.post("/saved-list", { blog })
+                .then(res => {
+                    console.log(res.data.data)
+
+                    data = res.data.data
+                    console.log(data)
+
+
+                }
+                )
+
+        }
+        axios.get('/saved-list').then(res => {
+
+            let data = res.data.data;
+            console.log(data)
+            // console.log(data.savedBy)
+            // console.log(data.savedBy.filter((id) => id === res.data.userid))
+
+            data.forEach(data => {
+                const saved = data.savedBy.filter((id => id === res.data.userid))
+                // console.log(data)
+                console.log(res)
+                if (res.data.userid === saved[0]) {
+
+                    const html = `
+                        <div class="saved-blog">
+                        <a href="/profile"><div class="user">
+                            <img src="./imgs/icons8-avatar-50.png" alt="avatar" id="avatar">
+                    <p>${data.createdBy.toLowerCase()}</p>
+                        </div></a>
+                        <a href="/blogContent-${data._id}">
+                            <div class="blog-title">
+                          <h3>${data.title}</h3>
+                            <span>${data.createdAt}</span>
+                        </div></a>
+                    </div>`
+
+                    savedlist.insertAdjacentHTML('afterbegin', html)
+                }
+
+
+            })
+
+        }
+
+        )
+        // axios.get("/getSessionData").then(res => {
+        //     console.log(res)
+        // })
+
+    </script>
+
+
+
+
+
+</div>

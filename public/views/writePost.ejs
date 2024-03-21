@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/writePost.css">
+</head>
+
+<body>
+    <%- include("../views/header") %>
+        <form action="/write-post" method="post" class="write-post">
+            <p>Title</p>
+            <input type="text" name="title" id="title" placeholder="title">
+            <p>Story</p>
+            <textarea name="story" id="story" cols="90" rows="20"></textarea>
+            <button type="submit">submit</button>
+
+        </form>
+
+</body>
+
+</html>

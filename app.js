@@ -1,9 +1,14 @@
 // importing modules
 'use strict';
+const SavedPost = require('./db/models/SavedPost');
+const Profile = require('./db/models/Profile');
+const Post = require('./db/models/Post');
+const expressLayouts = require('express-ejs-layouts');
+// const fileUpload = require('express-fileupload');
 const express = require('express');
 const mysql = require('mysql');
 const app = express();
-const port = 8005;
+const port = process.env.PORT || 8007;
 const bodyParser = require('body-parser');
 const lodash = require('lodash');
 const { exec } = require('child_process');
@@ -20,6 +25,7 @@ const ejs = require('ejs');
 const session = require('express-session');
 const speakeasy = require('speakeasy');
 const nodemailer = require('nodemailer');
+const connectMDB = require('./db/config/mdb');
 
 //Storing uploaded files in uploads folder locally.
 const storage = multer.diskStorage({
@@ -59,6 +65,7 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(fileUpload());
 app.use(express.json());
+// app.use(fileUpload());
 app.set('views', __dirname + '/public/views');
 app.set('view engine', 'ejs');
 app.use(
@@ -77,14 +84,88 @@ function createDbConnection() {
   return mysql.createConnection(sqlDbCredentials);
 }
 
+connectMDB();
+
 // HANDLING HTTP REQUESTS
 
-app.get('/', (req, res) => {
-  res.render('index');
+// app.get('/', (req, res) => {
+//   res.render('index');
+// });
+app.get('/blogs', isAuthUser, async (req, res) => {
+  const { user } = req.session.results;
+  // console.log(userData);
+  try {
+    const data = await Post.find();
+    const saved = await SavedPost.find();
+    console.log(data);
+
+    // const profile = await Profile.find();
+
+    //db connection
+    const mysqlConnection = createDbConnection();
+
+    mysqlConnection.connect(err => {
+      if (err) {
+        console.error('Error connecting to MySQL:', err);
+        return;
+      }
+      console.log('Connected to MySQL');
+    });
+    mysqlConnection.query(
+      'SELECT * FROM studentProfilePics WHERE user_id=?',
+      [user.user_id],
+      (err, results) => {
+        console.log(results);
+        let profilePic = results[0];
+        // if (profilePic === null) {
+        //   res.render('settings', {
+        //     username: user.user_name,
+        //     email: user.user_email,
+        //     profilePicData: 'profile pic',
+        //     profilePicMimeType: 'profile pic',
+        //   });
+        // } else {
+        res.render('blogs', {
+          userid: user.user_id,
+          email: user.user_email,
+          profilePicData: profilePic?.data,
+          profilePicMimeType: profilePic?.mime_type,
+          data,
+          saved,
+        });
+      }
+      // }
+    );
+  } catch (error) {
+    console.log(error);
+  }
 });
-app.get('/blogs', (req, res) => {
-  res.render('blogs');
+app.get('/reading-list', isAuthUser, async (req, res) => {
+  const { user } = req.session.results;
+  const data = await Post.find();
+
+  res.render('reading-list', { data, userid: user.user_id });
 });
+app.get('/write-post', isAuthUser, (req, res) => {
+  res.render('writePost');
+});
+app.get('/blogContent-:id', isAuthUser, async (req, res) => {
+  try {
+    const slug = req.params.id;
+    const data = await Post.findById({ _id: slug });
+    res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+    res.render('blogContent', { data });
+  } catch (error) {
+    console.log(error);
+  }
+});
+app.get('/profile-:id', isAuthUser, async (req, res) => {
+  const slug = req.params.id;
+  const profile = await Profile.findById({ _id: slug });
+  console.log(profile);
+  res.render('profile', { profile });
+});
+
 app.get('/results', (req, res) => {
   res.render('results');
 });
@@ -93,6 +174,9 @@ app.get('/uploadResults', (req, res) => {
 });
 app.get('/libBookReservation', isAuthUser, (req, res) => {
   res.render('libBookReservation');
+});
+app.get('/payment', (req, res) => {
+  res.render('payment');
 });
 app.get('/facultyacctVerify', (req, res) => {
   res.render('facultyacctVerify');
@@ -535,62 +619,42 @@ app.post('/upload', upload.single('myfile1'), (req, res) => {
       // );
       onDataProcessingComplete();
     });
-
-  // const filePath = __dirname + '/uploads/mdb_data_in_json/data.json';
-
-  // fs.readFile(filePath, 'utf-8', (err, results) => {
-  //   if (err) {
-  //     console.log(err);
-  //   }
-  //   try {
-  //     // const data = JSON.parse(results);
-  //     const mainData = [];
-  //     // console.log('From json:', results);
-  //     const data = results;
-  //     console.log('data', typeof data);
-  //     const updatedObj = {};
-  //     for (let i = 1; i < results.length; i++) {
-  //     const object = data[1];
-  //     console.log('obj:', object);
-  //     Object.keys(object).forEach(key => {
-  //       console.log(key);
-  //       // const updatedObj = {};
-  //       const updatedKey = lodash.camelCase(key);
-  //       updatedObj[updatedKey] = object[key];
-  //     });
-  //    }
-  //     mainData.push(updatedObj);
-
-  //     console.log('updatedData:', mainData);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-
-  //   //Db Connection
-  //   const mysqlConnection = createDbConnection();
-
-  //   //handling connection error
-  //   mysqlConnection.connect(err => {
-  //     if (err) {
-  //       console.error('Error connecting to MySQL:', err);
-  //       return;
-  //     }
-  //     console.log('Connected to MySQL');
-  //   });
-
-  //   // Query Execution
-  //   mysqlConnection.query(
-  //     'INSERT INTO studentDetails VALUES (?,?,?,?)',
-  //     [],
-  //     (err, results) => {}
-  //   );
-  // });
 });
 
-// user account creation
-// app.post('/signUp', async (req, res) => {
+// const filePath = __dirname + '/uploads/mdb_data_in_json/data.json';
+
+// fs.readFile(filePath, 'utf-8', (err, results) => {
+//   if (err) {
+//     console.log(err);
+//   }
+//   try {
+//     // const data = JSON.parse(results);
+//     const mainData = [];
+//     // console.log('From json:', results);
+//     const data = results;
+//     console.log('data', typeof data);
+//     const updatedObj = {};
+//     for (let i = 1; i < results.length; i++) {
+//     const object = data[1];
+//     console.log('obj:', object);
+//     Object.keys(object).forEach(key => {
+//       console.log(key);
+//       // const updatedObj = {};
+//       const updatedKey = lodash.camelCase(key);
+//       updatedObj[updatedKey] = object[key];
+//     });
+//    }
+//     mainData.push(updatedObj);
+
+//     console.log('updatedData:', mainData);
+//   } catch (err) {
+//     console.log(err);
+//   }
+
+//   //Db Connection
 //   const mysqlConnection = createDbConnection();
 
+//   //handling connection error
 //   mysqlConnection.connect(err => {
 //     if (err) {
 //       console.error('Error connecting to MySQL:', err);
@@ -599,124 +663,19 @@ app.post('/upload', upload.single('myfile1'), (req, res) => {
 //     console.log('Connected to MySQL');
 //   });
 
-//   const uname = req.body.uname;
-//   const email = req.body.email;
-//   const passwd = req.body.passwd;
-
-//   // Hash the password
-//   const hashedPassword = await bcrypt.hash(passwd, 10);
-
-//   console.log(hashedPassword);
-
-//   // Insert the user
+//   // Query Execution
 //   mysqlConnection.query(
-//     'INSERT INTO users VALUES (?, ?, ?)',
-//     [uname, email, hashedPassword],
-//     (err, results) => {
-//       if (err) {
-//         console.log('Error:', err);
-//         const message =
-//           "<script>alert('username or email id already in use.Choose diferrent username or email id'); window.location.href='/login'</script>";
-//         res.status(500).send(message);
-//         return;
-//       }
-//       const message =
-//         "<script>alert('Sign up successful.'); window.location.href='/login'</script>";
-//       res.send(message);
-//     }
-//   );
-//   // } .catch (error) {
-//   //   console.error('Error:', error);
-//   //   res.status(500).send('An error occurred while signing up.');
-//   // }
-// });
-
-// // checking availability of user crenditials
-// app.post('/check-Availability', (req, res) => {
-//   const { userName, email } = req.body;
-
-//   console.log({ email, userName });
-
-//   const mysqlConnection = createDbConnection();
-
-//   mysqlConnection.connect(err => {
-//     if (err) {
-//       console.error('Error connecting to MySQL:', err);
-//       return;
-//     }
-//     console.log('Connected to MySQL');
-//     // Your code here
-//   });
-
-//   mysqlConnection.query(
-//     'SELECT COUNT(*) AS userNameCount FROM users WHERE user_name=?',
-//     [userName],
-//     (err, userNameResults) => {
-//       if (err) {
-//         console.error(err);
-//         res.status(500).send('Error checking email availability');
-//         return;
-//       }
-
-//       mysqlConnection.query(
-//         'SELECT COUNT(*) AS emailCount FROM users WHERE user_email= ?',
-//         [email],
-//         (err, emailResults) => {
-//           if (err) {
-//             console.error(err);
-//             res.status(500).send('Error checking email availability');
-//             return;
-//           }
-
-//           const emailExists = emailResults[0].emailCount > 0;
-//           const userNameExists = userNameResults[0].userNameCount > 0;
-
-//           res.json({
-//             email: emailExists,
-//             userName: userNameExists,
-//           });
-//         }
-//       );
-//     }
-//   );
-// });
-// app.post('/facultysignUp', async (req, res) => {
-//   const mysqlConnection = createDbConnection();
-
-//   mysqlConnection.connect(err => {
-//     if (err) {
-//       console.error('Error connecting to MySQL:', err);
-//       return;
-//     }
-//     console.log('Connected to MySQL');
-//   });
-
-//   const uname = req.body.funame;
-//   const email = req.body.femail;
-//   const passwd = req.body.fpasswd;
-//   console.log(uname, email, passwd);
-
-//   // Hash the password
-//   const hashedPassword = await bcrypt.hash(passwd, 10);
-//   mysqlConnection.query(
-//     'INSERT INTO faculty VALUES (?, ?, ?)',
-//     [uname, email, hashedPassword],
-//     (err, results) => {
-//       if (err) {
-//         console.log('Error:', err);
-//         const message =
-//           "<script>alert('username or email id already in use.Choose diferrent username or email id'); window.location.href='/login'</script>";
-//         res.status(500).send(message);
-//         return;
-//       }
-//     }
+//     'INSERT INTO studentDetails VALUES (?,?,?,?)',
+//     [],
+//     (err, results) => {}
 //   );
 // });
 
-// let results1 = {};
-
+// Student account verification
+let secret;
+let otp;
 app.post('/studentacctVerify', (req, res) => {
-  const studentId = req.body.studentId;
+  const { studentId, emailid } = req.body;
   // const password = req.body.createPasswd;
   console.log(studentId);
   //db connection
@@ -743,6 +702,47 @@ app.post('/studentacctVerify', (req, res) => {
       console.log(results[0].user_id);
 
       if (results[0].user_id === +studentId) {
+        mysqlConnection.query(
+          'UPDATE studentLoginInfo SET user_email=? WHERE user_id=? ',
+          [emailid, studentId]
+        );
+
+        //otp generation;
+
+        secret = speakeasy.generateSecret();
+        otp = speakeasy.totp({
+          secret: secret.base32,
+          encoding: 'base32',
+        });
+
+        console.log('secret token shared between client and server', secret);
+        console.log('one time password', otp);
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'ramanakunam16@gmail.com',
+            pass: 'bgdjppxbdfvtlcub',
+          },
+        });
+
+        const mailOptions = {
+          from: 'ramanakunam16@gmail.com',
+          to: emailid,
+          subject: 'your one time password(OTP)',
+          text: `Your OTP is :${otp}`,
+        };
+        console.log(emailid);
+
+        transporter.sendMail(mailOptions, (err, info) => {
+          if (err) {
+            console.error('error sennding mail', err);
+          } else {
+            console.log('email sent', info.response);
+          }
+        });
+
+        // res.render('otpVerification');
+
         console.log('successfull');
         // res.redirect('/generateOTP');
       } else {
@@ -792,72 +792,7 @@ app.post('/facultyacctVerify', (req, res) => {
     }
   );
 });
-// password creation
 
-let secret;
-let otp;
-app.post('/studentgenerateOTP', async (req, res) => {
-  const email = req.body.emailid;
-  console.log(email);
-
-  //db connection
-  const mysqlConnection = createDbConnection();
-
-  mysqlConnection.connect(err => {
-    if (err) {
-      console.error('Error connecting to MySQL:', err);
-      return;
-    }
-    console.log('Connected to MySQL');
-  });
-
-  mysqlConnection.query(
-    'SELECT * FROM studentLoginInfo WHERE user_email=? ',
-    [email],
-    async (err, results) => {
-      console.log(results);
-      if (err) {
-      } else {
-        const userData = results[0];
-        if (email === userData.user_email) {
-          secret = speakeasy.generateSecret();
-          otp = speakeasy.totp({
-            secret: secret.base32,
-            encoding: 'base32',
-          });
-
-          console.log('secret token shared between client and server', secret);
-          console.log('one time password', otp);
-          const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-              user: 'ramanakunam16@gmail.com',
-              pass: 'bgdjppxbdfvtlcub',
-            },
-          });
-
-          const mailOptions = {
-            from: 'ramanakunam16@gmail.com',
-            to: email,
-            subject: 'your one time password(OTP)',
-            text: `Your OTP is :${otp}`,
-          };
-          console.log(email);
-
-          transporter.sendMail(mailOptions, (err, info) => {
-            if (err) {
-              console.error('error sennding mail', err);
-            } else {
-              console.log('email sent', info.response);
-            }
-          });
-
-          // res.render('otpVerification');
-        }
-      }
-    }
-  );
-});
 app.post('/generateOTP', async (req, res) => {
   const email = req.body.emailid;
 
@@ -1035,8 +970,6 @@ app.post('/passwordCreation', (req, res) => {
   }
 });
 
-let profilePic;
-
 // login authentication
 app.post('/signIn', async (req, res) => {
   const studentId = req.body.studentId;
@@ -1073,7 +1006,7 @@ app.post('/signIn', async (req, res) => {
             password,
             results[0].hashedPassword
           );
-
+          let profilePic;
           if (passwordMatch) {
             // results1 = results[0];
             req.session.results = { type: 'student', user: results[0] };
@@ -1081,29 +1014,30 @@ app.post('/signIn', async (req, res) => {
             console.log('results', userData);
             // console.log(req.session.results);
             // req.session.save();
-            try {
-              mysqlConnection.query(
-                'SELECT * FROM studentProfilePics WHERE user_id=?',
-                [userData.user_id],
-                async (err, results) => {
-                  if (err) {
-                    console.log(err);
-                  }
-                  console.log(results);
-                  if (results.length !== 0) {
-                    const picData = results;
-                    profilePic = picData[0];
-                    console.log('picdata', profilePic);
-                  } else {
-                    profilePic = {};
-                  }
-                }
-              );
-            } catch {
-              console.log('no pics');
-            }
+            // try {
+            //   mysqlConnection.query(
+            //     'SELECT * FROM studentProfilePics WHERE user_id=?',
+            //     [userData.user_id],
+            //     async (err, results) => {
+            //       if (err) {
+            //         console.log(err);
+            //       }
+            //       console.log(results);
+            //       if (results.length !== 0) {
+            //         const picData = results;
 
-            mysqlConnection.end();
+            //         profilePic = picData[0];
+            //         console.log('picdata', profilePic);
+            //       } else {
+            //         profilePic = {};
+            //       }
+            //     }
+            //   );
+            // } catch {
+            //   console.log('no pics');
+            // }
+
+            // mysqlConnection.end();
             res.redirect('/dashBoard');
             // res.json({ isLogged: true });
           } else {
@@ -1187,41 +1121,41 @@ function isAuthUser(req, res, next) {
 
 // dashboard page
 app.get('/dashBoard', isAuthUser, (req, res) => {
-  // const filePath = __dirname + '/public/dashBoard.ejs';
-  // res.setHeader(
-  //   'cache-control',
-  //   'no=cache',
-  //   'no-store',
-  //   'must-revalisate',
-  //   'proxy-revalidate'
-  // );
-  // res.setHeader('Expires', '0');
-  // res.setHeader('Pragma', 'no-cache');
-  // req.session.results1 = results1;
-  // req.session.save();
-  // console.log(filePath);
-  // res.setHeader('Content-Type', 'text/html; charset=UTF-8');
-  // res.setHeader('Content-Disposition', 'inline; filename=dashboard.html');
-  const userData = req.session.results;
-  console.log(userData);
+  const { user } = req.session.results;
+  //db connection
+  const mysqlConnection = createDbConnection();
 
-  if (!profilePic) {
-    res.render('dashBoard', {
-      username: userData.user.user_name,
-      email: userData.user.user_email,
-      userPic: profilePic.user_name,
-      profilePicData: 'no profile pic',
-      profilePicMimeType: 'no profile pic',
-    });
-  } else {
-    res.render('dashBoard', {
-      username: userData.user.user_name,
-      email: userData.user.user_email,
-      userPic: profilePic.user_name,
-      profilePicData: profilePic.data,
-      profilePicMimeType: profilePic.mime_type,
-    });
-  }
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+  mysqlConnection.query(
+    'SELECT * FROM studentProfilePics WHERE user_id=?',
+    [user.user_id],
+    (err, results) => {
+      console.log(results);
+      const profilePic = results[0];
+      // console.log(profilePic.data);
+      if (profilePic === null) {
+        res.render('dashBoard', {
+          username: user.user_name,
+          email: user.user_email,
+          profilePicData: 'no profile pic',
+          profilePicMimeType: 'no profile pic',
+        });
+      } else {
+        res.render('dashBoard', {
+          username: user.user_name,
+          email: user.user_email,
+          profilePicData: profilePic?.data,
+          profilePicMimeType: profilePic?.mime_type,
+        });
+      }
+    }
+  );
 });
 
 //booksReservation
@@ -1264,7 +1198,7 @@ app.post('/rejectedBooks', (req, res) => {
     req.body.book;
   const rejectedDate = req.body.rejectedDate;
   const reason = req.body.reason;
-  console.log(reason);
+  // console.log(reason);
 
   //db connection
   const mysqlConnection = createDbConnection();
@@ -1350,7 +1284,7 @@ app.get('/reservedBooks', (req, res) => {
   });
 
   mysqlConnection.query('SELECT * FROM reservedBooks', (err, results) => {
-    console.log(results);
+    // console.log(results);
 
     res.json(results);
   });
@@ -1368,7 +1302,7 @@ app.get('/rejectedBooks', (_, res) => {
   });
 
   mysqlConnection.query('SELECT * FROM rejectedBooks', (err, results) => {
-    console.log(results);
+    // console.log(results);
 
     res.json(results);
   });
@@ -1386,7 +1320,7 @@ app.get('/completedBooks', (_, res) => {
   });
 
   mysqlConnection.query('SELECT * FROM completedBooks', (err, results) => {
-    console.log(results);
+    // console.log(results);
 
     res.json(results);
   });
@@ -1396,24 +1330,65 @@ app.get('/completedBooks', (_, res) => {
 app.get('/settings', isAuthUser, (req, res) => {
   // req.session.results1 = results1;
   // const filePath = __dirname + '/public/settings.ejs';
-  const userData = req.session.results;
-  if (profilePic === 0) {
-    res.render('settings', {
-      username: userData.user.user_name,
-      email: userData.user.user_email,
-      userPic: profilePic.user_name,
-      profilePicData: 'no profile pic',
-      profilePicMimeType: 'no profile pic',
-    });
-  } else {
-    res.render('settings', {
-      username: userData.user.user_name,
-      email: userData.user.user_email,
-      userPic: profilePic.user_name,
-      profilePicData: profilePic.data,
-      profilePicMimeType: profilePic.mime_type,
-    });
-  }
+
+  const { user } = req.session.results;
+
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+  mysqlConnection.query(
+    'SELECT * FROM studentProfilePics WHERE user_id=?',
+    [user.user_id],
+    (err, results) => {
+      console.log(results);
+      let profilePic = results[0];
+      // if (profilePic === null) {
+      //   res.render('settings', {
+      //     username: user.user_name,
+      //     email: user.user_email,
+      //     profilePicData: 'profile pic',
+      //     profilePicMimeType: 'profile pic',
+      //   });
+      // } else {
+      res.render('settings', {
+        username: user.user_name,
+        email: user.user_email,
+        profilePicData: profilePic?.data,
+        profilePicMimeType: profilePic?.mime_type,
+      });
+    }
+    // }
+  );
+});
+
+app.post('/uploadProfilePic', (req, res) => {
+  const { data, name, mimetype } = req.files.pic;
+  const { user } = req.session.results;
+  // console.log(userData);
+  console.log(data);
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+  mysqlConnection.query(
+    'INSERT INTO studentProfilePics (user_id,file_name,mime_type,data) VALUES(?,?,?,?)',
+    [user.user_id, name, mimetype, data]
+  );
+
+  res.json('uploaded');
 });
 
 // logout
@@ -1580,20 +1555,63 @@ app.post('/resetPassword', async (req, res) => {
     if (err) {
       console.error('Error connecting to MySQL:', err);
       return;
-    }
-    console.log('Connected to MySQL');
-  });
 
-  mysqlConnection.query(
-    'UPDATE studentLoginInfo SET hashedPassword=? WHERE user_email=?',
-    [newHashedPassword, email],
-    (err, results) => {
-      if (err) {
-        console.log(err);
-      }
-      res.render('resetSuccess');
+      console.log('Connected to MySQL');
     }
-  );
+  });
+});
+
+app.post('/saved-list', isAuthUser, async (req, res) => {
+  try {
+    const { user } = req.session.results;
+    const blog = req.body.blog;
+    console.log(blog);
+    const blogData = await Post.findById({ _id: blog });
+    console.log(blogData.savedBy);
+
+    // const savedBy= await Post.find()
+
+    // console.log(saved);
+    await Post.updateMany(
+      { _id: blog },
+      { $set: { savedBy: [...blogData.savedBy, user.user_id] } }
+    );
+
+    await SavedPost.insertMany([
+      {
+        title: blogData.title,
+        body: blogData.body,
+        createdAt: blogData.createdAt,
+        createdBy: blogData.createdBy,
+        savedBy: user.user_id,
+      },
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.get('/saved-list', isAuthUser, async (req, res) => {
+  // const data = await SavedPost.find();
+  const { user } = req.session.results;
+  const data = await Post.find();
+  res.json({ data, userid: user.user_id });
+});
+
+app.post('/write-post', isAuthUser, async (req, res) => {
+  const data = req.body;
+  console.log(data);
+  const { user } = req.session.results;
+  // console.log(userData.user.user_name);
+
+  await Post.insertMany([
+    {
+      title: data.title,
+      body: data.story,
+      createdBy: `${user.user_name}`,
+    },
+  ]);
+  res.json('submited');
 });
 
 app.listen(port, '0.0.0.0', () => {

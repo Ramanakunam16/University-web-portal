@@ -1,0 +1,42 @@
+h1 {
+  text-align: center;
+  padding: 20px;
+}
+.add-note {
+  width: 100%;
+  padding: 16px;
+  margin: 10px;
+  border: none;
+  border-left: 4px solid #333;
+}
+.add-note:focus {
+  border: none;
+}
+.saved-tools {
+  /* width: 20%; */
+  max-width: 50%;
+  border: 1px solid #fff;
+  background-color: #fff;
+  margin: 20px;
+  transition: 0.5s;
+}
+.saved-tools ul {
+  list-style-type: none;
+}
+.saved-tools ul li {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ddd;
+  align-items: center;
+  color: #333;
+  padding: 10px;
+}
+
+.saved-tools ul li:hover {
+  cursor: pointer;
+  /* background: #333131; */
+  color: black;
+}
+.hidden {
+  display: none;
+}

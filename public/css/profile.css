@@ -1,0 +1,82 @@
+* {
+  margin: 0;
+  /* padding: 0; */
+  box-sizing: border-box;
+}
+
+header {
+  display: flex;
+  height: 90px;
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  padding: 20px;
+}
+.logo-search {
+  width: 80%;
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+}
+#search-bar {
+  /* width: 20px; */
+  height: 40px;
+  padding: 20px;
+  align-self: center;
+  border-radius: 30px;
+}
+#write-icon,
+#notification-icon {
+  width: 30px;
+}
+
+img.logo {
+  width: 50px;
+  /* padding-top: 10px; */
+  align-self: center;
+}
+
+.nav-bar {
+  display: flex;
+  width: auto;
+  gap: 40px;
+  font-size: 18px;
+}
+.nav-bar a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+}
+.write,
+.notification {
+  align-self: center;
+}
+.header::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.profile-container {
+  display: flex;
+  /* justify-content: center; */
+  /* margin: 40px auto; */
+  align-items: center;
+}
+.profile-details {
+  width: 60%;
+  padding-left: 30px;
+  margin-left: 10%;
+  align-self: center;
+}
+
+.profile-details > h2 {
+  text-align: center;
+}
+
+.profile-details .options {
+  display: flex;
+}
+.profile {
+  padding: 0 30px;
+  border-left: 1px solid #ddd;
+}

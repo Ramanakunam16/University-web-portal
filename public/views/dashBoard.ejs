@@ -20,7 +20,9 @@
             <h2>Dr Brau</h2>
         </div>
         <!-- <div id="line"></div> -->
+
         <div class="dropdown">
+
             <% if (profilePicData) { %>
                 <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>" id="avatar"
                     alt="profile pic">
@@ -29,7 +31,7 @@
                     <% } %>
 
                         <i style="width:30px; margin-right: 47px;" class="dropdown-btn">
-                            <span><img src="./imgs/dropdown5.jpg" alt="dropDownbtn" id="dbicon"></span>
+                            <span><img src="./imgs/menu-outline.svg" alt="dropDownbtn" class="menuicon"></span>
                         </i>
 
                         <div class="dropdown-features">
@@ -41,6 +43,13 @@
     </div>
     <div class="overlay hidden"></div>
 
+    <div class="username">
+
+        <h2>welcome</h2>
+        <p>
+            <%= username%>
+        </p>
+    </div>
     <div class="info">
 
 
@@ -62,58 +71,79 @@
         <p>Click here to view features..</p>
 
 
-        . <div class="shape">
-
-        </div>
-        <div class="username">
-            <h2>welcome</h2>
-            <p>
-                <%= username%>
-            </p>
-        </div>
 
     </div>
 
-    <div class="features">
-        <h2>Features:</h2>
-        <div class="results">
 
-            <article class="resultsfeatures">
-                <div class="resultsPics"> <img src=".imgs/results.jpg" class="resultsimg1" alt="">
-                    <img src="./imgs/results1.jpg" class="resultsimg2" alt="">
+    <section class="features">
+        <h2 class="title">Features:</h2>
+
+        <p class="features-info">
+            Discover your semester results, reserve library books, and read engaging blogs easily. Your one-stop
+            platform for
+            simplified access to information and enjoyable reading experiences.</p>
+        <div class="features-container">
+
+            <a href="/results">
+
+                <div class="feature results">
+                    <img src="../imgs/results-image.jpeg">
+
+                    <p>Discover your success story with just a click! Check your grades, achievements, and progress
+                        easily on our
+                        University Web Portal.</p>
                 </div>
+            </a>
 
-                <div class="resultsHeader">
-                    <p style="color:rgb(14, 11, 11)">You can view results of every semester here......</p>
+            <a href="/libBookReservation">
+                <div class="feature library-books-rsv">
+                    <img src="../imgs/library-image.jpeg">
+                    <p>Reserve your favorite library books effortlessly and dive into a world of knowledge.</p>
                 </div>
+            </a>
 
-                <div class="resultsbtn">
-                    <p>Click here to view results</p>
-                    <a href="/results">View Results</a>
+            <a href="/blogs">
+                <div class="feature blogs">
+                    <img src="../imgs/blogs-image1.jpeg">
+                    <p>Delve into curated content on our website, exclusively tailored for students. Edited by faculty
+                        administrators,
+                        our blogs offer a unique blend of insights to enrich your learning experience</p>
                 </div>
+            </a>
+            <a href="/payment">
+                <div class="feature payment">
+                    <img src="../imgs/payment.jpeg">
+                    <p>Empowering students with secure payment choices, our website simplifies semester registration,
+                        enhancing
+                        the university experience</p>
+                </div>
+            </a>
 
-            </article>
         </div>
-        <div class="libReserve">
-            <article class="libReservefeatures">
-                <div> <img src="./imgs/lib1.jpg" class="libimg1" alt="">
-                    <img src="./imgs/lib.jpg" class="libimg2" alt="">
-
-                </div>
-
-                <div class="libHeader">
-                    <p style="color:rgb(14, 11, 11)">You can reserve library books here......</p>
-                </div>
-
-                <div class="libbtn">
-                    <p>Click here to reserve a book</p>
-                    <a href="/libBookReservation">Reserve Books</a>
-                </div>
-            </article>
+    </section>
+    <footer>
+        <div class="footer">
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/">university portal</a>
+                </li>
+                <li>
+                    <a href="/">Privacy Policy</a>
+                </li>
+                <li>
+                    <a href="/">about</a>
+                </li>
+                <li>
+                    <a href="/">Contact</a>
+                </li>
+            </ul>
+            <p>Dr Brau university ,srikakulam </p>
+            <p>@copyrights reserved</p>
         </div>
-        <div class="blogs"></div>
-    </div>
-
+    </footer>
 
     <script src="./js/studentDashBoard.js">
     </script>

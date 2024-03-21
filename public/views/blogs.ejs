@@ -4,30 +4,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>blogs</title>
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/blogs.css">
+
 </head>
 
 <body>
+    <header>
 
-    <div class="blogs">
-        <div class="user-details">
-            <h4>Ramana</h4>
-            <p>student</p>
+        <div class="logo-search"> <img src="../imgs/ambedkar-university-sklm.jpg" alt="logo" class="logo" />
+            <input type="search" name="search" id="search-bar" placeholder="search">
         </div>
-    </div>
-    <div class="content">
-        <input type="text">
-    </div>
-    <div class="interact">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#000">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="{2}"
-                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-        </svg>
-        <img src="https://p7.hiclipart.com/preview/779/603/798/speech-balloon-computer-icons-encapsulated-postscript-like-share-comment-thumbnail.jpg"
-            alt="comments">
-        <img src="https://p7.hiclipart.com/preview/454/590/520/5bbf5dc38c2c5-thumbnail.jpg" alt="share">
-    </div>
 
+        <div class="nav-bar">
+
+            <div class="write">
+
+                <a href="/write-post"> <img src="./imgs/icons8-pen-nib-32.png" alt="write icon"
+                        id="write-icon">write</a>
+            </div>
+            <div class="notification">
+                <a href="#"><img src="./imgs/icons8-notification-50.png" alt="notification icon"
+                        id="notification-icon"></a>
+            </div>
+            <div class="profile">
+                <!-- <img src="./imgs/icons8-avatar-50.png" alt="profilepic" id="avatar"> -->
+                <% if (profilePicData) { %>
+
+                    <img src="data:<%= profilePicMimeType %>;base64,<%= profilePicData.toString('base64') %>"
+                        id="avatar" alt="profile pic">
+                    <% } else { %>
+
+                        <img src="./imgs/avatar.jpg" id="avatar" alt="profilepic">
+                        <% } %>
+            </div>
+        </div>
+    </header>
+
+    <%- include("../views/blogs-container") %>
+
+
+        <div class="footer">
+            <ul>
+                <li>
+                    <a href="/">Home</a>
+                </li>
+                <li>
+                    <a href="/">university portal</a>
+                </li>
+                <li>
+                    <a href="/">Privacy Policy</a>
+                </li>
+                <li>
+                    <a href="/">about</a>
+                </li>
+                <li>
+                    <a href="/">Contact</a>
+                </li>
+            </ul>
+            <p>Dr Brau university ,srikakulam </p>
+            <p>@copyrights reserved</p>
+        </div>
 </body>
 
 </html>

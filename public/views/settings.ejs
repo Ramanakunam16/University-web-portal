@@ -14,7 +14,7 @@
 <body>
     <div class="header">
         <div>
-            <img id="logo" src="./imgs/ambedkar-university-sklm.jpg">
+            <a href="/dashBoard"> <img id="logo" src="./imgs/ambedkar-university-sklm.jpg"></a>
 
         </div>
 
@@ -92,7 +92,7 @@
 
                             </form>
                             <% } else { %>
-                                <form action="/saveProfilePic" method="post" enctype="multipart/form-data">
+                                <form action="/uploadProfilePic" method="post" enctype="multipart/form-data">
                                     <img src="./imgs/avatar.jpg" id="profilepic" alt="">
 
                                     <h3>Profile Picture</h3>

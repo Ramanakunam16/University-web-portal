@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/profile.css">
+</head>
+
+<body>
+    <header>
+
+        <div class="logo-search"> <img src="../imgs/ambedkar-university-sklm.jpg" alt="logo" class="logo" />
+            <input type="search" name="search" id="search-bar" placeholder="search">
+        </div>
+
+        <div class="nav-bar">
+
+            <div class="write">
+
+                <a href=""> <img src="./imgs/icons8-pen-nib-32.png" alt="write icon" id="write-icon">write</a>
+            </div>
+            <div class="notification">
+                <a href="#"><img src="./imgs/icons8-notification-50.png" alt="notification icon"
+                        id="notification-icon"></a>
+            </div>
+            <div class="profile">
+                <img src="./imgs/icons8-avatar-50.png" alt="avatar" id="avatar">
+            </div>
+        </div>
+    </header>
+
+
+    <div class="profile-container">
+        <div class="profile-details">
+            <div class="profile-info">
+                <h2>user name</h2>
+                <div class="options">
+                    <a href="#">Home</a>
+                    <a href="">about</a>
+                </div>
+                <div class="home-container hidden" id="home-container"></div>
+                <div class="about-container hidden" id="about-container"></div>
+
+            </div>
+
+
+
+        </div>
+
+        <div class="profile">
+            <div class="profile-info">
+                <img src="./imgs/icons8-avatar-50" alt="avatar">
+                <h2>
+                    <%=profile.user_name %>
+                </h2>
+                <p>
+                    <%=profile.about %>
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

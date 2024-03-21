@@ -21,33 +21,37 @@
 
                 <div class="id">
                     <label for="studentId">Enter student Id:</label>
-                    <input type="text" id="studentId" name="studentId" required>
+                    <input type="text" id="studentId" name="studentId" placeholder="student id" required>
+                </div>
+                <div class="emailid">
+
+                    <label for="emailid">Enter your email Id:</label>
+                    <input type="email" id="emailid" name="emailid" placeholder="email id" required>
+
                 </div>
 
                 <button id="verifyAcct">Verify Account</button>
             </form>
         </div>
 
-        <div class="generateOtp hidden">
+        <!-- <div class="generateOtp hidden">
             <form action="/studentgenerateOTP" method="post" id="form2">
 
                 <div class="emailid">
 
-                    <label for="emailid">Enter college provided email Id:</label>
-
-                    <span>example:20819510**@brau.edu.in</span>
+                    <label for="emailid">Enter your email Id:</label>
                     <input type="email" id="emailid" name="emailid" required>
                     <Button class="generateotpBtn">generate otp</Button>
                 </div>
             </form>
-        </div>
+        </div> -->
         <div class="verifyotp hidden">
             <form action="/studentotp" method="post" id="form2">
 
 
 
                 <label for="verifyotp">
-                    verify Otp
+                    verify otp
 
                     <input type="integer" id="verifyotp" name="verifyotp" min="6" required>
                     <Button class="verifyotpBtn">verify otp</Button>

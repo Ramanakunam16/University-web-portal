@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>reading list</title>
+    <link rel="stylesheet" href="./css/blogs.css">
+    <link rel="stylesheet" href="./css/reading-list.css">
+</head>
+
+
+<body>
+
+    <h1>Reading List</h1>
+
+    <div class="container">
+
+
+
+        <div class="blogs">
+
+            <% data.forEach(data=> { %>
+                <% if (userid===data.savedBy.filter((id)=>id===userid)[0]) { %>
+                    <div class="blog">
+
+                        <input type="text" placeholder="add note" class="add-note">
+                        <a href="">
+                            <div class="user">
+                                <img src="./imgs/icons8-avatar-50.png" alt="avatar" id="avatar">
+                                <p>
+                                    <%= data.createdBy.toLowerCase() %>
+                                </p>
+                                <span>
+                                    <%= data.createdAt.toDateString() %>
+                                </span>
+
+                            </div>
+                        </a>
+
+                        <div class="blogsFront">
+                            <a href="/blogContent-<%=data._id%>">
+                                <h2>
+                                    <%= data.title %>
+                                </h2>
+                                <p>
+                                    <%= data.body?.slice(0,300) %>....
+                                </p>
+                            </a>
+
+                        </div>
+                        <div class=" tools">
+                            <p>ForntEnd development</p>
+
+                            <div class="save" data-blog='<%=data._id%>'>
+
+                                <% if (data.savedBy.includes(userid)) { %>
+                                    <img src="./imgs/icons8-save-24-b.png" alt="">
+                                    <% } else { %>
+                                        <img src="./imgs/icons8-save-24.png" alt="">
+                                        <% } %>
+
+
+
+
+
+
+                            </div>
+
+
+                            <span class="savedtoolsbtn">...</span>
+                            <!-- <div class="saved-tools hidden">
+                                <ul>
+                                    <li>Edit note</li>
+                                    <li id="remove-story" data-blog='<%=data._id%>'>Remove story</li>
+                                </ul>
+                            </div> -->
+                        </div>
+                        <div class="saved-tools hidden">
+                            <ul>
+                                <li>Edit note</li>
+                                <li id="remove-story" data-blog='<%=data._id%>'>Remove story</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <% } %>
+
+
+                        <% }) %>
+
+
+
+
+
+
+
+        </div>
+        <div class="user">
+            <h2>
+                <%=userid %>
+            </h2>
+        </div>
+    </div>
+    <script>
+        const savedtoolsbtn = document.querySelectorAll(".savedtoolsbtn")
+        const savedtools = document.querySelectorAll(".saved-tools")
+        savedtoolsbtn.forEach((savedbtn, index) => {
+
+            savedbtn.addEventListener("click", () => {
+                console.log(savedtools[index])
+                savedtools[index].classList.toggle("hidden")
+
+            })
+        })
+    </script>
+</body>
+
+</html>

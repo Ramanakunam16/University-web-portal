@@ -230,7 +230,7 @@ span {
 
 .container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   gap: 6%;
   margin: 20px;
 }
@@ -241,7 +241,7 @@ span {
 
   height: 160px;
 
-  width: 20%;
+  width: 30%;
 
   border-radius: 20px;
   display: inline-block;
@@ -289,7 +289,8 @@ span {
   background-color: #91c7b9;
   border: 2px solid rgb(7, 115, 151);
   border-radius: 20px;
-  min-width: 65%;
+  padding: 20px;
+  max-width: 100%;
   /* height: 40em; */
   max-height: 100em;
   /* text-align: center; */
@@ -302,7 +303,7 @@ span {
   display: flex;
   justify-content: center;
   gap: 2%;
-  margin: 20px;
+  margin: 20px 0;
 }
 
 .completedBtn {
@@ -323,10 +324,8 @@ span {
 }
 
 .reason {
-  /* margin-left: 10px; */
-  position: relative;
-  top: -5px;
-  /* margin-bottom: 150px; */
+  width: 180%;
+  grid-row-end: 2 / span 2;
 }
 
 .reason h2 {
@@ -353,26 +352,27 @@ span {
 .bookCover {
   margin-top: 20px;
   margin-bottom: 20px;
-  width: 10%;
-  height: 50%;
+  width: 30%;
+  height: 70%;
 }
 
-.reservedBooks {
-  display: flex;
+.books {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   width: 98%;
-  justify-content: space-around;
   margin: 20px 20px;
-  margin-left: 20px;
-  /* text-align: center; */
   border: 1px solid black;
   padding: 20px;
-  gap: 25px;
+  /* gap: 25px; */
 }
 
 .bookInfo {
   display: block;
   margin: 20px;
   width: max-content;
+}
+.bookInfo img {
+  width: 50%;
 }
 
 .bookInfo h4 {
@@ -385,6 +385,9 @@ span {
   margin: 0;
   display: inline-block;
   padding-left: 20px;
+}
+.date {
+  width: 50%;
 }
 
 .date p {

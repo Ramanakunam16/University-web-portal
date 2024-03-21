@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="./css/blogContent.css">
+</head>
+
+<body>
+    <header>
+
+        <div class="logo-search"> <img src="../imgs/ambedkar-university-sklm.jpg" alt="logo" class="logo" />
+            <input type="search" name="search" id="search-bar" placeholder="search">
+        </div>
+
+        <div class="nav-bar">
+
+            <div class="write">
+
+                <a href=""> <img src="./imgs/icons8-pen-nib-32.png" alt="write icon" id="write-icon">write</a>
+            </div>
+            <div class="notification">
+                <a href="#"><img src="./imgs/icons8-notification-50.png" alt="notification icon"
+                        id="notification-icon"></a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>
+            <%= data.title %>
+        </h2>
+        <div class="user">
+            <img src="./imgs/icons8-avatar-50.png" alt="avatar" id="avatar">
+            <p>
+                <%= data.createdBy %>
+            </p>
+            <span>
+                <%= data.createdAt.toDateString() %>
+            </span>
+
+        </div>
+        <div class="tools">
+            <p>ForntEnd development</p>
+            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256"
+                style="fill:#000000;">
+                <defs>
+                    <clipPath id="clip-1">
+                        <path
+                            d="M0,256v-256h256v256zM225.52381,195.04762h-4.57143v-4.57143c0,-10.08457 -8.20114,-18.28571 -18.28571,-18.28571c-10.08457,0 -18.28571,8.20114 -18.28571,18.28571v4.57143h-4.57143c-10.08457,0 -18.28571,8.20114 -18.28571,18.28571c0,10.08457 8.20114,18.28571 18.28571,18.28571h4.57143v4.57143c0,10.08457 8.20114,18.28571 18.28571,18.28571c10.08457,0 18.28571,-8.20114 18.28571,-18.28571v-4.57143h4.57143c10.08457,0 18.28571,-8.20114 18.28571,-18.28571c0,-10.08457 -8.20114,-18.28571 -18.28571,-18.28571z"
+                            id="overlayBgMask" fill="none"></path>
+                    </clipPath>
+                </defs>
+                <g clip-path="url(#clip-1)" fill="none" fill-rule="nonzero" stroke="none" stroke-width="1"
+                    stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
+                    stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                    style="mix-blend-mode: normal">
+                    <g transform="scale(10.66667,10.66667)" fill="#000000">
+                        <path
+                            d="M6,2c-1.15556,0 -2,0.96667 -2,2v18.03906l8,-2.97266l8,2.97266v-1.43945v-16.59961c0,-0.52222 -0.19133,-1.05461 -0.56836,-1.43164c-0.37703,-0.37703 -0.90942,-0.56836 -1.43164,-0.56836zM6,4h12v15.16211l-6,-2.22852l-6,2.22852z">
+                        </path>
+                    </g>
+                </g>
+                <g fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                    stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                    font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                    style="mix-blend-mode: normal">
+                    <g transform="translate(170.66667,181.33333) scale(4.57143,4.57143)" id="overlay">
+                        <path
+                            d="M14,7c0,1.105 -0.895,2 -2,2h-3v3c0,1.105 -0.895,2 -2,2c-1.105,0 -2,-0.895 -2,-2v-3h-3c-1.105,0 -2,-0.895 -2,-2c0,-1.105 0.895,-2 2,-2h3v-3c0,-1.105 0.895,-2 2,-2c1.105,0 2,0.895 2,2v3h3c1.105,0 2,0.895 2,2z">
+                        </path>
+                    </g>
+                </g>
+            </svg>
+            <span>...</span>
+        </div>
+        <div class="content">
+            <%= data.body %>
+                <!-- 💡 This is a humorous piece. We all need to unwind and have a little fun every now and then. Please don’t
+            take any of this advice seriously.
+            <br>
+            <br>
+
+            Maybe you are an experienced developer and have a lot of skills and experience to help teach us how to be a
+            good front-end developer.
+
+            <br>
+            <br>
+             Unfortunately, I’m an average programmer and I can only share with you how to be the worst front-end
+            developer ever.
+            <br>
+            Haha, I have 15 years of experience in this field. Let’s learn some bad advice together and get fired from
+            the company as soon as possible!
+            <br>
+            1. Please use global variables as much as possible
+            You should use global variables as much as possible and teach your colleagues to use this coding style.
+            <br>
+            <br>
+
+            2. We can`t object to any functionality envisioned by the Product Manager
+            We should accept all the requirements planned by the product manager and not put forward our own thoughts
+            and objections.
+            <br>
+            Please do your best to realize the complex, chaotic and cumbersome functions of interaction and gain a sense
+            of technical achievement through it, and be a little white rabbit who is not picky about food.
+            <br>
+            3. Please never write code comments
+            Why should we write notes? In order to make your colleague’s work easier? I refuse!!!
+            4. We should reject TypeScript
+            We can’t use TypeScript and should reconstruct the items written by TypeScript into JavaScript code, which
+            is more conducive to maintenance and expansion.
+            <br>
+            Last year, our department hired a leader. After he briefly learned about the rich text editor project I was
+            maintaining, he told me that the project needed to be refactored. The goal of the refactoring was to abandon
+            TypeScript and rewrite it with JavaScript.
+            <br>
+            After struggling for several days, I made a difficult decision to leave the company.
+ -->
+
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>

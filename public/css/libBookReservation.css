@@ -173,6 +173,7 @@ body {
   background-color: rgb(142, 204, 113);
   position: fixed;
   right: 0;
+  bottom: 0;
   font-size: 20px;
   margin-right: 5%;
   width: 30%;

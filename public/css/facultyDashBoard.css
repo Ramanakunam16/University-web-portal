@@ -30,14 +30,17 @@ body {
   justify-content: space-between;
   /* align-items: center; */
 }
+.logo #clg {
+  margin-left: 30px;
+}
 
 .header h2 {
   display: inline-block;
   position: absolute;
-  top: 25;
-  margin-top: 2px;
+  top: 22;
+  /* margin-top: 2px; */
   margin-left: 5px;
-  margin-top: 25px;
+  margin-top: 10px;
   color: rgb(0, 0, 0);
 }
 
@@ -66,9 +69,9 @@ nav a {
   font-family: 'Courier New', Courier, monospace;
   /* font-size: 25px; */
   color: rgb(5, 64, 78);
-  margin-top: 15%;
+  margin-top: 5%;
   margin-left: 10%;
-  margin-bottom: 20%;
+  margin-bottom: 40px;
 }
 
 .info h2 {
@@ -101,10 +104,9 @@ nav a {
 }
 
 .username {
-  position: absolute;
-  right: 0;
-  top: 40.3%;
-  margin-right: 20%;
+  margin-top: 40px;
+  margin-left: 10%;
+  text-align: center;
 }
 
 .username p {
@@ -117,7 +119,7 @@ nav a {
 .blogs,
 .uploadResults {
   border-top: 1px solid black;
-  margin-bottom: 20%;
+  /* margin-bottom: 20%; */
 }
 
 .libraryFeatures h2 {
@@ -190,6 +192,16 @@ nav a {
 }
 
 @media (max-width: 900px) {
+  nav a {
+    margin-right: auto;
+  }
+
+  .username,
+  .shape {
+    display: none;
+  }
+}
+@media only screen and (max-width: 480px) {
   nav a {
     margin-right: auto;
   }

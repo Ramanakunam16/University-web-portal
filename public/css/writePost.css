@@ -1,0 +1,102 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  display: flex;
+
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  /* padding: 0 10px; */
+  /* margin: 0 auto; */
+  padding: 20px;
+}
+.logo-search {
+  width: 80%;
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+}
+#search-bar {
+  /* width: 20px; */
+  height: 40px;
+  padding: 20px;
+  align-self: center;
+  border-radius: 30px;
+}
+
+#notification-icon {
+  width: 20px;
+}
+.write {
+  display: none;
+}
+img.logo {
+  width: 50px;
+  /* padding-top: 10px; */
+  align-self: center;
+}
+
+.nav-bar {
+  display: flex;
+  width: auto;
+  gap: 40px;
+  font-size: 18px;
+}
+.nav-bar a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+}
+.write,
+.notification {
+  align-self: center;
+}
+
+.header::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.write-post {
+  font-size: 18px;
+  margin: 30px;
+}
+
+.write-post input,
+textarea {
+  display: block;
+  margin: 20px auto;
+}
+.write-post p {
+  text-align: center;
+  font-size: 24px;
+}
+textarea {
+  padding: 20px;
+  font-size: 18px;
+}
+
+.write-post input {
+  width: 80%;
+  margin: 30px;
+  border-radius: 30px;
+  padding: 10px;
+  font-size: 18px;
+  margin: 20px 10%;
+}
+input[type='text'] {
+  text-align: center;
+}
+.write-post button {
+  border-radius: 30px;
+  padding: 10px;
+  margin: 0 10%;
+}
+.write-post button:hover {
+  background: #3a3a;
+  cursor: pointer;
+}
