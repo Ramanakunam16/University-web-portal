@@ -15,6 +15,7 @@ body {
     rgba(56, 166, 199, 0.6),
     rgb(117, 142, 148)
   );
+  font-family: 'Courier New', Courier, monospace;
 }
 
 #logo {
@@ -31,7 +32,10 @@ body {
   /* align-items: center; */
 }
 .logo #clg {
-  margin-left: 30px;
+  margin-left: 16px;
+}
+.logo h2 {
+  font-size: 14px;
 }
 
 .header h2 {
@@ -39,8 +43,9 @@ body {
   position: absolute;
   top: 22;
   /* margin-top: 2px; */
+  font-size: 14px;
   margin-left: 5px;
-  margin-top: 10px;
+  margin-top: 25px;
   color: rgb(0, 0, 0);
 }
 

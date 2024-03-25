@@ -180,6 +180,10 @@ span {
   position: relative;
 }
 
+.dropdown-btn:hover {
+  cursor: pointer;
+}
+
 .dropbtn {
   border: none;
   cursor: pointer;
@@ -215,7 +219,7 @@ span {
 }
 
 #dbicon {
-  width: 20px;
+  width: 30px;
 }
 
 #dbicon:hover {
@@ -290,7 +294,7 @@ span {
   border: 2px solid rgb(7, 115, 151);
   border-radius: 20px;
   padding: 20px;
-  max-width: 100%;
+  width: 68%;
   /* height: 40em; */
   max-height: 100em;
   /* text-align: center; */

@@ -5,10 +5,170 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>payment</title>
+    <link rel="stylesheet" href="./css/payment.css">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script> -->
 </head>
 
 <body>
-    <h1>payment</h1>
+    <!-- <h1>payment</h1>
+    
+    -->
+    <header>
+        <div class="header">
+            <img src="../imgs/ambedkar-university-sklm.jpg" alt="" id="logo">
+            <h2><span id="clg">College of Engineering</span>
+                <br> DR B.R.Ambedkar university
+            </h2>
+
+        </div>
+    </header>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <a href="">
+                    <li class="dash-side active">Dashboard</li>
+                </a>
+
+
+
+                <li id="aboutbtn">about</li>
+
+                <a href="">
+                    <li>Transactions</li>
+                </a>
+
+
+
+
+            </ul>
+        </div>
+        <div class="payment-dash hidden">
+            <h1> Welcome to Your Payment Dashboard</h1>
+            <p> you can Pay your semester registration and practicals fee from this payment dashboard. </p>
+            <p>Select below cards to pay.</p>
+            <div class="cards">
+
+                <div class="card semreg">
+                    <h1>
+                        Semester Registration
+                    </h1>
+                </div>
+
+                <a href="">
+                    <div class="practicals card">
+                        <h1>
+                            Practical Fee
+                        </h1>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
+        <div class="sem-reg">
+            <h1>Semester Registration</h1>
+            <p>Fill the below form to pay </p>
+            <form action="" class="sem-reg-form">
+                <input type="integer" name="amount" id="amount" value="₹ 1050.00/-" readonly>
+                <select name="semester" id="name-list" class="form-select" required>
+                    <option value="" disabled selected>Choose Semester</option>
+                    <option value="semester 1">semester 1</option>
+                    <option value="semester 2">semester 2</option>
+                    <option value="semester 3">semester 3</option>
+                    <option value="semester 4">semester 4</option>
+                    <option value=" semester 5">semester 5</option>
+                    <option value="semester 6">semester 6</option>
+                    <option value="semester 7">semester 7</option>
+                    <option value="semester 8">semester 8</option>
+                </select>
+                <input type="integer" name="studentid" id="studentid" placeholder="Student Id" required>
+
+                <input type="text" name="studentname" id="studentname" placeholder="Student Name" required>
+                <input type="text" name="fathername" id="fathername" placeholder="Father Name" required>
+                <button id="checkoutbtn">Pay now</button>
+            </form>
+
+        </div>
+        <div class="aboutinfo hidden">
+            <p>
+                The University Payment Dashboard is an intuitive online platform that seamlessly integrates various fee
+                payment options, including hostel fees, semester fees, and practicals fees, providing students with a
+                one-stop solution for all their payment needs. It offers a streamlined, secure, and user-friendly
+                interface that allows students to easily manage and track their payments in real-time, ensuring a smooth
+                and hassle-free payment experience. With features like payment history, instant receipts, and payment
+                reminders, the dashboard enhances the financial management capabilities of both students and the
+                university administration.</p>
+        </div>
+
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <script>
+        const checkoutbtn = document.querySelector("#checkoutbtn");
+        const semreg = document.querySelector(".semreg")
+        const paymentdash = document.querySelector(".payment-dash")
+        const aboutbtn = document.querySelector("#aboutbtn")
+        const aboutinfo = document.querySelector(".aboutinfo")
+        const dashside = document.querySelector(".dash-side")
+        const sem_reg_pay = document.querySelector(".sem-reg")
+        const semestervalue = document.getElementById("name-list")
+        const studentIdvalue = document.querySelector("#studentid")
+        const studentName = document.querySelector("#studentname")
+
+
+        // checkoutbtn.addEventListener("click", (e) => {
+        //     e.preventDefault();
+        //     console.log("clicked")
+        //     const semester = semesterlist
+        //     console.log(semester)
+        //     const items = [{ id: 1, quantity: 1, name: "semester registration", price: 105000 }, { id: 2, quantity: 1, name: "praticals fee", price: 10000 }]
+        //     axios.post("/create-checkout", { items }).then(res => {
+        //         console.log(res)
+
+        //         window.location = res.data.url
+        //     })
+        // })
+        dashside.addEventListener("click", () => {
+            aboutbtn.classList.remove("active")
+            dashside.classList.add("active")
+            paymentdash.classList.remove("hidden")
+            aboutinfo.classList.add("hidden")
+            sem_reg_pay.classList.add("hidden")
+        })
+        aboutbtn.addEventListener("click", () => {
+            aboutbtn.classList.add("active")
+            dashside.classList.remove("active")
+            paymentdash.classList.add("hidden");
+            aboutinfo.classList.remove("hidden")
+        })
+
+        checkoutbtn.addEventListener("click", (e) => {
+            e.preventDefault()
+            const semester = semestervalue.selectedOptions[0].value
+            console.log(semester)
+            const studentId = studentIdvalue.value
+            if (semester && studentId) {
+                axios.post("/create-checkout", { semester, studentId }).then(res => {
+                    console.log(res)
+
+                    window.location = res.data.url
+                })
+            }
+        });
+
+        semreg.addEventListener("click", () => {
+            document.querySelector(".dash-side").style.background = "none"
+            document.querySelector(".dash-side").style.color = "#000";
+            paymentdash.classList.add("hidden");
+            sem_reg_pay.classList.remove("hidden")
+        })
+
+
+    </script>
 </body>
 
 </html>

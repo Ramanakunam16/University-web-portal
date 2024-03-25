@@ -1,3 +1,153 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+header {
+  display: flex;
+
+  width: 100%;
+  border-bottom: 1px solid #ddd;
+  /* padding: 0 10px; */
+  /* margin: 0 auto; */
+  padding: 20px;
+}
+#avatar {
+  align-self: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  /* margin-top: 15px; */
+  object-fit: cover;
+}
+.logo-search {
+  width: 80%;
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+}
+#search-bar {
+  /* width: 20px; */
+  height: 40px;
+  padding: 20px;
+  align-self: center;
+  border-radius: 30px;
+}
+#write-icon,
+#notification-icon {
+  width: 20px;
+}
+#write-icon {
+  margin-top: 10px;
+}
+
+img.logo {
+  width: 50px;
+  /* padding-top: 10px; */
+  align-self: center;
+}
+
+.nav-bar {
+  display: flex;
+  width: auto;
+  gap: 40px;
+  font-size: 18px;
+}
+.nav-bar a {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+}
+.write,
+.notification {
+  align-self: center;
+}
+
+.header::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+.container {
+  /* position: fixed; */
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  /* max-height: 74vh; */
+  gap: 0;
+  overflow: hidden;
+}
+.blogs {
+  width: 100%;
+  grid-column: 1 / span 1;
+  /* border-right: 1px solid #ddd; */
+  overflow: hidden;
+  /* overflow-y: scroll; */
+}
+.blogs::-webkit-scrollbar {
+  width: 6px;
+}
+
+.blogs::-webkit-scrollbar-thumb {
+  background-color: #555454;
+  border-radius: 20px;
+}
+
+.blogs::-webkit-scrollbar-track {
+  background-color: #ecf0f1;
+}
+
+.blog {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+.blog:hover {
+  background: #ddd;
+  border-bottom: 4px solid #939393dd;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+}
+.user > p,
+span {
+  padding: 0 10px;
+}
+.blogsFront * {
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+}
+.blogsFront h2 {
+  font-size: 30px;
+}
+.tools {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  /* align-content: center; */
+}
+.tools > p {
+  border: none;
+  background: beige;
+  padding: 5px;
+  margin-right: 20px;
+}
+.tools > span {
+  /* font-size: 20px; */
+  font-weight: 1000;
+  margin-right: 20px;
+}
+.tools span:hover {
+  cursor: pointer;
+}
 h1 {
   text-align: center;
   padding: 20px;
@@ -15,10 +165,11 @@ h1 {
 .saved-tools {
   /* width: 20%; */
   max-width: 50%;
+  float: right;
   border: 1px solid #fff;
   background-color: #fff;
   margin: 20px;
-  transition: 0.5s;
+  transition: 3s;
 }
 .saved-tools ul {
   list-style-type: none;
@@ -39,4 +190,53 @@ h1 {
 }
 .hidden {
   display: none;
+}
+a {
+  color: #333;
+  text-decoration: none;
+}
+.msg,
+.confirm-msg {
+  position: fixed;
+  top: 20px;
+  right: 240px;
+  width: 60%;
+  text-align: center;
+  color: #fff;
+  background-color: #333;
+  padding: 20px;
+}
+.msg > .close,
+.no {
+  font-size: 14px;
+  float: right;
+  border-radius: 20px;
+  padding: 10px;
+}
+.msg > .close:hover {
+  cursor: pointer;
+  /* font-size: 4px; */
+  background: #ddd;
+}
+.msg > .no:hover {
+  cursor: pointer;
+  /* font-size: 24px; */
+  background: #ddd;
+}
+.confirm-msg > .confirm-btn {
+  font-size: 20px;
+  float: right;
+}
+.confirm-msg > .conform-btn:hover {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+@media only screen and (max-width: 786px) {
+  .msg,
+  .confirm-msg {
+    position: fixed;
+    top: 20px;
+    right: 130px;
+  }
 }

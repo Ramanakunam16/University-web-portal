@@ -10,6 +10,19 @@
 </head>
 
 <body>
+    <div class="dropdown">
+
+
+        <img src="./imgs/menu-outline.svg" class="dropdown-btn" alt="dropDownbtn" class="menuicon">
+
+
+        <div class="dropdown-features">
+            <a href="/settings" class="settings">⚙ Platform settings</a>
+            <a href="/logout">↩ Sign Out</a>
+
+        </div>
+    </div>
+    <div class="overlay hidden"></div>
 
     <div class="container ">
         <div class="msg hidden">you reserved your book successfully</div>
@@ -21,12 +34,11 @@
 
         </div>
         <div class="book-container hidden"></div>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-        <script src="./js/libBookReservation.js">
-        </script>
+    <script src="./js/libBookReservation.js">
+    </script>
 </body>
 
 </html>

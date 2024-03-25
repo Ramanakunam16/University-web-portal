@@ -5,114 +5,154 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>reading list</title>
-    <link rel="stylesheet" href="./css/blogs.css">
+
     <link rel="stylesheet" href="./css/reading-list.css">
 </head>
 
 
 <body>
+    <%- include("../views/header.ejs") %>
 
-    <h1>Reading List</h1>
+        <h1>Reading List</h1>
 
-    <div class="container">
+        <div class="msg hidden">Do you want Remove Story from reading list?<button class="close">Yes</button>
+            <button class="no">No</button>
+        </div>
+        <div class="confirm-msg hidden">Successfully deleted <span class="confirm-btn">&times;</span></div>
+
+        <div class="container">
 
 
 
-        <div class="blogs">
+            <div class="blogs">
 
-            <% data.forEach(data=> { %>
-                <% if (userid===data.savedBy.filter((id)=>id===userid)[0]) { %>
-                    <div class="blog">
+                <% data.forEach(data=> { %>
+                    <% if (userid===data.savedBy.filter((id)=>id===userid)[0]) { %>
+                        <div class="blog">
 
-                        <input type="text" placeholder="add note" class="add-note">
-                        <a href="">
-                            <div class="user">
-                                <img src="./imgs/icons8-avatar-50.png" alt="avatar" id="avatar">
-                                <p>
-                                    <%= data.createdBy.toLowerCase() %>
-                                </p>
-                                <span>
-                                    <%= data.createdAt.toDateString() %>
-                                </span>
+                            <input type="text" placeholder="add note" class="add-note">
+                            <a href="">
+                                <div class="user">
+                                    <img src="./imgs/icons8-avatar-50.png" alt="avatar" id="avatar">
+                                    <p>
+                                        <%= data.createdBy.toLowerCase() %>
+                                    </p>
+                                    <span>
+                                        <%= data.createdAt.toDateString() %>
+                                    </span>
 
-                            </div>
-                        </a>
-
-                        <div class="blogsFront">
-                            <a href="/blogContent-<%=data._id%>">
-                                <h2>
-                                    <%= data.title %>
-                                </h2>
-                                <p>
-                                    <%= data.body?.slice(0,300) %>....
-                                </p>
+                                </div>
                             </a>
 
-                        </div>
-                        <div class=" tools">
-                            <p>ForntEnd development</p>
-
-                            <div class="save" data-blog='<%=data._id%>'>
-
-                                <% if (data.savedBy.includes(userid)) { %>
-                                    <img src="./imgs/icons8-save-24-b.png" alt="">
-                                    <% } else { %>
-                                        <img src="./imgs/icons8-save-24.png" alt="">
-                                        <% } %>
-
-
-
-
-
+                            <div class="blogsFront">
+                                <a href="/blogContent-<%=data._id%>">
+                                    <h3>
+                                        <%= data.title %>
+                                    </h3>
+                                    <p>
+                                        <%= data.body?.slice(0,300) %>....
+                                    </p>
+                                </a>
 
                             </div>
+                            <div class=" tools">
+                                <p>ForntEnd development</p>
+
+                                <div class="save" data-blog='<%=data._id%>'>
+
+                                    <% if (data.savedBy.includes(userid)) { %>
+                                        <img src="./imgs/icons8-save-24-b.png" alt="">
+                                        <% } else { %>
+                                            <img src="./imgs/icons8-save-24.png" alt="">
+                                            <% } %>
 
 
-                            <span class="savedtoolsbtn">...</span>
-                            <!-- <div class="saved-tools hidden">
+
+
+
+
+                                </div>
+
+
+                                <span class="savedtoolsbtn">...</span>
+
+                            </div>
+                            <div class="saved-tools hidden">
                                 <ul>
                                     <li>Edit note</li>
-                                    <li id="remove-story" data-blog='<%=data._id%>'>Remove story</li>
+                                    <li id="remove-story" data-blog-id='<%=data._id%>'>Remove story</li>
                                 </ul>
-                            </div> -->
+                            </div>
                         </div>
-                        <div class="saved-tools hidden">
-                            <ul>
-                                <li>Edit note</li>
-                                <li id="remove-story" data-blog='<%=data._id%>'>Remove story</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <% } %>
+                        <% } %>
 
 
-                        <% }) %>
+                            <% }) %>
 
 
 
 
 
 
+
+            </div>
 
         </div>
-        <div class="user">
-            <h2>
-                <%=userid %>
-            </h2>
-        </div>
-    </div>
-    <script>
-        const savedtoolsbtn = document.querySelectorAll(".savedtoolsbtn")
-        const savedtools = document.querySelectorAll(".saved-tools")
-        savedtoolsbtn.forEach((savedbtn, index) => {
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-            savedbtn.addEventListener("click", () => {
-                console.log(savedtools[index])
-                savedtools[index].classList.toggle("hidden")
+        <script>
+            const savedtoolsbtn = document.querySelectorAll(".savedtoolsbtn")
+            const savedtools = document.querySelectorAll(".saved-tools")
+            const removebtn = document.querySelectorAll("#remove-story")
+            const blogs = document.querySelector(".blogs")
+            const closebtn = document.querySelector(".close")
+            const msg = document.querySelector(".msg")
+            const msgConfirm = document.querySelector(".confirm-msg")
+            const confirmClosebtn = document.querySelector(".confirm-btn")
 
+
+            savedtoolsbtn.forEach((savedbtn, index) => {
+
+                savedbtn.addEventListener("click", () => {
+                    // console.log(savedtools[index])
+                    savedtools[index].classList.toggle("hidden")
+
+                })
             })
-        })
-    </script>
+            removebtn.forEach((removebtn) => {
+                removebtn.addEventListener("click", () => {
+                    const blogId = removebtn.dataset.blogId
+                    console.log("clicked", blogId)
+                    savedtools.forEach((savedtools) => { savedtools.classList.add("hidden") })
+
+                    msg.classList.remove("hidden")
+                    closebtn.addEventListener("click", () => {
+                        msg.classList.add("hidden")
+                        window.location.reload()
+                        msgConfirm.classList.remove("hidden")
+                    })
+                    removeStory(blogId)
+
+
+                })
+            })
+
+            confirmClosebtn.addEventListener("click", () => {
+                msgConfirm.classList.add("hidden")
+            })
+            document.querySelector(".no").addEventListener("click", () => {
+                msg.classList.add("hidden")
+            })
+
+            async function removeStory(blogId) {
+                await axios.post("/removestory", { blogId })
+
+
+            }
+            axios.get("/checkConnect").then(res => { console.log(res) })
+
+
+        </script>
 </body>
 
 </html>

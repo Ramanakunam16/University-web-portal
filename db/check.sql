@@ -10,3 +10,4 @@ DELETE FROM studentDetails;
 -- WHERE user_id=2081951001
 
 -- DELETE * FROM studentProfilePics;
+SELECT * FROM reservedBooks;

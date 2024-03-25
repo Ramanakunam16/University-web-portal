@@ -24,11 +24,20 @@ body {
     rgb(202, 236, 245)
   );
 }
+#clg {
+  margin-left: 14px;
+}
+.header h2 {
+  display: inline-block;
+  font-size: 14px;
+  padding: 34px 0;
+  /* text-align: center; */
+}
 
 img.logo {
   border-radius: 50%;
   width: 60px;
-  margin: 20px 10%;
+  margin: 20px 1%;
   padding: 10px;
   float: left;
 }

@@ -1,5 +1,9 @@
 // importing modules
 'use strict';
+const stripe = require('stripe')(
+  'sk_test_51OxMDMSDSooK0I1kmjADepReYVGo3L377b23vzvq32aitOCDNSdSTJQdcT8ZZtqfcSXFy3ZDQn1dNsu7XDXFRXSI00HCkoyxal'
+);
+const jwt = require('jsonwebtoken');
 const SavedPost = require('./db/models/SavedPost');
 const Profile = require('./db/models/Profile');
 const Post = require('./db/models/Post');
@@ -63,6 +67,7 @@ function getlatestUploadedFile(uploadDir) {
 // expressjs middleware
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 // app.use(fileUpload());
 app.use(express.json());
 // app.use(fileUpload());
@@ -83,14 +88,15 @@ const sqlDbCredentials = require('./db/sqlDbCredentials.js');
 function createDbConnection() {
   return mysql.createConnection(sqlDbCredentials);
 }
-
-connectMDB();
-
+// connectMDB();
+// connectMDB().then(res => console.log(res?.connection._readyState));
 // HANDLING HTTP REQUESTS
 
 // app.get('/', (req, res) => {
 //   res.render('index');
 // });
+connectMDB();
+
 app.get('/blogs', isAuthUser, async (req, res) => {
   const { user } = req.session.results;
   // console.log(userData);
@@ -175,7 +181,7 @@ app.get('/uploadResults', (req, res) => {
 app.get('/libBookReservation', isAuthUser, (req, res) => {
   res.render('libBookReservation');
 });
-app.get('/payment', (req, res) => {
+app.get('/payment', isAuthUser, (req, res) => {
   res.render('payment');
 });
 app.get('/facultyacctVerify', (req, res) => {
@@ -1000,7 +1006,7 @@ app.post('/signIn', async (req, res) => {
 
         if (results.length === 0) {
           // res.render("check");
-          res.send('mell');
+          res.json('invalid id');
         } else if (results.length !== 0) {
           const passwordMatch = await bcrypt.compare(
             password,
@@ -1009,35 +1015,18 @@ app.post('/signIn', async (req, res) => {
           let profilePic;
           if (passwordMatch) {
             // results1 = results[0];
+            // const token = jwt.sign(
+            //   { studentId },
+            //   "secretKey",
+            //   (expiresIn = '1h')
+            // );
+            // // console.log(token);
+            // res.cookie('jwt',token,{httpOnly:true,maxAge:3600000})
+
             req.session.results = { type: 'student', user: results[0] };
             const userData = req.session.results;
             console.log('results', userData);
-            // console.log(req.session.results);
-            // req.session.save();
-            // try {
-            //   mysqlConnection.query(
-            //     'SELECT * FROM studentProfilePics WHERE user_id=?',
-            //     [userData.user_id],
-            //     async (err, results) => {
-            //       if (err) {
-            //         console.log(err);
-            //       }
-            //       console.log(results);
-            //       if (results.length !== 0) {
-            //         const picData = results;
 
-            //         profilePic = picData[0];
-            //         console.log('picdata', profilePic);
-            //       } else {
-            //         profilePic = {};
-            //       }
-            //     }
-            //   );
-            // } catch {
-            //   console.log('no pics');
-            // }
-
-            // mysqlConnection.end();
             res.redirect('/dashBoard');
             // res.json({ isLogged: true });
           } else {
@@ -1586,6 +1575,7 @@ app.post('/saved-list', isAuthUser, async (req, res) => {
         savedBy: user.user_id,
       },
     ]);
+    res.redirect('/blogs');
   } catch (error) {
     console.log(error);
   }
@@ -1598,9 +1588,23 @@ app.get('/saved-list', isAuthUser, async (req, res) => {
   res.json({ data, userid: user.user_id });
 });
 
+app.post('/removestory', async (req, res) => {
+  try {
+    const { user } = req.session.results;
+    console.log(req.body);
+    await Post.updateMany(
+      { _id: req.body.blogId },
+      { $pull: { savedBy: user.user_id } }
+    );
+    res.redirect('/reading-list');
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 app.post('/write-post', isAuthUser, async (req, res) => {
   const data = req.body;
-  console.log(data);
+  // console.log(data);
   const { user } = req.session.results;
   // console.log(userData.user.user_name);
 
@@ -1611,9 +1615,109 @@ app.post('/write-post', isAuthUser, async (req, res) => {
       createdBy: `${user.user_name}`,
     },
   ]);
-  res.json('submited');
+  res.redirect('/blogs');
 });
 
+// app.post('/create-checkout', isAuthUser, (req, res) => {
+//   try {
+//     const session = stripe.checkout.sessions.create({
+//       payment_method_types: ['card'],
+//       mode: 'payment',
+//       line_items: req.body.productData.map(item => {
+//         return {
+//           price_data: {
+//             currency: 'inr',
+//             product_data: {
+//               name: item.item,
+//             },
+//             unit_amount: item.price,
+//           },
+//           quantity: item.quantity,
+//         };
+//       }),
+//       success_url: `http://localhost:8007/sucess.ejs`,
+//       cancel_url: `http://localhost:8007/cancel.ejs`,
+//     });
+//     // console.log(session.url);
+//     res.json({ url: session });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
+// const storeItems = new Map([
+//   [1, { priceInCents: 10000, name: 'Learn React Today' }],
+//   [2, { priceInCents: 20000, name: 'Learn CSS Today' }],
+// ]);
+
+app.post('/create-checkout', isAuthUser, async (req, res) => {
+  let price = 105000;
+  console.log(req.body);
+  try {
+    console.log(req.body);
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode: 'payment',
+      line_items: [
+        {
+          price_data: {
+            currency: 'INR',
+            product_data: {
+              name: `${req.body.semester} Registration`,
+            },
+            unit_amount: price,
+          },
+          quantity: 1,
+        },
+      ],
+
+      billing_address_collection: 'required',
+      success_url: `${process.env.SERVER_URL}/success.html`,
+      cancel_url: `${process.env.SERVER_URL}/cancel.html`,
+    });
+    res.json({ url: session.url });
+  } catch (e) {
+    console.log(e);
+  }
+});
+// const WEBHOOK_SECRET =
+//   'whsec_bad87d758c13d11b3e25f7705e09279d3090e1782fafe4b740e67a972e751ae4';
+app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  // try {
+  //   event = stripe.webhooks.constructEvent(
+  //     req.body,
+  //     sig,
+  //     WEBHOOK_SECRET
+  //   );
+  //   console.log('webhook verifyed', event.type);
+  // } catch (err) {
+  //   console.log(`Webhook Error: ${err.message}`);
+  //   response.status(400).send(`Webhook Error: ${err.message}`);
+  //   return;
+  // }
+
+  if (req.body.type === 'checkout.session.completed') {
+    const data = req.body.data.object;
+    console.log(data);
+  }
+
+  // Handle the event
+  // switch (event.type) {
+  //   case 'invoice.payment_succeeded':
+  //     const invoicePaymentSucceeded = event.data.object;
+  //     // Then define and call a function to handle the event invoice.payment_succeeded
+  //     break;
+  //   // ... handle other event types
+  //   default:
+  //     console.log(`Unhandled event type ${event.type}`);
+  // }
+
+  // Return a 200 response to acknowledge receipt of the event
+  res.send();
+});
 app.listen(port, '0.0.0.0', () => {
   console.log(`app listening on port ${port}`);
 });

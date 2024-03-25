@@ -21,9 +21,9 @@ body {
   display: inline-block;
   position: absolute;
   top: 25;
-
+  font-size: 14px;
   margin-left: 5px;
-  margin-top: 30px;
+  margin-top: 24px;
   color: rgb(0, 0, 0);
 }
 
@@ -32,6 +32,9 @@ body {
   width: 40px;
   margin-top: 20px;
   margin-left: 40px;
+}
+.logo #clg {
+  margin-left: 16px;
 }
 
 #avatar {
@@ -144,17 +147,6 @@ span {
 .letsGo:hover {
   cursor: pointer;
   box-shadow: 3px 3px black;
-}
-
-.shape {
-  width: 160px;
-  height: 160px;
-  border-radius: 40% 40% 50% 50%/30% 40% 50% 50%;
-  background-color: rgb(111, 125, 206);
-  position: absolute;
-  right: 0;
-  top: 40.3%;
-  margin-right: 20%;
 }
 
 .username {

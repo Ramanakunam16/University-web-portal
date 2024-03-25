@@ -1,4 +1,33 @@
 //Serach features
+const dropdownbtn = document.querySelector('.dropdown-btn');
+const overlay = document.querySelector('.overlay');
+
+let dropdown = document.getElementsByClassName('dropdown-btn');
+let i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener('click', function () {
+    // this.classList.toggle("active");
+    var dropdownfeatures = this.nextElementSibling;
+    if (dropdownfeatures.style.display === 'block') {
+      dropdownfeatures.style.display = 'none';
+    } else {
+      dropdownfeatures.style.display = 'block';
+    }
+  });
+}
+
+dropdownbtn.addEventListener('click', () => {
+  console.log(dropdownbtn);
+  overlay.classList.remove('hidden');
+});
+
+overlay.addEventListener('click', () => {
+  console.log('clicked');
+  document.querySelector('.dropdown-features').style.display = 'none';
+
+  overlay.classList.add('hidden');
+});
 const searchbtn = document.querySelector('.searchbtn');
 const container = document.querySelector('.container');
 const searchHeader = document.querySelector('.search-header');
@@ -9,21 +38,6 @@ const msg = document.querySelector('.msg');
 console.log(bookName);
 const book = document.querySelectorAll('.book');
 console.log(book);
-searchInput.addEventListener('input', e => {
-  const value = e.target.value;
-
-  if (value) {
-    searchHeader.classList.add('hidden');
-
-    booksContainer.classList.remove('hidden');
-    msg.classList.add('hidden');
-  } else {
-    searchHeader.classList.remove('hidden');
-
-    booksContainer.classList.add('hidden');
-    msg.classList.add('hidden');
-  }
-});
 
 // searchInput.addEventListener("keydown", (e) => {
 //     if (e.key === "Enter") {
@@ -123,6 +137,37 @@ books.forEach(book => {
 
   </div>
 </div>`;
+  searchInput.addEventListener('input', e => {
+    const value = e.target.value;
+    console.log(value);
+    if (value) {
+      searchHeader.classList.add('hidden');
+
+      booksContainer.classList.remove('hidden');
+      msg.classList.add('hidden');
+    } else {
+      searchHeader.classList.remove('hidden');
+
+      booksContainer.classList.add('hidden');
+      msg.classList.add('hidden');
+    }
+    console.log(bookName.length);
+    for (let i = 0; i < bookName.length; i++) {
+      let bookNameValue = book[i].getElementsByClassName('book-name')[0];
+      console.log('bookname', bookNameValue);
+
+      if (bookNameValue) {
+        let textvalue = bookNameValue.textContent || bookNameValue.innerHTML;
+        console.log(textvalue);
+
+        if (textvalue.toUpperCase().indexOf(value.toUpperCase()) > -1) {
+          book[i].style.display = '';
+        } else {
+          book[i].style.display = 'none';
+        }
+      }
+    }
+  });
   const date = new Date().getDate();
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fir', 'Sat'];
   const day = new Date().getDay();
@@ -181,6 +226,7 @@ async function reserveBook(book, bookedDate) {
     });
 }
 
+//model popup
 const btn2 = document.querySelectorAll('.btn2');
 const bookmodal = document.querySelectorAll('.bookmodal');
 const closeModal = document.querySelectorAll('.close-modal');
@@ -194,27 +240,4 @@ for (let i = 0; i < btn2.length; i++) {
       bookmodal[i].classList.add('hidden');
     });
   });
-  // window.addEventListener("click", (e) => {
-  //     if (e.target === bookmodal) {
-  //         bookmodal[i].classList.add("hidden");
-  //     })
 }
-searchInput.addEventListener('input', e => {
-  const value = e.target.value;
-  console.log(value);
-  for (let i = 0; bookName.length; i++) {
-    let bookNameValue = book[i].getElementsByClassName('book-name')[0];
-    console.log('bookname', bookNameValue);
-
-    if (bookNameValue) {
-      let textvalue = bookNameValue.textContent || bookNameValue.innerHTML;
-      console.log(textvalue);
-
-      if (textvalue.toUpperCase().indexOf(value.toUpperCase()) > -1) {
-        book[i].style.display = '';
-      } else {
-        book[i].style.display = 'none';
-      }
-    }
-  }
-});

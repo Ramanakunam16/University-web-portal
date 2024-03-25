@@ -3,7 +3,7 @@
 
     <div class="blogs">
 
-        <% data.forEach(data=> { %>
+        <% data.reverse().forEach(data=> { %>
 
             <div class="blog">
                 <a href="">
@@ -21,9 +21,9 @@
 
                 <div class="blogsFront">
                     <a href="/blogContent-<%=data._id%>">
-                        <h2>
+                        <h3>
                             <%= data.title %>
-                        </h2>
+                        </h3>
                         <p>
                             <%= data.body?.slice(0,300) %>....
                         </p>
@@ -75,7 +75,7 @@
 
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+    <!-- 
     <script>
         const savebtns = document.querySelectorAll(".save");
         const savedlist = document.querySelector(".saved")
@@ -128,8 +128,9 @@
         }
         axios.get('/saved-list').then(res => {
 
-            let data = res.data.data;
+            let data = res.data.data.slice(-4);
             console.log(data)
+
             // console.log(data.savedBy)
             // console.log(data.savedBy.filter((id) => id === res.data.userid))
 
@@ -165,8 +166,78 @@
         //     console.log(res)
         // })
 
-    </script>
+    </script> -->
 
+    <script>
+        const savebtns = document.querySelectorAll(".save");
+        const savedlist = document.querySelector(".saved");
+
+
+        // Function to display saved posts
+        const displaySavedPosts = async () => {
+            try {
+                const res = await axios.get('/saved-list');
+                const data = res.data.data;
+                console.log(data)
+
+                savedlist.innerHTML = ''; // Clear existing saved posts
+
+                data.reverse().forEach(data => {
+                    const saved = data.savedBy.includes(res.data.userid);
+
+                    if (saved) {
+                        const html = `
+                            <div class="saved-blog">
+                                <a href="/profile">
+                                    <div class="user">
+                                        <img src="./imgs/icons8-avatar-50.png" alt="avatar" id="avatar">
+                                        <p>${data.createdBy.toLowerCase()}</p>
+                                    </div>
+                                </a>
+                                <a href="/blogContent-${data._id}">
+                                    <div class="blog-title">
+                                        <h3>${data.title}</h3>
+                                        <span>${data.createdAt}</span>
+                                    </div>
+                                </a>
+                            </div>`;
+
+                        savedlist.insertAdjacentHTML('afterbegin', html);
+                    }
+                });
+            } catch (error) {
+                console.error('Error fetching saved posts:', error);
+            }
+        };
+
+        // Event listener for save buttons
+        const saveimg2 = '<img src="./imgs/icons8-save-24-b.png" alt="">';
+        savebtns.forEach((savebtn) => {
+            savebtn.addEventListener("click", async () => {
+                const blogId = savebtn.dataset.blog;
+
+                try {
+                    const res = await axios.post("/saved-list", { blog: blogId });
+                    console.log(res.data.data);
+                    if (savebtn.innerHTML === saveimg2) {
+                        return;
+                    }
+                    savebtn.innerHTML = saveimg2
+                    // After saving, display updated saved posts
+                    await displaySavedPosts();
+                    // document.body.style.cursor = 'wait';
+
+                    // // When the window has finished loading, set it back to default...
+                    // // window.onload = function () { document.body.style.cursor = 'default'; }
+                } catch (error) {
+                    console.error('Error saving post:', error);
+                }
+            });
+        });
+        axios.get("/checkConnect").then(res => { console.log(res) })
+        // Display saved posts when the page loads
+        window.addEventListener('DOMContentLoaded', displaySavedPosts);
+    </script>
 
 
 
