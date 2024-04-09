@@ -1,5 +1,6 @@
 * {
   box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 body {
@@ -24,8 +25,7 @@ body {
 }
 
 .form3 {
-  min-width: 50%;
-  max-width: 70%;
+  width: 100%;
 
   border-radius: 20px;
   background-color: #91c7b9;
@@ -193,28 +193,28 @@ span {
   position: relative;
   display: inline-block;
 }
-
-.dropdown-content {
+.dropdown-features {
   display: none;
   position: absolute;
   right: 70%;
+  /* top: 20px; */
   background-color: #76cfaa;
   min-width: 250px;
   /* border: 2px solid black; */
   border-radius: 20px;
   /* box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); */
-  z-index: 1;
+  z-index: 5;
 }
 
-.dropdown-content a {
+.dropdown-features a {
   color: rgb(255, 254, 254);
-  /* padding: 12px 16px; */
+  padding: 12px 16px;
   text-decoration: none;
   display: block;
-  font-size: 20px;
+  font-size: 18px;
 }
 
-.dropdown-content a:hover {
+.dropdown-features a:hover {
   color: #504e4e;
 }
 
@@ -293,20 +293,18 @@ span {
   background-color: #91c7b9;
   border: 2px solid rgb(7, 115, 151);
   border-radius: 20px;
-  padding: 20px;
+  padding: 10px;
   width: 68%;
-  /* height: 40em; */
   max-height: 100em;
-  /* text-align: center; */
   overflow: hidden;
   overflow-y: scroll;
   overflow-x: scroll;
 }
 
 .features {
-  display: flex;
-  justify-content: center;
-  gap: 2%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
   margin: 20px 0;
 }
 
@@ -320,6 +318,13 @@ span {
 
 .reservedBtn {
   background-color: #4383be;
+}
+.returnedbtn {
+  background-color: #e9a72b;
+}
+
+.returnbtn:hover {
+  background-color: #c76565;
 }
 
 .date {
@@ -338,7 +343,7 @@ span {
 
 .reason p {
   color: #000000;
-  font-size: 18px;
+  font-size: 12px;
 }
 
 .completedBtn:hover {
@@ -356,27 +361,30 @@ span {
 .bookCover {
   margin-top: 20px;
   margin-bottom: 20px;
-  width: 30%;
+  width: 20%;
   height: 70%;
+  aspect-ratio: 3/2;
+  object-fit: contain;
 }
 
 .books {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  width: 98%;
-  margin: 20px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 20px auto;
   border: 1px solid black;
   padding: 20px;
-  /* gap: 25px; */
+  gap: 20px;
 }
-
+.deadline {
+  grid-column: 2 / span 2;
+}
 .bookInfo {
   display: block;
-  margin: 20px;
+  margin: 10px;
+  align-self: center;
   width: max-content;
-}
-.bookInfo img {
-  width: 50%;
+  font-size: 12px;
 }
 
 .bookInfo h4 {
@@ -391,7 +399,7 @@ span {
   padding-left: 20px;
 }
 .date {
-  width: 50%;
+  width: max-content;
 }
 
 .date p {
@@ -409,16 +417,12 @@ span {
 
 a:not(.dropdown-content) {
   display: grid;
-  /* margin: 16px 0; */
-
-  /* height: 40px; */
-  /* background-color: #f0f3f3; */
   border-radius: 20px;
   border: none;
-  padding: 10px;
+  /* padding: 10px; */
   font: bold;
-
-  width: 70%;
+  color: #000000;
+  width: 100%;
 
   font-size: 18px;
   color: hsl(60, 18%, 93%);
@@ -427,10 +431,10 @@ a:not(.dropdown-content) {
 }
 
 a:not(.dropdown-content a) {
-  margin-top: 20px;
+  /* margin-top: 20px; */
   text-align: center;
-
-  margin-left: 10%;
+  color: #000;
+  /* margin-left: 10%; */
 }
 
 a:hover {
@@ -451,6 +455,33 @@ a:hover {
   backdrop-filter: blur(3px);
   z-index: 0;
 }
+.msg {
+  position: fixed;
+  top: 20px;
+  right: 240px;
+  width: 60%;
+  text-align: center;
+  color: #fff;
+  background-color: #333;
+  padding: 20px;
+}
+.msg > .close,
+.no {
+  font-size: 14px;
+  float: right;
+  border-radius: 20px;
+  padding: 10px;
+}
+.msg > .close:hover {
+  cursor: pointer;
+  /* font-size: 4px; */
+  background: #ddd;
+}
+.msg > .no:hover {
+  cursor: pointer;
+  /* font-size: 24px; */
+  background: #ddd;
+}
 
 @media (max-width: 1280px) {
   .container {
@@ -469,7 +500,6 @@ a:hover {
   .box-1 {
     margin-bottom: 30px;
     width: 100%;
-    height: 160px;
     display: inline-block;
   }
 
@@ -495,12 +525,17 @@ a:hover {
     display: block;
   }
 
-  .form3 p,
   h3,
-  .piclabel {
-    width: max-content;
+  label,
+  input {
+    width: 200%;
   }
-
+  .form1 button {
+    width: 800px;
+  }
+  .form3 p {
+    width: 200%;
+  }
   .piclabel {
     width: max-content;
   }

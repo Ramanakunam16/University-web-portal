@@ -4,6 +4,7 @@ const stripe = require('stripe')(
   'sk_test_51OxMDMSDSooK0I1kmjADepReYVGo3L377b23vzvq32aitOCDNSdSTJQdcT8ZZtqfcSXFy3ZDQn1dNsu7XDXFRXSI00HCkoyxal'
 );
 const jwt = require('jsonwebtoken');
+const RegistrationPayments = require('./db/models/RegistrationPayments');
 const SavedPost = require('./db/models/SavedPost');
 const Profile = require('./db/models/Profile');
 const Post = require('./db/models/Post');
@@ -181,8 +182,17 @@ app.get('/uploadResults', (req, res) => {
 app.get('/libBookReservation', isAuthUser, (req, res) => {
   res.render('libBookReservation');
 });
-app.get('/payment', isAuthUser, (req, res) => {
+app.get('/payment', isAuthUser, async (req, res) => {
   res.render('payment');
+});
+app.get('/semesterReg', isAuthUser, async (req, res) => {
+  res.render('semesterRegistration');
+});
+app.get('/transactions', isAuthUser, async (req, res) => {
+  const { user } = req.session.results;
+  const data = await RegistrationPayments.find();
+  console.log(data);
+  res.render('transactions', { data, student_id: user.user_id });
 });
 app.get('/facultyacctVerify', (req, res) => {
   res.render('facultyacctVerify');
@@ -193,7 +203,7 @@ app.get('/studentacctVerify', (req, res) => {
 app.get('/login', (req, res) => {
   res.render('signinform');
 });
-app.get('/studentReservedBooks', (req, res) => {
+app.get('/studentReservedBooks', isAuthUser, (req, res) => {
   res.render('reservedBooks');
 });
 app.get('/uploadBooks', (req, res) => {
@@ -978,9 +988,9 @@ app.post('/passwordCreation', (req, res) => {
 
 // login authentication
 app.post('/signIn', async (req, res) => {
-  const studentId = req.body.studentId;
+  const studentId = req.body.studentid;
   const password = req.body.passwd;
-  console.log(studentId);
+  console.log(+studentId);
 
   //db connection
   const mysqlConnection = createDbConnection();
@@ -997,7 +1007,7 @@ app.post('/signIn', async (req, res) => {
   try {
     mysqlConnection.query(
       'SELECT * FROM studentLoginInfo WHERE  user_id=?',
-      [studentId],
+      [+studentId],
       async (err, results) => {
         console.log(results);
         if (err) {
@@ -1005,15 +1015,15 @@ app.post('/signIn', async (req, res) => {
         }
 
         if (results.length === 0) {
-          // res.render("check");
-          res.json('invalid id');
+          res.json({ isinvalid: true });
         } else if (results.length !== 0) {
           const passwordMatch = await bcrypt.compare(
             password,
             results[0].hashedPassword
           );
           let profilePic;
-          if (passwordMatch) {
+          if (+studentId === results[0].user_id && passwordMatch) {
+            console.log('logged');
             // results1 = results[0];
             // const token = jwt.sign(
             //   { studentId },
@@ -1026,21 +1036,14 @@ app.post('/signIn', async (req, res) => {
             req.session.results = { type: 'student', user: results[0] };
             const userData = req.session.results;
             console.log('results', userData);
-
-            res.redirect('/dashBoard');
+            res.json({ isLogged: true });
             // res.json({ isLogged: true });
           } else {
             res.json({ isLogged: false });
-            //   const message =
-            //     "<script>alert('invalid password'); window.location.href='signinform.html'</script>";
-            //   res.send(message);
           }
         }
-        // console.log(results);
       }
     );
-
-    // const userData = req.session.results;
   } catch (error) {
     console.log(error);
   }
@@ -1051,9 +1054,9 @@ app.get('/getSessionData', (req, res) => {
 });
 
 app.post('/facultysignIn', (req, res) => {
-  const facultyId = req.body.facultyId;
+  const facultyId = req.body.adminid;
   const password = req.body.passwd;
-  console.log(facultyId);
+  console.log(+facultyId);
   //db connection
   const mysqlConnection = createDbConnection();
 
@@ -1067,7 +1070,7 @@ app.post('/facultysignIn', (req, res) => {
 
   mysqlConnection.query(
     'SELECT * FROM facultyLoginInfo WHERE  user_id=?',
-    [facultyId],
+    [+facultyId],
     async (err, results) => {
       console.log(results);
       if (err) {
@@ -1083,22 +1086,28 @@ app.post('/facultysignIn', (req, res) => {
           results[0].hashedPassword
         );
 
-        if (passwordMatch) {
+        if (+facultyId === results[0].user_id && passwordMatch) {
           // results1 = results[0];
           req.session.results = { type: 'faculty', user: results[0] };
           const userData = req.session.results;
           console.log('results', userData);
-          res.render('facultyDashBoard', {
-            username: userData.user.user_name,
-          });
+          // res.render('facultyDashBoard', {
+          //   username: userData.user.user_name,
+          // });
+          res.json({ isLogged: true, isVerifyed: true });
         } else {
-          const message =
-            "<script>alert('invalid password'); window.location.href='signinform.html'</script>";
-          res.send(message);
+          res.json({ isLogged: false });
         }
       }
     }
   );
+});
+app.get('/facultyDashBoard', isAuthUser, (req, res) => {
+  const userData = req.session.results;
+  console.log('results', userData);
+  res.render('facultyDashBoard', {
+    username: userData.user.user_name,
+  });
 });
 function isAuthUser(req, res, next) {
   if (req.session && req.session.results) {
@@ -1261,6 +1270,52 @@ app.post('/completedBooks', (req, res) => {
   );
   mysqlConnection.end();
 });
+app.post('/returnedBooks', (req, res) => {
+  const { studentId, book_title, author, publishers, book_edition, book_id } =
+    req.body.book;
+  const returnedDate = new Date();
+  //db connection
+  const mysqlConnection = createDbConnection();
+
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  try {
+    mysqlConnection.query(
+      'INSERT INTO returnedBooks (studentId,book_title,author,publishers,book_edition,returned_date,book_id) VALUES(?,?,?,?,?,?,?);',
+      [
+        studentId,
+        book_title,
+        author,
+        publishers,
+        book_edition,
+        returnedDate,
+        book_id,
+      ]
+    );
+    mysqlConnection.query(
+      'UPDATE completedBooks SET returned= 1 - returned WHERE book_id=?;',
+      [book_id]
+    );
+    // mysqlConnection.end();
+    res.json({
+      returned: true,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
+  // mysqlConnection.query(
+  //   'DELETE FROM reservedBooks WHERE studentId=? AND book_id=? ',
+  //   [studentId, book_id]
+  // );
+  mysqlConnection.end();
+});
 app.get('/reservedBooks', (req, res) => {
   const mysqlConnection = createDbConnection();
 
@@ -1278,7 +1333,23 @@ app.get('/reservedBooks', (req, res) => {
     res.json(results);
   });
 });
+app.get('/returnedBooks', (req, res) => {
+  const mysqlConnection = createDbConnection();
 
+  mysqlConnection.connect(err => {
+    if (err) {
+      console.error('Error connecting to MySQL:', err);
+      return;
+    }
+    console.log('Connected to MySQL');
+  });
+
+  mysqlConnection.query('SELECT * FROM returnedBooks', (err, results) => {
+    // console.log(results);
+
+    res.json(results);
+  });
+});
 app.get('/rejectedBooks', (_, res) => {
   const mysqlConnection = createDbConnection();
 
@@ -1664,60 +1735,77 @@ app.post('/create-checkout', isAuthUser, async (req, res) => {
             currency: 'INR',
             product_data: {
               name: `${req.body.semester} Registration`,
+              description: `${req.body.semester} Registration`,
             },
             unit_amount: price,
           },
           quantity: 1,
         },
       ],
-
+      metadata: {
+        description: `${req.body.semester} Registration`,
+        user_id: req.body.studentId,
+      },
       billing_address_collection: 'required',
       success_url: `${process.env.SERVER_URL}/success.html`,
       cancel_url: `${process.env.SERVER_URL}/cancel.html`,
     });
-    res.json({ url: session.url });
+    res.json({ url: session.url, id: session.id });
   } catch (e) {
     console.log(e);
   }
 });
 // const WEBHOOK_SECRET =
 //   'whsec_bad87d758c13d11b3e25f7705e09279d3090e1782fafe4b740e67a972e751ae4';
-app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
-  const sig = req.headers['stripe-signature'];
-  let event;
+app.post(
+  '/webhook',
+  express.raw({ type: 'application/json' }),
+  async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    let event;
 
-  // try {
-  //   event = stripe.webhooks.constructEvent(
-  //     req.body,
-  //     sig,
-  //     WEBHOOK_SECRET
-  //   );
-  //   console.log('webhook verifyed', event.type);
-  // } catch (err) {
-  //   console.log(`Webhook Error: ${err.message}`);
-  //   response.status(400).send(`Webhook Error: ${err.message}`);
-  //   return;
-  // }
+    // try {
+    //   event = stripe.webhooks.constructEvent(
+    //     req.body,
+    //     sig,
+    //     WEBHOOK_SECRET
+    //   );
+    //   console.log('webhook verifyed', event.type);
+    // } catch (err) {
+    //   console.log(`Webhook Error: ${err.message}`);
+    //   response.status(400).send(`Webhook Error: ${err.message}`);
+    //   return;
+    // }
 
-  if (req.body.type === 'checkout.session.completed') {
-    const data = req.body.data.object;
-    console.log(data);
+    if (req.body.type === 'checkout.session.completed') {
+      const data = req.body.data.object;
+      console.log(data);
+      await RegistrationPayments.insertMany([
+        {
+          student_id: data.metadata.user_id,
+          payment_intent: data.payment_intent,
+          description: data.metadata.description,
+          amount: data.amount_total,
+          payment_status: data.payment_status,
+        },
+      ]);
+    }
+
+    // Handle the event
+    // switch (event.type) {
+    //   case 'invoice.payment_succeeded':
+    //     const invoicePaymentSucceeded = event.data.object;
+    //     // Then define and call a function to handle the event invoice.payment_succeeded
+    //     break;
+    //   // ... handle other event types
+    //   default:
+    //     console.log(`Unhandled event type ${event.type}`);
+    // }
+
+    // Return a 200 response to acknowledge receipt of the event
+    res.send();
   }
-
-  // Handle the event
-  // switch (event.type) {
-  //   case 'invoice.payment_succeeded':
-  //     const invoicePaymentSucceeded = event.data.object;
-  //     // Then define and call a function to handle the event invoice.payment_succeeded
-  //     break;
-  //   // ... handle other event types
-  //   default:
-  //     console.log(`Unhandled event type ${event.type}`);
-  // }
-
-  // Return a 200 response to acknowledge receipt of the event
-  res.send();
-});
+);
 app.listen(port, '0.0.0.0', () => {
   console.log(`app listening on port ${port}`);
 });

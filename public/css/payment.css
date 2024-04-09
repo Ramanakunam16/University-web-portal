@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .header {
@@ -26,11 +27,31 @@
 }
 .container {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: 10;
+}
+.transactions {
+  position: relative;
+  width: 100%;
 }
 
+table {
+  position: sticky;
+  top: 20%;
+  left: 30%;
+  overflow: hidden;
+  overflow-x: scroll;
+}
+
+th {
+  padding: 40px;
+  border-bottom: 1px solid #ddd;
+}
+
+tr,
+td {
+  border-bottom: 1px solid #ddd;
+  padding: 40px;
+  text-align: center;
+}
 .sidebar {
   width: 20%;
   max-width: 30%;
@@ -77,11 +98,12 @@
 }
 .cards h1 {
   font-size: 18px;
+  text-align: center;
 }
 
 .card {
   /* width: 40%; */
-  max-width: 80%;
+  max-width: 100%;
   padding: 40px;
   border-radius: 30px;
 
@@ -178,6 +200,13 @@ button:hover {
   .sidebar {
     display: none;
   }
+
+  table {
+    position: sticky;
+    top: 30%;
+    right: 0;
+  }
+
   .payment-dash {
     width: 100%;
     padding: 20px;

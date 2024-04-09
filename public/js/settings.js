@@ -32,7 +32,7 @@ dropdownbtn.addEventListener('click', () => {
 
 overlay.addEventListener('click', () => {
   console.log('clicked');
-  document.querySelector('.dropdown-content').style.display = 'none';
+  document.querySelector('.dropdown-features').style.display = 'none';
   overlay.classList.add('hidden');
 });
 
@@ -78,6 +78,11 @@ async function studentreservedBooks() {
   console.log('specific student books:', studentReservationHistory);
   studentReservationHistory.forEach(book => {
     console.log(book);
+    console.log(book.booked_date.toString());
+    const bookedDate = new Date(book.booked_date);
+    const deadlineDate = new Date(book.booked_date);
+    deadlineDate.setDate(deadlineDate.getDate() + 14);
+    // console.log(deadlineDate);
     const html = `<div class="books"> 
  <img class="bookCover" src="./imgs/b${book.book_id}.jpg" alt="book img">
  <div class= "bookInfo" >
@@ -89,9 +94,11 @@ async function studentreservedBooks() {
 
  </div >
  <div class="date">
-    <h4>Booked On :</h4><p class="bookDetails">${book.booked_date}</p>
+    <h4>Booked On :</h4><p class="bookDetails">${bookedDate.toDateString()}</p>
    </div>
-
+   <div id=""deadline>
+   <h4>deadline date :</h4><p class="bookDetails">${deadlineDate.toDateString()}</p>
+   </div>
  
    
 
@@ -142,6 +149,9 @@ async function studentRejectedBooks() {
  <div class="date">
     <h4>rejected On :</h4><p class="bookDetails">${book.rejected_date}</p>
    </div>
+
+   <div class="deadlinedate">
+ 
 
   
    <div class="reason">
@@ -196,22 +206,103 @@ async function studentCompletedBooks() {
 
  </div >
  <div class="date">
-    <h4>completed On :</h4><p class="bookDetails">${book.completed_date}</p>
+    <h4>Accepted On :</h4><p class="bookDetails">${book.completed_date}</p>
+    <button class='returnbtn'>Return book</button>
+   <span id="returnmsg">${book.returned ? 'Book Returned' : ''}</span>
    </div>
 
- 
-   
+<div class="msg hidden">Do you want Return book?<button class="close">Yes</button>
+            <button class="no">No</button>
+        </div>
+
 
 </div >`;
 
     document
       .querySelector('.completedContainer')
       .insertAdjacentHTML('afterbegin', html);
+
+    const returnbtn = document.querySelector('.returnbtn');
+    const msg = document.querySelector('.msg');
+    const returnmsg = document.querySelector('#returnmsg');
+    const confirmbtn = document.querySelector('.close');
+    const rejectbtn = document.querySelector('.no');
+
+    returnbtn.addEventListener('click', async () => {
+      console.log('clicked', book);
+      msg.classList.remove('hidden');
+      confirmbtn.addEventListener('click', async () => {
+        await axios.post('/returnedBooks', { book }).then(res => {
+          console.log(res.data);
+          if (res.data.returned) {
+            window.location.reload = '/settings#box-4';
+            studentReturnedBooks();
+            returnbtn.style.display = 'none';
+            returnmsg.innerHTML = 'Book Returned';
+            msg.classList.add('hidden');
+          }
+        });
+      });
+
+      rejectbtn.addEventListener('click', () => {
+        msg.classList.add('hidden');
+      });
+    });
+    book.returned ? (returnbtn.style.display = 'none') : '';
+  });
+}
+
+let returnedBooks = [];
+let returnedBooksHistory = [];
+async function studentReturnedBooks() {
+  await axios.get('getSessionData').then(async response => {
+    const data = response.data.userData.user;
+    console.log(data);
+
+    await axios.get('/returnedBooks').then(response => {
+      const books = response.data;
+      console.log('returned Books', books);
+
+      returnedBooks.push(books);
+    });
+    returnedBooks[0].filter(book => {
+      console.log('returned book', book);
+      console.log(' user data', data);
+      if (book.studentId === data.user_id) {
+        returnedBooksHistory.push(book);
+      }
+    });
+  });
+
+  console.log('returned Books:', returnedBooks);
+  console.log('specific studentreturned books:', returnedBooksHistory);
+  returnedBooksHistory.forEach(book => {
+    console.log(book);
+    const html = `<div class="books"> 
+ <img class="bookCover" src="./imgs/b${book.book_id}.jpg" alt="book img">
+ <div class= "bookInfo" >
+     <h4>studentId:<p class="bookDetails">${book.studentId}</p></h4>
+     <h4>Book title:<p class="bookDetails">${book.book_title}</p></h4>
+     <h4>Author:<p class="bookDetails">${book.author}</p></h4>
+     <h4>publishers:<p class="bookDetails">${book.publishers}</p></h4>
+     <h4>book edition:<p class="bookDetails">${book.book_edition}</p></h4>
+
+ </div >
+ <div class="date">
+
+    <h4>Returned On :</h4><p class="bookDetails">${book.returned_date}</p>
+   </div>
+</div >`;
+
+    document
+      .querySelector('.returnedContainer')
+      .insertAdjacentHTML('afterbegin', html);
   });
 }
 studentreservedBooks();
 studentRejectedBooks();
 studentCompletedBooks();
+studentReturnedBooks();
 
 //profile Settings contents
 profileSettings.addEventListener('click', () => {
@@ -229,14 +320,18 @@ reservedBtn.style.backgroundColor = '#4383be';
 const reserveBooksContainer = document.querySelector('.reservedContainer');
 const completedBooksContainer = document.querySelector('.completedContainer');
 const rejectedBooksContainer = document.querySelector('.rejectedContainer');
+const returnedBooksContainer = document.querySelector('.returnedContainer');
+const returnedbtn = document.querySelector('.returnedbtn');
 
 document.addEventListener('DOMContentLoaded', function () {
   completedBtn.addEventListener('click', () => {
     reserveBooksContainer.classList.add('hidden');
+    returnedBooksContainer.classList.add('hidden');
     completedBooksContainer.classList.remove('hidden');
     completedBtn.style.backgroundColor = '#06eeee';
     reservedBtn.style.backgroundColor = '';
     rejectedBtn.style.backgroundColor = '';
+    returnedbtn.style.backgroundColor = '';
     rejectedBooksContainer.classList.add('hidden');
     const html = ``;
   });
@@ -247,17 +342,36 @@ reservedBtn.addEventListener('click', () => {
   completedBtn.classList.add('hidden');
   completedBooksContainer.classList.add('hidden');
   rejectedBooksContainer.classList.add('hidden');
+  returnedBooksContainer.classList.add('hidden');
   reservedBtn.style.backgroundColor = '#4383be';
   completedBtn.style.backgroundColor = '';
   rejectedBtn.style.backgroundColor = '';
+  returnedbtn.style.backgroundColor = '';
 });
 rejectedBtn.addEventListener('click', () => {
   reserveBooksContainer.classList.add('hidden');
   rejectedBooksContainer.classList.remove('hidden');
   completedBooksContainer.classList.add('hidden');
+  returnedBooksContainer.classList.add('hidden');
   completedBtn.classList.add('hidden');
   rejectedBtn.classList.add('hidden');
   reservedBtn.style.backgroundColor = '';
   completedBtn.style.backgroundColor = '';
+  returnedbtn.style.backgroundColor = '';
   rejectedBtn.style.backgroundColor = '#c76565';
 });
+returnedbtn.addEventListener('click', () => {
+  reserveBooksContainer.classList.add('hidden');
+  rejectedBooksContainer.classList.add('hidden');
+  returnedBooksContainer.classList.remove('hidden');
+  completedBooksContainer.classList.add('hidden');
+  completedBtn.classList.add('hidden');
+  rejectedBtn.classList.add('hidden');
+  rejectedBtn.classList.add('hidden');
+  reservedBtn.style.backgroundColor = '';
+  completedBtn.style.backgroundColor = '';
+  rejectedBtn.style.backgroundColor = '';
+  returnedbtn.style.backgroundColor = '#333';
+});
+
+// book return

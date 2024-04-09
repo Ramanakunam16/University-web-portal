@@ -47,6 +47,7 @@ console.log(book);
 
 const books = [
   {
+    booked: false,
     book_id: 1,
     book_title: 'The Pragmatic programmer',
     author: 'Andrew Hunt, David Thomas',
@@ -57,6 +58,7 @@ const books = [
       ' Since its creation in 1999 by its authors to aid its clientele to develop better software,The Pragmatic Programmer has succeeded in becoming one of the highly-revered programming books. This book is for every coder looking to transcend to be a skilled software developer and a full-fledged programmer.',
   },
   {
+    booked: false,
     book_id: 2,
     book_title: 'Head First Design Patterns',
     author: 'Eric Freeman',
@@ -67,6 +69,7 @@ const books = [
       'The Head First book series is known for its innovative way of breaking down complex topics intosimpler, easy-to-understand units. The Head First Design Patterns: A Brain-Friendly Guide is compiled based on this tried-and-tested formula.There is a galore of illustrative and brain-stimulating examples in the Head First Design Patternsbook that will make learning both efficient and fun simultaneously.',
   },
   {
+    booked: false,
     book_id: 3,
     book_title: 'Artificial Intelligence',
     author: 'Jhon paul',
@@ -76,6 +79,7 @@ const books = [
     book_discription: '',
   },
   {
+    booked: false,
     book_id: 4,
     book_title: 'Eloquent JavaScript',
     author: 'marjin',
@@ -86,6 +90,7 @@ const books = [
   },
 
   {
+    booked: false,
     book_id: 5,
     book_title: 'C++ Primer',
     author: 'stanly,josee,barbara',
@@ -95,6 +100,7 @@ const books = [
     book_discription: '',
   },
   {
+    booked: false,
     book_id: 6,
     book_title: 'C Programming',
     author: 'greg perry',
@@ -104,6 +110,7 @@ const books = [
     book_discription: '',
   },
   {
+    booked: false,
     book_id: 7,
     book_title: 'Head First Java',
     author: 'Eric',
@@ -117,7 +124,6 @@ const books = [
 const bookContainer = document.querySelector('.book-container');
 const reservebtns = document.querySelectorAll('.btn1');
 let count = 0;
-let disabled = false;
 books.forEach(book => {
   const html = `  <div class="book">
   <img class="book-cover" src="./imgs/${book.book_img}" alt="Book 1 Cover">
@@ -127,13 +133,12 @@ books.forEach(book => {
 
   <div class="bookmodal hidden">
       <button class="close-modal">&times;</button>
-      <img class="book-cover" src="${book.book_img}" alt="Book 1 Cover">
+      <img class="book-cover" src="./imgs/${book.book_img}" alt="Book 1 Cover">
       <h3>Author</h3> - ${book.author}
       <h3>Latest Edition</h3> - ${book.latest_edition}
       <h3>Publisher</h3> -${book.publishers}
 
-      <h3>About Book:</h3>
-      <p>${book.book_discription}</p>
+      <h3>About Book:</h3><p>${book.book_discription}</p>
 
   </div>
 </div>`;
@@ -168,7 +173,7 @@ books.forEach(book => {
       }
     }
   });
-  const date = new Date().getDate();
+  const date = new Date();
   const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fir', 'Sat'];
   const day = new Date().getDay();
   const months = [
@@ -195,10 +200,11 @@ books.forEach(book => {
 
   bookContainer.insertAdjacentHTML('afterbegin', html);
 
-  if (!disabled) {
-    const reserveBtn = bookContainer.querySelector('.btn1');
-    reserveBtn.addEventListener('click', () => {
-      reserveBook(book, bookedDate);
+  const reserveBtn = bookContainer.querySelector('.btn1');
+
+  reserveBtn.addEventListener('click', () => {
+    if (count < 3 && !book.booked) {
+      reserveBook(book, date);
       reserveBtn.textContent = 'Booked';
       reserveBtn.style.backgroundColor = 'grey';
 
@@ -210,17 +216,29 @@ books.forEach(book => {
         msg.classList.add('hidden');
         // reserveBtn.style.display = "none"
       }, 5000);
-
       count++;
+      book.booked = true;
       msg.textContent = `you reserved ${count} books for now. Feel free to book again!`;
-      // msg.textContent = "you reserved 2 books for now.it was limited for day."
-    });
-  }
+      // msg.textContent = "you reserved 3 books for now.it was limited per day."
+    } else {
+      setTimeout(() => {
+        msg.classList.remove('hidden');
+        // reserveBtn.style.display = 'none';
+      }, 1000);
+      setTimeout(() => {
+        msg.classList.add('hidden');
+        // reserveBtn.style.display = "none"
+      }, 10000);
+
+      msg.textContent =
+        'you reserved 3 books for now.it was limited.(if want to reserve another book please return previously booked books.).';
+    }
+  });
 });
 
-async function reserveBook(book, bookedDate) {
+async function reserveBook(book, date) {
   await axios
-    .post('/bookReservation', { book: book, bookedDate: bookedDate })
+    .post('/bookReservation', { book: book, bookedDate: date })
     .then(response => {
       console.log(response);
     });

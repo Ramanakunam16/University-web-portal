@@ -1,53 +1,12 @@
-const userOrEmailInput = document.getElementById('studentId');
-const error = document.getElementById('error');
-const passwdInput = document.getElementById('passwd');
-const loginForm = document.getElementById('loginbtn');
+const studentIdValue = document.getElementById('studentId');
+const adminidvalue = document.getElementById('facultyId');
+const ferror = document.getElementById('ferror');
+const serror = document.getElementById('serror');
+const spasswdInput = document.getElementById('spasswd');
+const fpasswdInput = document.getElementById('fpasswd');
+const sloginForm = document.getElementById('sloginbtn');
+const floginForm = document.getElementById('floginbtn');
 const loader = document.querySelector('.loader');
-
-//     axios.post("/signIn")
-//         .then(response => {
-//             console.log(response.data);
-//             if (response.data.isLogged) {
-//                 passwdInput.style.border = "2px solid green";
-//             }
-//             else {
-//                 passwdInput.style.border = "2px solid red";
-//                 passwdInput.textContent = "wrong password.check again!"
-//             }
-
-//         })
-
-//         .catch(error => {
-//             console.log("error", error);
-//         })
-// })
-
-// userOrEmailInput.addEventListener("blur", () => {
-//     const usernameOrEmail = userOrEmailInput.value;
-//     console.log(usernameOrEmail);
-//     if (usernameOrEmail) {
-//         axios.post("/check-Validity", { usernameOrEmail })
-//             .then(response => {
-//                 console.log(response.data.isValidity);
-//                 if (response.data.isValidity) {
-
-//                     userOrEmailInput.style.border = "2px solid red";
-//                     error.textContent = " 🚫 Invalid userName or email Id"
-
-//                 }
-//                 else {
-//                     userOrEmailInput.style.border = "2px solid green";
-//                     error.textContent = "User Found ✅"
-//                 }
-//             })
-//             .catch(error => {
-//                 console.log("error in checking", error);
-//             })
-//     }
-
-// })
-
-// signIn();
 
 check.onclick = togglePassword;
 function togglePassword() {
@@ -85,4 +44,43 @@ studentbtn.addEventListener('click', () => {
     studentbtn.classList.add('sactive');
     loader.classList.add('hidden');
   }, 1000);
+});
+
+sloginForm.addEventListener('click', async e => {
+  e.preventDefault();
+
+  const studentid = studentIdValue.value;
+  const passwd = spasswdInput.value;
+  await axios.post('/signIn', { studentid, passwd }).then(res => {
+    console.log(res);
+    if (!res.data.isLogged) {
+      serror.innerHTML = 'invalid student id or password';
+      setTimeout(() => {
+        serror.innerHTML = '';
+      }, 3000);
+      return;
+    }
+    if (res.data.isLogged) {
+      window.location.href = '/dashBoard';
+    }
+  });
+});
+floginForm.addEventListener('click', async e => {
+  e.preventDefault();
+
+  const adminid = adminidvalue.value;
+  const passwd = fpasswdInput.value;
+  await axios.post('/facultysignIn', { adminid, passwd }).then(res => {
+    console.log(res);
+    if (!res.data.isLogged) {
+      ferror.innerHTML = 'invalid admin id or password';
+      setTimeout(() => {
+        ferror.innerHTML = '';
+      }, 3000);
+      return;
+    }
+    if (res.data.isLogged) {
+      window.location.href = '/facultyDashBoard';
+    }
+  });
 });

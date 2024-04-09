@@ -35,8 +35,8 @@
                         <i style="width:30px; margin-right: 47px;" class="dropdown-btn">
                             <span><img src="./imgs/menu-outline.svg" alt="dropDownbtn" id="dbicon"></span>
                         </i>
-                        <div class="dropdown-content">
-                            <a href="/settings">⚙ Platform settings</a>
+                        <div class="dropdown-features">
+                            <a href="/settings" class="settings">⚙ Platform settings</a>
                             <a href="/logout">↩ Sign Out</a>
 
                         </div>
@@ -47,8 +47,8 @@
 
     <div class="container">
         <div class="box-1">
-            <button class="profileSettings">⚙ Profile Settings</button>
-            <button class="libReserve">📚 Library Reservations history</button>
+            <button class="profileSettings"><a href="#box-2">⚙ Profile Settings</a></button>
+            <button class="libReserve"><a href="#box-4">📚 Library Reservations history</a></button>
 
         </div>
         <div class="overlay hidden"></div>
@@ -73,7 +73,7 @@
                         <button type="submit">Update Profile</button>
                     </form>
                 </div>
-                <div class="box-3">
+                <div class="box-3" id="box-3">
                     <div class="form3">
 
                         <% if (profilePicData) { %>
@@ -149,9 +149,10 @@
         <div class="box-4 hidden" , id="box-4">
 
             <div class="features">
-                <button class="reservedBtn">History</button>
-                <button class="completedBtn">Completed</button>
+                <button class="reservedBtn">Requests</button>
+                <button class="completedBtn">Accepted</button>
                 <button class="rejectedBtn">Rejected</button>
+                <button class="returnedbtn">Returned</button>
             </div>
             <div class="reservedContainer"></div>
             <div class="completedContainer hidden"></div>
@@ -160,6 +161,7 @@
 
 
             </div>
+            <div class="returnedContainer hidden"></div>
         </div>
 
         <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

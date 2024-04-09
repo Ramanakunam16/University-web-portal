@@ -29,14 +29,15 @@
     <div class="container">
         <div class="sidebar">
             <ul>
-                <a href="">
-                    <li class="dash-side active">Dashboard</li>
+                <a href="/payment">
+                    <li class="dash-side">Dashboard</li>
                 </a>
                 <a href="/semesterReg">
-                    <li>
+                    <li class="active">
                         Semester Reg
                     </li>
                 </a>
+
                 <a href="/transactions">
                     <li>Transactions</li>
                 </a>
@@ -46,31 +47,8 @@
 
             </ul>
         </div>
-        <div class="payment-dash">
-            <h1> Welcome to Your Payment Dashboard</h1>
-            <p> you can Pay your semester registration and practicals fee from this payment dashboard. </p>
-            <p>Select below cards to pay.</p>
-            <div class="cards">
-                <a href="semesterReg">
-                    <div class="card semreg">
-                        <h1>Semester Registration</h1>
 
-
-                    </div>
-                </a>
-
-                <a href="">
-                    <div class="practicals card">
-                        <h1>
-                            Hostel Fee
-                        </h1>
-                    </div>
-                </a>
-
-            </div>
-        </div>
-
-        <div class="sem-reg hidden">
+        <div class="sem-reg">
             <h1>Semester Registration</h1>
             <p>Fill the below form to pay </p>
             <form action="" class="sem-reg-form">
@@ -100,44 +78,26 @@
 
     <script>
         const checkoutbtn = document.querySelector("#checkoutbtn");
-        const semreg = document.querySelector(".semreg")
-        const paymentdash = document.querySelector(".payment-dash")
-        const dashside = document.querySelector(".dash-side")
-        const sem_reg_pay = document.querySelector(".sem-reg")
         const semestervalue = document.getElementById("name-list")
         const studentIdvalue = document.querySelector("#studentid")
         const studentName = document.querySelector("#studentname")
 
 
 
-        dashside.addEventListener("click", () => {
-            dashside.classList.add("active")
-            paymentdash.classList.remove("hidden")
+        checkoutbtn.addEventListener("click", (e) => {
+            e.preventDefault()
+            const semester = semestervalue.selectedOptions[0].value
+            console.log(semester)
+            const studentId = studentIdvalue.value
+            if (semester && studentId) {
+                axios.post("/create-checkout", { semester, studentId }).then(res => {
+                    console.log(res.data.id)
 
-            sem_reg_pay.classList.add("hidden")
-        })
+                    window.location = res.data.url
+                })
+            }
+        });
 
-
-        // checkoutbtn.addEventListener("click", (e) => {
-        //     e.preventDefault()
-        //     const semester = semestervalue.selectedOptions[0].value
-        //     console.log(semester)
-        //     const studentId = studentIdvalue.value
-        //     if (semester && studentId) {
-        //         axios.post("/create-checkout", { semester, studentId }).then(res => {
-        //             console.log(res.data.id)
-
-        //             window.location = res.data.url
-        //         })
-        //     }
-        // });
-
-        // semreg.addEventListener("click", () => {
-        //     document.querySelector(".dash-side").style.background = "none"
-        //     document.querySelector(".dash-side").style.color = "#000";
-        //     paymentdash.classList.add("hidden");
-        //     sem_reg_pay.classList.remove("hidden")
-        // })
 
 
     </script>

@@ -1,8 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  margin: 0;
+  background-image: linear-gradient(
+    90deg,
+    rgba(56, 166, 199, 0.6),
+    rgb(117, 142, 148)
+  );
+  font-family: 'Courier New', Courier, monospace;
+}
+
 .studentLoginForm,
 .facultyLoginForm {
-  width: 28%;
-  max-width: 80%;
-  margin: auto;
+  width: 40%;
+  /* max-width: 80%; */
+  margin: 20px auto;
   border-radius: 20px;
   background-color: #91c7b9;
   padding: 40px;
@@ -25,7 +39,10 @@ label {
   margin: auto;
   margin-top: 10px;
 }
-
+#ssignin,
+#fsignin {
+  margin-top: 20px;
+}
 input,
 .loginbtn {
   display: block;
@@ -37,16 +54,18 @@ input,
   border: none;
   padding: 10px;
 }
+.acctVerify {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 #acctVerify {
-  display: inline-block;
   width: max-content;
-  /* height: 30px; */
   background-color: #0d8b8b;
   border-radius: 20px;
   border: 1px solid black;
   padding: 10px;
-  margin-bottom: 20px;
   color: #f0f3f3;
 }
 
@@ -71,24 +90,8 @@ input,
   margin-top: 25px;
 }
 
-.fp a {
-  text-decoration: none;
-  font-size: 16px;
-  color: black;
-  margin: auto;
-}
-
 .loginbtn:hover {
   color: rgb(248, 246, 245);
-}
-
-body {
-  margin-top: 5%;
-  background-image: linear-gradient(
-    90deg,
-    rgba(56, 166, 199, 0.6),
-    rgb(117, 142, 148)
-  );
 }
 
 input:hover {
@@ -106,8 +109,16 @@ input:hover {
 
 .fp {
   display: flex;
-  margin-left: 70px;
+  justify-content: space-around;
+  align-items: center;
   color: red;
+  padding: 20px;
+}
+.fp a {
+  text-decoration: none;
+  font-size: 16px;
+  color: black;
+  align-self: center;
 }
 
 .fp span {
@@ -163,7 +174,7 @@ a:not(.acctVerify) {
 }
 
 h2 {
-  margin-bottom: 20px;
+  margin: 20px auto;
 }
 
 #check {

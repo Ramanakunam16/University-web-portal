@@ -15,17 +15,17 @@
 <h2 style="text-align: center;">Login To Dr.B.R Ambedkar University web portal</h2>
 <div class="btns">
     <button class="studentbtn ">Student</>
-        <button class="facultybtn factive">Faculty
+        <button class="facultybtn factive">Admin
 </div>
 </div>
 <div class="studentLoginForm hidden">
     <h2>Student Login:</h2>
-    <div class="accctVerify">
+    <div class="acctVerify">
         <p>Please verify your identity if yourn't before. </p>
         <a href="/studentacctVerify" id="acctVerify">Verify Account</a>
     </div>
-    <form id="signin" action="/signIn" , method="post">
-
+    <form id="ssignin" action="/signIn" , method="post">
+        <span id="serror" style="color: red;"></span>
         <div class="label1">
             <label for="studentId" name="studentId">Student Id :<input type="integer" id="studentId" name="studentId" ,
                     placeholder="Enter student id" required></label>
@@ -34,7 +34,7 @@
 
         </div>
         <div class="label2">
-            <label for="passwd" name="passwd">Password :<input type="password" id="passwd" name="passwd"
+            <label for="passwd" name="passwd">Password :<input type="password" id="spasswd" name="passwd"
                     placeholder="password" required>
             </label>
             <label class="eye" for="check"><input id="check" type="checkbox">
@@ -45,7 +45,7 @@
 
         </div>
 
-        <button class="loginbtn" id="loginbtn">Log in</button>
+        <button class="loginbtn" id="sloginbtn">Log in</button>
         <div class="fp">
             <p>Did you forgot your password?</p>
             <a href="/forgotPassword"><span>Reset Password</span></a>
@@ -55,22 +55,22 @@
 </div>
 
 <div class="facultyLoginForm">
-    <h2>Faculty Login:</h2>
-    <div class="accctVerify">
+    <h2>Admin Login:</h2>
+    <div class="acctVerify">
         <p>Please verify your identity if yourn't before. </p>
         <a href="/facultyacctVerify" id="acctVerify">Verify Account</a>
     </div>
-    <form id="signin" action="/facultysignIn" , method="post">
-
+    <form id="fsignin" action="/facultysignIn" , method="post">
+        <span id="ferror" style="color: red;"></span>
         <div class="label1">
-            <label for="facultyId" name="facultyId">Faculty Id :<input type="text" id="facultyId" name="facultyId" ,
+            <label for="facultyId" name="facultyId">Admin Id :<input type="text" id="facultyId" name="facultyId" ,
                     placeholder="Enter faculty id" required></label>
 
 
 
         </div>
         <div class="label2">
-            <label for="passwd" name="passwd">Password :<input type="password" id="passwd" name="passwd"
+            <label for="passwd" name="passwd">Password :<input type="password" id="fpasswd" name="passwd"
                     placeholder="password" required>
             </label>
             <label class="eye" for="check"><input id="check" type="checkbox">
@@ -81,7 +81,7 @@
 
         </div>
 
-        <button class="loginbtn" id="loginbtn">Log in</button>
+        <button class="loginbtn" id="floginbtn">Log in</button>
         <div class="fp">
             <p>Did you forgot your password?</p>
             <a href="/forgotPassword"><span>Reset Password</span></a>
