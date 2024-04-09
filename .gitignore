@@ -3,6 +3,6 @@ node_modules/
 sqlDbCredentials.js
 rough/
 uploads/
-
+.env
 
 
