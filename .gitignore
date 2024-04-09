@@ -3,5 +3,5 @@ db/sqlDbCredentials.js
 uploads/
 .env
 rough
-.cache
-.vscode
+/.cache
+/.vscode
