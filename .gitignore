@@ -1,8 +1,8 @@
 .cache/
 .vscode/
 node_modules/
-db/sqlDbCredentials.js
+sqlDbCredentials/
 uploads/
-.env
+.env/
 rough
 
