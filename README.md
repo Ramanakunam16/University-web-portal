@@ -10,16 +10,16 @@ ent![Screenshot from 2024-04-15 17-29-05](https://github.com/Ramanakunam16/Unive
    ![Screenshot from 2024-04-15 17-29-27](https://github.com/Ramanakunam16/University-web-portal/assets/92236684/d2077a7b-564f-4fe1-b84c-3a50419c6b6f)
 
 #Technologies used
-#Programming languages used : Javascript,HTML,CSS
-#API is implemed via express js routes
+ Programming languages used : Javascript,HTML,CSS
+ API is implemed via express js routes
 
 
 
-# Database:Used mariadb an open source Database which is an fork of mysql.To store data like student details like student name,hall ticket no.(registration no/Roll No.) and semester results
+Database:Used mariadb an open source Database which is an fork of mysql.To store data like student details like student name,hall ticket no.(registration no/Roll No.) and semester results
 
-# Platform used : used docker to run Database using mariadb docker image,used github and codespace.
+Platform used : used docker to run Database using mariadb docker image,used github and codespace.
 
-# Tools used :
+ Tools used :
     ## docker - to run mysql database container,
     ## npm(to install packages like express ,
     ## node-xlsx - used to extract data into json format
