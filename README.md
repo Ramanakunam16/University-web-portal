@@ -18,9 +18,9 @@ ent![Screenshot from 2024-04-15 17-29-05](https://github.com/Ramanakunam16/Unive
 - **Platform used **: used docker to run Database using mariadb docker image,used github and codespace.
 
  - **Tools used **:
-    ## docker - to run mysql database container,
-    ## npm(to install packages like express ,
-    ## node-xlsx - used to extract data into json format
-    ## nodemon - to restart the server when there is changes in code ),
+   - docker - to run mysql database container.
+   - npm(to install packages like express.
+   - ode-xlsx - used to extract data into json format.
+   - nodemon - to restart the server when there is changes in code ).
 
  - **Version controls** : used git version control
