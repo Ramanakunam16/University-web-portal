@@ -33,7 +33,25 @@ Below are picture snippets of the website
    - nodemon - to restart the server when there is changes in code ).
 
  - **Version controls** : used git version control
+## Installations
+To run this website in  locally folllow below steps:
+ 1. Clone repository:
+
+    `git clone git@github.com:Ramanakunam16/University-web-portal.git `
+
+2. Navigate to the project directory:
+
+   `cd University-web-portal/   `
+
+3. Install the required dependencies:
+
+    `npm install` or `npm i`
+
+5. Run the website
+
+    `npm run dev`
 ## How to Use
-- If you want to run this project in your local environment clone repo using *git clone* command and then install live-server extension
-- Click on login
+- Click on login button to navigate to the login page.
+- Login using student Id/Admin Id and password verify studentId/AdminId before login to create password
+- After successfull login it redirect to dashboard page where features were displayed.
   
